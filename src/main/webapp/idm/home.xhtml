@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<head>
+    <ui:fragment rendered="#{not identity.loggedIn}">
+        <meta http-equiv="Refresh" content="0; URL=#{facesContext.externalContext.requestContextPath}/login.jsf"/>
+    </ui:fragment>
+</head>
+<body>
+    <ui:fragment rendered="#{identity.loggedIn}">
+        <p>
+            Welcome <b>#{identity.account.loginName}</b> !
+        </p>
+
+        <p>
+
+            <h:form>
+                <ui:fragment rendered="#{authorizationManager.operator0}">
+                    <h:outputLink value="users.xhtml">
+                        <h:outputText value="#{msgs.allUsers}"/>
+                    </h:outputLink>
+                    <br/>
+                    <h:outputLink value="#">
+                        <h:outputText value="#{msgs.invName}"/>
+                    </h:outputLink>
+                    <br/>
+                    <h:outputLink value="#">
+                        <h:outputText value="#{msgs.cuName}"/>
+                    </h:outputLink>
+                    <br/>
+                    <h:outputLink value="#">
+                        <h:outputText value="#{msgs.dispName}"/>
+                    </h:outputLink>
+                    <br/>
+                    <h:outputLink value="#">
+                        <h:outputText value="#{msgs.repairName}"/>
+                    </h:outputLink>
+                </ui:fragment>
+            </h:form>
+        </p>
+    </ui:fragment>
+
+    <h:form>
+        <h:commandButton id="logout" value="#{msgs.quit}" action="#{loginController.logout}"/>
+    </h:form>
+</body>
+</html>

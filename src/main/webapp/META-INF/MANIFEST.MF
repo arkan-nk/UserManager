@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Built-By: arkan
+Created-By: Apache Maven 3.3.9
+Build-Jdk: 1.8.0_91
+Dependencies: org.picketlink, org.picketlink.core, javax.faces.api, ja
+ vax.ejb.api
+

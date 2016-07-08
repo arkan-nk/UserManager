@@ -1,4 +1,4 @@
-package ru.chipn.manage.idm;
+package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.model.basic.User;
 

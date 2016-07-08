@@ -1,4 +1,4 @@
-package ru.chipn.manage.login;
+package ru.chipn.usermanage.login;
 
 /**
  * Created by arkan on 27.06.2016.
@@ -6,8 +6,6 @@ package ru.chipn.manage.login;
 
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.credential.UsernamePasswordCredentials;
-import org.picketlink.idm.credential.handler.PasswordCredentialHandler;
 import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.*;
 
@@ -15,17 +13,11 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
 import static org.picketlink.common.constants.LDAPConstants.*;
-import static ru.chipn.manage.login.ConfigurationEnum.*;
+import static ru.chipn.usermanage.login.ConfigurationEnum.*;
 
 @ApplicationScoped
 public class IdentityManagementConfiguration {
-    /**
-     * <p>
-     * We use this method to produce a {@link IdentityConfiguration} configured with a LDAP store.
-     * </p>
-     *
-     * @return
-     */
+
     @Produces
     public IdentityConfiguration configure() {
         IdentityConfigurationBuilder builder = new IdentityConfigurationBuilder();

@@ -1,9 +1,9 @@
-package ru.chipn.manage.idm;
+package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
-import ru.chipn.manage.login.AuthorizationManager;
+import ru.chipn.usermanage.login.AuthorizationManager;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -24,8 +24,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     public List<User> getAll() {
         IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
         IdentityQuery query = iqb.createIdentityQuery(User.class);
-        List<User> result = query.getResultList();
-        return result;
+        return query.getResultList();
     }
 
     @Inject

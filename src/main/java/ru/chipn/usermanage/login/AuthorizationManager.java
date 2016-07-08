@@ -1,4 +1,4 @@
-package ru.chipn.manage.login;
+package ru.chipn.usermanage.login;
 
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
@@ -52,7 +52,7 @@ public class AuthorizationManager implements Serializable{
      * <p>Checks if the current user is granted with the given role.</p>
      *
      * @param applicationRole
-     * @return
+     * @return boolean result
      */
     private boolean hasRole(ApplicationRole applicationRole) {
         Account agent = getIdentity().getAccount();

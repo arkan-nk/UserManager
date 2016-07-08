@@ -7,7 +7,7 @@
         <default-locale>ru</default-locale>
     </locale-config>
     <resource-bundle>
-        <base-name>ru.chipn.manage.rusmessages</base-name>
+        <base-name>ru.chipn.usermanage.rusmessages</base-name>
         <var>msgs</var>
     </resource-bundle>
 </application>

@@ -1,4 +1,4 @@
-package ru.chipn.manage.login;
+package ru.chipn.usermanage.login;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;

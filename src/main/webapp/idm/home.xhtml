@@ -3,7 +3,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <head>
     <ui:fragment rendered="#{not identity.loggedIn}">
-        <meta http-equiv="Refresh" content="0; URL=#{facesContext.externalContext.requestContextPath}/login.jsf"/>
+        <meta http-equiv="refresh" content="0; URL=#{facesContext.externalContext.requestContextPath}/login.jsf"/>
     </ui:fragment>
 </head>
 <body>

@@ -11,6 +11,8 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Map;
 
+import static ru.chipn.usermanage.idm.LDAPATTRS.*;
+
 /**
  * Created by arkan on 26.07.2016.
  */
@@ -19,20 +21,21 @@ import java.util.Map;
 public class UserAttributeBean implements Serializable{
     public void changeAttribute(ValueChangeEvent event){
         LDAPATTRS la = null;
+        String stub = " ";
         String attributeLabel = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("attributeLabel");
         if (attributeLabel==null || attributeLabel.trim().length()<1) return;
         switch (attributeLabel.trim()){
-            case "telephoneNumber" : la = LDAPATTRS.TELEPHONENUMBER; break;
-            case "homePhone" : la = LDAPATTRS.HOMEPHONE; break;
-            case "title" : la = LDAPATTRS.TITLE; break;
-            case "organization" : la = LDAPATTRS.ORGANIZATIONNAME; break;
-            case "description" : la = LDAPATTRS.DESCRIPTION; break;
-            case "postalCode" : la = LDAPATTRS.POSTALCODE; break;
-            case "postalAddress" : la = LDAPATTRS.POSTALADDRESS;
+            case "telephoneNumber" : {la = TELEPHONENUMBER; stub = "0"; break;}
+            case "homePhone" : {la = HOMEPHONE; stub = "0"; break; }
+            case "title" : la = TITLE; break;
+            case "organization" : la = ORGANIZATIONNAME; break;
+            case "description" : la = DESCRIPTION; break;
+            case "postalCode" : la = POSTALCODE; break;
+            case "postalAddress" : la = POSTALADDRESS;
         }
         String tn = (String) event.getNewValue();
-        if (tn==null || tn.trim().length()<1) tn=" ";
-        userManagerBean.getCurrentUser().setAttribute(new Attribute<String>(la.getTxt(), tn.trim()));
+        if (tn==null || tn.trim().length()<1) tn=stub;
+        userManagerBean.getCurrentUser().setAttribute(new Attribute<String>(la.getTxt(), tn));
     }
 
     @Inject
@@ -95,26 +98,21 @@ public class UserAttributeBean implements Serializable{
     @PostConstruct
     public void init() {
         Map<String, Attribute<? extends Serializable>> mapUserAttr = userManagerBean.getCurrentUser().getAttributesMap();
-        if (mapUserAttr.containsKey(LDAPATTRS.ORGANIZATIONNAME.getTxt())) {
-            this.organization = mapUserAttr.get(LDAPATTRS.ORGANIZATIONNAME.getTxt()).getValue().toString();
+        this.organization = this.fill(ORGANIZATIONNAME, mapUserAttr);
+        this.title = this.fill(TITLE, mapUserAttr);
+        this.description = this.fill(DESCRIPTION, mapUserAttr);
+        this.postalCode = this.fill(POSTALCODE, mapUserAttr);
+        this.postalAddress = this.fill(POSTALADDRESS, mapUserAttr);
+        this.mobile = this.fill(HOMEPHONE, mapUserAttr);
+        this.telephoneNumber = this.fill(TELEPHONENUMBER, mapUserAttr);
+    }
+    private String fill(LDAPATTRS la, Map<String, Attribute<? extends Serializable>> mapUserAttr){
+        String value = " ";
+        if (mapUserAttr.containsKey(la.getTxt())) {
+            value = mapUserAttr.get(la.getTxt()).getValue().toString();
+        } else {
+            userManagerBean.getCurrentUser().setAttribute(new Attribute<String>(la.getTxt(), value));
         }
-        if (mapUserAttr.containsKey(LDAPATTRS.TELEPHONENUMBER.getTxt())) {
-            this.telephoneNumber = mapUserAttr.get(LDAPATTRS.TELEPHONENUMBER.getTxt()).getValue().toString();
-        }
-        if (mapUserAttr.containsKey(LDAPATTRS.TITLE.getTxt())) {
-            this.title = mapUserAttr.get(LDAPATTRS.TITLE.getTxt()).getValue().toString();
-        }
-        if (mapUserAttr.containsKey(LDAPATTRS.DESCRIPTION.getTxt())) {
-            this.description = mapUserAttr.get(LDAPATTRS.DESCRIPTION.getTxt()).getValue().toString();
-        }
-        if (mapUserAttr.containsKey(LDAPATTRS.POSTALCODE.getTxt())) {
-            this.postalCode = mapUserAttr.get(LDAPATTRS.POSTALCODE.getTxt()).getValue().toString();
-        }
-        if (mapUserAttr.containsKey(LDAPATTRS.POSTALADDRESS.getTxt())) {
-            this.postalAddress = mapUserAttr.get(LDAPATTRS.POSTALADDRESS.getTxt()).getValue().toString();
-        }
-        if (mapUserAttr.containsKey(LDAPATTRS.HOMEPHONE.getTxt())) {
-            this.mobile = mapUserAttr.get(LDAPATTRS.HOMEPHONE.getTxt()).getValue().toString();
-        }
+        return value;
     }
 }

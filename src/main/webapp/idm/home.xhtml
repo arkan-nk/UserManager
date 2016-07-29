@@ -16,9 +16,9 @@
 
             <h:form>
                 <ui:fragment rendered="#{authorizationManager.operator0}">
-                    <h:outputLink value="users.xhtml">
+                    <h:commandLink action="users.xhtml" actionListener="#{userManagerBean.setPageName(msgs.allUsers)}">
                         <h:outputText value="#{msgs.allUsers}"/>
-                    </h:outputLink>
+                    </h:commandLink>
                     <br/>
                     <h:outputLink value="#">
                         <h:outputText value="#{msgs.invName}"/>

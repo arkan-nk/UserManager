@@ -14,7 +14,7 @@ public enum ConfigurationEnum {
     ConfigurationEnum(String t){
         txt = t;
     }
-    String getTxt(){
+    public String getTxt(){
         return txt;
     }
 }

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title><h:outputText value="#{msgs.cardUser}"/></title>
 </h:head>
@@ -13,17 +14,78 @@
     <ui:include src="../resources/fragment/toolheader.xhtml"/>
 </h:form>
 <h:form>
-    <h:panelGrid columns="2">
-        <h:outputText value="#{msgs.cardUser} :" styleClass="order-table-header"/>
+<table style="width:850px;">
+<tr><td style="width:350px;">
+    <h:panelGrid columns="2" class="right-align-text">
+        <h:outputText value="Входное имя:"/>
         <h:outputText value="#{userManagerBean.currentUser.loginName}" styleClass="order-table-header"/>
         <h:outputText value="#{msgs.userName1} :"/>
-        <h:inputText value="#{userManagerBean.currentUser.firstName}" />
+        <h:inputText value="#{userManagerBean.currentUser.firstName}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form" />
+        </h:inputText>
         <h:outputText value="#{msgs.userName2} :"/>
-        <h:inputText value="#{userManagerBean.currentUser.lastName}" />
+        <h:inputText value="#{userManagerBean.currentUser.lastName}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form" />
+        </h:inputText>
         <h:outputText value="#{msgs.email} :"/>
-        <h:inputText value="#{userManagerBean.currentUser.email}" />
+        <h:inputText value="#{userManagerBean.currentUser.email}" >
+            <p:ajax event="valueChange" update="@form" />
+        </h:inputText>
+        <h:outputText value="#{msgs.passwd}"/>
+        <h:inputText value="#{userManagerBean.password}">
+            <p:ajax event="valueChange" update="@form" />
+        </h:inputText>
     </h:panelGrid>
-    <br/>
+</td><td>
+    <h:panelGrid columns="2" >
+        <h:outputText value="#{msgs.telephoneNumber} 1"/>
+        <h:inputText value="#{userAttributeBean.telephoneNumber}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="telephoneNumber"/>
+        </h:inputText>
+        <h:outputText value="#{msgs.telephoneNumber} 2"/>
+        <h:inputText value="#{userAttributeBean.mobile}"
+                     valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="homePhone"/>
+        </h:inputText>
+        <h:outputText value="#{msgs.personTitle}"/>
+        <h:inputTextarea value="#{userAttributeBean.title}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="title"/>
+        </h:inputTextarea>
+        <h:outputText value="#{msgs.o}"/>
+        <h:inputTextarea value="#{userAttributeBean.organization}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="organization"/>
+        </h:inputTextarea>
+        <h:outputText value="#{msgs.description}"/>
+        <h:inputTextarea value="#{userAttributeBean.description}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="description"/>
+        </h:inputTextarea>
+        <h:outputText value="#{msgs.postalCode}" />
+        <h:inputText value="#{userAttributeBean.postalCode}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="postalCode"/>
+        </h:inputText>
+        <h:outputText value="#{msgs.postalAddress}" />
+        <h:inputTextarea value="#{userAttributeBean.postalAddress}"
+            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            <p:ajax event="valueChange" update="@form"/>
+            <f:param name="attributeLabel" value="postalAddress"/>
+        </h:inputTextarea>
+    </h:panelGrid>
+</td></tr>
+</table>
+    <h:commandButton actionListener="#{userManagerBean.saveUser}" value="#{msgs.save}" />
 </h:form>
 </h:body>
 </html>

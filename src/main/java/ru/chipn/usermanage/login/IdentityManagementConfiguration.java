@@ -7,7 +7,11 @@ package ru.chipn.usermanage.login;
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
 import org.picketlink.idm.model.IdentityType;
-import org.picketlink.idm.model.basic.*;
+import org.picketlink.idm.model.basic.Grant;
+import org.picketlink.idm.model.basic.GroupMembership;
+import org.picketlink.idm.model.basic.Role;
+import org.picketlink.idm.model.basic.User;
+import ru.chipn.usermanage.idm.LDAPATTRS;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -29,7 +33,6 @@ public class IdentityManagementConfiguration {
                 .bindCredential("admin")
                 .url(LDAP_URL.getTxt())
                 .supportCredentials(true)
-                //.addCredentialHandler(PasswordCredentialHandler.class)
                 .supportType(IdentityType.class)
                 .supportGlobalRelationship(Grant.class, GroupMembership.class)
                 .mapping(User.class)
@@ -39,6 +42,13 @@ public class IdentityManagementConfiguration {
                   .attribute("firstName", CN)
                   .attribute("lastName", SN)
                   .attribute("email", EMAIL)
+                  .attribute(LDAPATTRS.DESCRIPTION.getTxt(), LDAPATTRS.DESCRIPTION.getTxt())
+                  .attribute(LDAPATTRS.TITLE.getTxt(), LDAPATTRS.TITLE.getTxt())
+                  .attribute(LDAPATTRS.ORGANIZATIONNAME.getTxt(), LDAPATTRS.ORGANIZATIONNAME.getTxt())
+                  .attribute(LDAPATTRS.TELEPHONENUMBER.getTxt(), LDAPATTRS.TELEPHONENUMBER.getTxt())
+                  .attribute(LDAPATTRS.HOMEPHONE.getTxt(), LDAPATTRS.HOMEPHONE.getTxt())
+                  .attribute(LDAPATTRS.POSTALCODE.getTxt(), LDAPATTRS.POSTALCODE.getTxt())
+                  .attribute(LDAPATTRS.POSTALADDRESS.getTxt(), LDAPATTRS.POSTALADDRESS.getTxt())
                   .readOnlyAttribute(LDAPATTRS.CREATEDDATE.getTxt(), CREATE_TIMESTAMP)
                 .mapping(Role.class)
                   .baseDN(GROUPS_OU.getTxt() + ModuleEnum.INV_DN.getTxt() + BASE_DN.getTxt() + ROOT_DN.getTxt())
@@ -74,16 +84,5 @@ public class IdentityManagementConfiguration {
                    .forMapping(Role.class)
                    .attribute("assignee", LDAPATTRS.UNIQUEMEMBER.getTxt());
         return builder.build();
-    }
-    private enum LDAPATTRS{
-        NAME("name"), INETORGPERSON("inetOrgPerson"), ORGANIZATIONALPERSON("organizationalPerson"),
-        CREATEDDATE("createdDate"), UNIQUEMEMBER("uniqueMember");
-        private String txt;
-        String getTxt(){
-            return txt;
-        }
-        LDAPATTRS(String tt){
-            txt = tt;
-        }
     }
 }

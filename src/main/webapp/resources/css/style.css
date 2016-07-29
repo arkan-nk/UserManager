@@ -27,3 +27,7 @@
 .tool-image_padding{
     padding-right: 5px;
 }
+.right-align-text {
+    text-align: right;
+    width: 100%;
+}

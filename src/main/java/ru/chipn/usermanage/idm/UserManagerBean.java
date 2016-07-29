@@ -1,8 +1,5 @@
 package ru.chipn.usermanage.idm;
 
-import org.picketlink.idm.PartitionManager;
-import org.picketlink.idm.config.IdentityConfiguration;
-import org.picketlink.idm.credential.Credentials;
 import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.credential.UsernamePasswordCredentials;
 import org.picketlink.idm.model.basic.User;
@@ -16,7 +13,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

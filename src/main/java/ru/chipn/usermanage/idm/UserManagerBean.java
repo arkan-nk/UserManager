@@ -2,6 +2,8 @@ package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.credential.UsernamePasswordCredentials;
+import org.picketlink.idm.model.basic.BasicModel;
+import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
@@ -9,12 +11,12 @@ import ru.chipn.usermanage.login.AuthorizationManager;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Named
@@ -25,6 +27,8 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     private List<User> foundUsers;
     private String pageName;
     private String password;
+    @Inject
+    private AuthorizationManager authorizationManager;
 
     @Override
     public List<User> getAll() {
@@ -35,18 +39,30 @@ public class UserManagerBean implements UserManagerIf, Serializable{
                 .sorted((user1,user2)->user1.getLoginName().compareTo(user2.getLoginName()))
                 .collect(Collectors.toList());
     }
-
-    public void saveUser(ActionEvent event){
+    @Override
+    public void saveUser(){
+        Objects.requireNonNull(currentUser.getLoginName());
+        boolean isNew = currentUser.getId()==null || currentUser.getId().length()<1;
+        if (isNew){
+            authorizationManager.getIdentityManager().add(this.currentUser);
+        }
         if (password!=null && password.trim().length()>0) {
             UsernamePasswordCredentials credential = new UsernamePasswordCredentials();
             credential.setUsername(currentUser.getLoginName());
             Password password1 = new Password(this.password);
             credential.setPassword(password1);
-            this.password=null;
             authorizationManager.getIdentityManager().updateCredential(currentUser, password1);
             authorizationManager.getIdentityManager().validateCredentials(credential);
         }
         authorizationManager.getIdentityManager().update(currentUser);
+        if (isNew) init();
+    }
+    public User getUser(String loginName){
+        return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
+    }
+
+    public void newUser(){
+        currentUser = new User();
     }
 
 
@@ -62,8 +78,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     public void setPassword(String p){
         password = p;
     }
-    @Inject
-    private AuthorizationManager authorizationManager;
+
     public UserManagerBean(){}
     @PostConstruct
     public void init(){

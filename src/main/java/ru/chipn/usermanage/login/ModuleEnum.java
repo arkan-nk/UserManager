@@ -4,16 +4,19 @@ package ru.chipn.usermanage.login;
  * Created by arkan on 28.06.2016.
  */
 public enum ModuleEnum {
-    CU_DN ("dc=cu,"),
-    INV_DN ("dc=inv,"),
-    DISP_DN ("dc=disp,"),
-    REPAIR_DN ("dc=repair,"),
-    MANAGE_DN ("dc=manage,");
+    CU_DN ("cu"),
+    INV_DN ("inv"),
+    DISP_DN ("disp"),
+    REPAIR_DN ("repair"),
+    MANAGE_DN ("manage");
     String txt;
     ModuleEnum(String t){
         txt = t;
     }
-    String getTxt(){
+    public String getTxt(){
+        return "dc="+txt+",";
+    }
+    public String getModule(){
         return txt;
     }
 }

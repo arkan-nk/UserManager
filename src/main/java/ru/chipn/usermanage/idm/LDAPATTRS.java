@@ -4,7 +4,7 @@ package ru.chipn.usermanage.idm;
  * Created by arkan on 26.07.2016.
  */
 public enum LDAPATTRS {
-    NAME("name"), INETORGPERSON("inetOrgPerson"), ORGANIZATIONALPERSON("organizationalPerson"),
+    NAME("name"), INETORGPERSON("inetOrgPerson"), PERSON("person"), POSIXACCOUNT("posixAccount"),
     CREATEDDATE("createdDate"), UNIQUEMEMBER("uniqueMember"), TITLE("title"), ORGANIZATIONNAME("o"),
     DESCRIPTION("description"), TELEPHONENUMBER("telephoneNumber"), HOMEPHONE("homePhone"),
     POSTALCODE("postalCode"), POSTALADDRESS("postalAddress");

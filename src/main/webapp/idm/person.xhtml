@@ -17,20 +17,21 @@
 <table style="width:850px;">
 <tr><td style="width:350px;">
     <h:panelGrid columns="2" class="right-align-text">
-        <h:outputText value="Входное имя:"/>
+        <h:outputText value="#{msgs.inputName} :"/>
         <h:outputText value="#{userManagerBean.currentUser.loginName}" styleClass="order-table-header"/>
+
         <h:outputText value="#{msgs.userName1} :"/>
         <h:inputText value="#{userManagerBean.currentUser.firstName}"
-            valueChangeListener="#{userAttributeBean.changeAttribute}">
+            valueChangeListener="#{userAttributeBean.changeFirstName}">
             <p:ajax event="valueChange" update="@form" />
         </h:inputText>
         <h:outputText value="#{msgs.userName2} :"/>
-        <h:inputText value="#{userManagerBean.currentUser.lastName}"
-            valueChangeListener="#{userAttributeBean.changeAttribute}">
+        <h:inputText value="#{userManagerBean.currentUser.lastName}">
             <p:ajax event="valueChange" update="@form" />
         </h:inputText>
         <h:outputText value="#{msgs.email} :"/>
-        <h:inputText value="#{userManagerBean.currentUser.email}" >
+        <h:inputText value="#{userManagerBean.currentUser.email}"
+            valueChangeListener="#{userAttributeBean.changeEmail}">
             <p:ajax event="valueChange" update="@form" />
         </h:inputText>
         <h:outputText value="#{msgs.passwd}"/>
@@ -85,7 +86,13 @@
     </h:panelGrid>
 </td></tr>
 </table>
-    <h:commandButton actionListener="#{userManagerBean.saveUser}" value="#{msgs.save}" update="@form"/>
+    <h:outputText value="Пользователь с таким входным именем уже зарегистрирован!"
+                  rendered="#{userAttributeBean.registered}" style="color:red;">
+        <br/>
+    </h:outputText>
+    <h:commandButton actionListener="#{userManagerBean.saveUser()}"
+                     value="#{msgs.save}" update="@form"
+                     disabled="#{userAttributeBean.saveDisabled}"/>
 </h:form>
 </h:body>
 </html>

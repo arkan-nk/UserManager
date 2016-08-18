@@ -2,9 +2,12 @@ package ru.chipn.usermanage.login;
 
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
+import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.model.Account;
+import org.picketlink.idm.model.Partition;
 import org.picketlink.idm.model.basic.BasicModel;
+import org.picketlink.idm.model.basic.Realm;
 import org.picketlink.idm.model.basic.Role;
 
 import javax.enterprise.context.RequestScoped;
@@ -20,7 +23,8 @@ import static org.picketlink.idm.model.basic.BasicModel.getRole;
 public class AuthorizationManager implements Serializable{
     @Inject
     private Instance<Identity> identityInstance;
-
+    @Inject
+    private PartitionManager partitionManager;
     @Inject
     private IdentityManager identityManager;
     @Inject
@@ -33,6 +37,12 @@ public class AuthorizationManager implements Serializable{
         return hasRole(ApplicationRole.FG_ADMIN0);
     }
     */
+    public PartitionManager getPartitionManager(){
+        return partitionManager;
+    }
+    public RelationshipManager getRelationshipManager(){
+        return relationshipManager;
+    }
     public IdentityManager getIdentityManager(){
         return identityManager;
     }
@@ -57,7 +67,6 @@ public class AuthorizationManager implements Serializable{
     private boolean hasRole(ApplicationRole applicationRole) {
         Account agent = getIdentity().getAccount();
         Role role = getRole(this.identityManager, applicationRole.name());
-
         return BasicModel.hasRole(this.relationshipManager, agent, role);
     }
 }

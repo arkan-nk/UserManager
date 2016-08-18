@@ -1,5 +1,6 @@
 package ru.chipn.usermanage.idm;
 
+import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.User;
 
 import java.util.List;
@@ -9,4 +10,5 @@ import java.util.List;
  */
 public interface UserManagerIf {
     List<User> getAll();
+    void saveUser();
 }

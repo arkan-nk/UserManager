@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title><h:outputText value="#{msgs.groupUser}"/></title>
+</h:head>
+<h:body>
+<h:form>
+    <ui:include src="../resources/fragment/toolheader.xhtml"/>
+</h:form>
+<h:panelGrid columns="2">
+    <h:outputText value="#{msgs.inputName} :"/>
+    <h:outputText value="#{userManagerBean.currentUser.loginName}" styleClass="order-table-header"/>
+    <h:outputText value="#{userManagerBean.currentUser.firstName}"/>
+    <h:outputText value="#{userManagerBean.currentUser.lastName}"/>
+    <h:outputText value="#{userManagerBean.currentUser.email}"/>
+    <h:outputText value="#{userManagerBean.currentUser.getAttribute('telephoneNumber').value}"/>
+</h:panelGrid>
+<br/>
+<h:form>
+    <h:outputText value="#{msgs.cuName}" rendered="#{not empty userGroupBean.listCuGroup}"/>
+<table>
+    <ui:repeat value="#{userGroupBean.listCuGroup}" var="gCu">
+        <tr><td>
+            <h:outputText value="#{gCu.getAttribute('description').value}"/>
+        </td><td>
+            <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gCu)}"/>
+        </td></tr>
+    </ui:repeat>
+</table>
+</h:form>
+<br/>
+<h:form>
+<h:outputText value="#{msgs.invName}" rendered="#{not empty userGroupBean.listInvGroup}"/>
+<table>
+    <ui:repeat value="#{userGroupBean.listInvGroup}" var="gInv">
+        <tr><td>
+        <h:outputText value="#{gInv.getAttribute('description').value}"/>
+        </td><td>
+        <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gInv)}"/>
+        </td></tr>
+    </ui:repeat>
+</table>
+</h:form>
+<br/>
+<h:form>
+<h:outputText value="#{msgs.dispName}" rendered="#{not empty userGroupBean.listDispGroup}"/>
+<table>
+       <ui:repeat value="#{userGroupBean.listDispGroup}" var="gDisp">
+       <tr><td>
+            <h:outputText value="#{gDisp.getAttribute('description').value}"/>
+       </td><td>
+            <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gDisp)}"/>
+       </td></tr>
+       </ui:repeat>
+</table>
+</h:form>
+<br/>
+<h:form>
+<h:outputText value="#{msgs.repairName}" rendered="#{not empty userGroupBean.listRepairGroup}"/>
+<table>
+    <ui:repeat value="#{userGroupBean.listRepairGroup}" var="gRepair">
+        <tr><td>
+            <h:outputText value="#{gRepair.getAttribute('description').value}"/>
+        </td><td>
+            <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gRepair)}"/>
+        </td></tr>
+    </ui:repeat>
+</table>
+</h:form>
+</h:body>
+</html>

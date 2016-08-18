@@ -10,6 +10,7 @@
     <ui:fragment rendered="#{identity.loggedIn}">
         <p>
             Welcome <b>#{identity.account.loginName}</b> !
+            <br/><h:outputText value="#{groupBean.txt}"/>
         </p>
 
         <p>

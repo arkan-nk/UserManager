@@ -20,15 +20,14 @@
         emptyMessage="#{msgs.no_data}" styleClass="order-table"
         headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row"
         filteredValue="#{userManagerBean.foundUsers}" widgetVar="userTable" rows="25">
+        <f:facet name="header">
+            <h:commandLink action="person.jsf" actionListener="#{userManagerBean.newUser()}">
+                <h:graphicImage value="../resources/images/add.png"/>
+                <h:outputText value="#{msgs.addNewPerson}"/>
+            </h:commandLink>
+        </f:facet>
         <p:column filterBy="#{userIt.loginName}" headerText="#{msgs.filter}">
             <h:outputText value="#{userIt.loginName}"/>
-        </p:column>
-        <p:column>
-            <p:commandLink title="#{msgs.cardUser}" action="person.xhtml"
-                actionListener="#{userManagerBean.setCurrentUser(userIt)}">
-                <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.cardUser)}" />
-                <h:graphicImage value="../resources/images/pencil.png" alt="edit" styleClass="tool-image_padding" />
-            </p:commandLink>
         </p:column>
         <p:column>
             <f:facet name="header"><h:outputText value="#{msgs.userName1}"/></f:facet>
@@ -38,7 +37,18 @@
             <f:facet name="header"><h:outputText value="#{msgs.userName2}"/></f:facet>
             <h:outputText value="#{userIt.lastName}"/>
         </p:column>
-
+        <p:column>
+            <p:commandLink title="#{msgs.cardUser}" action="person.xhtml"
+                           actionListener="#{userManagerBean.setCurrentUser(userIt)}">
+                <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.cardUser)}" />
+                <h:graphicImage value="../resources/images/pencil.png" alt="edit" styleClass="tool-image_padding" />
+            </p:commandLink>
+            <p:commandLink title="#{msgs.groupUser}" action="usergroup.xhtml"
+                           actionListener="#{userManagerBean.setCurrentUser(userIt)}">
+                <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.groupUser)}" />
+                <h:graphicImage value="../resources/images/permission.png" alt="edit" styleClass="tool-image_padding" />
+            </p:commandLink>
+        </p:column>
     </p:dataTable>
 </h:form>
 </h:body>

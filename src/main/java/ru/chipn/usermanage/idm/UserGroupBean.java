@@ -1,10 +1,10 @@
 package ru.chipn.usermanage.idm;
 
-import org.picketlink.idm.model.Attribute;
+import org.picketlink.idm.RelationshipManager;
+import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.GroupMembership;
 import org.picketlink.idm.model.basic.User;
-import org.picketlink.idm.query.RelationshipQuery;
 import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
@@ -27,9 +27,9 @@ import static ru.chipn.usermanage.login.ConfigurationEnum.*;
 public class UserGroupBean implements Serializable {
     public void doGetOut(Group group1){
         Objects.requireNonNull(group1);
-        Objects.requireNonNull(authorizationManager.getRelationshipManager());
         Objects.requireNonNull(userManagerBean.getCurrentUser());
-        //BasicModel.removeFromGroup(authorizationManager.getRelationshipManager(),userManagerBean.getCurrentUser(), group1);
+        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
+        BasicModel.removeFromGroup(relationshipManager,userManagerBean.getCurrentUser(), group1);
         /*
         RelationshipQuery<GroupMembership> query = authorizationManager.getRelationshipManager().createRelationshipQuery(GroupMembership.class);
         query.setParameter(GroupMembership.MEMBER, userManagerBean.getCurrentUser());
@@ -72,18 +72,20 @@ public class UserGroupBean implements Serializable {
         ).forEach(groupMemb ->list.add(groupMemb.getGroup()));
         return list;
     }
-    @Inject
-    private AuthorizationManager authorizationManager;
+
     @Inject
     private UserManagerBean userManagerBean;
+    @Inject
+    private AuthorizationManager authorizationManager;
     private List<GroupMembership> groupMemberShip;
 
     @PostConstruct
     public void init(){
+        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
         Objects.requireNonNull(userManagerBean.getCurrentUser());
         User currentUser = userManagerBean.getCurrentUser();
-        RelationshipQuery<GroupMembership> relationshipQuery = authorizationManager.getRelationshipManager().createRelationshipQuery(GroupMembership.class);
-        relationshipQuery.setParameter(GroupMembership.MEMBER, currentUser);
-        groupMemberShip = relationshipQuery.getResultList();
+        groupMemberShip = relationshipManager.createRelationshipQuery(GroupMembership.class)
+                .setParameter(GroupMembership.MEMBER , currentUser)
+                .getResultList();
     }
 }

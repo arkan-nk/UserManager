@@ -4,7 +4,6 @@ import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
-import org.picketlink.idm.query.QueryParameter;
 import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 

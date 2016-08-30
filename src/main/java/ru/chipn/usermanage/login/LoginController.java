@@ -1,15 +1,23 @@
 package ru.chipn.usermanage.login;
 
+import org.picketlink.Identity;
+import org.picketlink.idm.IdentityManager;
+import org.picketlink.idm.PartitionManager;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.picketlink.Identity;
+import java.io.Serializable;
 
 @Named
 @RequestScoped
 public class LoginController {
+    @Inject
+    private PartitionManager partitionManager;
+    @Inject
+    private IdentityManager identityManager;
 
     @Inject
     private Identity identity;
@@ -29,7 +37,7 @@ public class LoginController {
     }
 
     public String logout() {
-        this.identity.logout();
+        if (this.identity.isLoggedIn()) this.identity.logout();
         this.facesContext.getExternalContext().invalidateSession();
         return "/login.xhtml";
     }

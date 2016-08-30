@@ -1,7 +1,5 @@
 package ru.chipn.usermanage.idm;
 
-import org.picketlink.idm.RelationshipManager;
-import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.GroupMembership;
 import org.picketlink.idm.model.basic.User;
@@ -9,44 +7,52 @@ import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.ldap.InitialLdapContext;
+import javax.naming.ldap.LdapContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static ru.chipn.usermanage.login.ConfigurationEnum.*;
-
 /**
  * Created by arkan on 15.08.2016.
  */
 @Named
-@RequestScoped
-public class UserGroupBean implements Serializable {
-    public void doGetOut(Group group1){
+@ViewScoped
+public class UserGroupBean implements Serializable{
+    public void doGetOut(Group group1, int appNom) throws Exception{
         Objects.requireNonNull(group1);
         Objects.requireNonNull(userManagerBean.getCurrentUser());
-        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
-        BasicModel.removeFromGroup(relationshipManager,userManagerBean.getCurrentUser(), group1);
-        /*
-        RelationshipQuery<GroupMembership> query = authorizationManager.getRelationshipManager().createRelationshipQuery(GroupMembership.class);
-        query.setParameter(GroupMembership.MEMBER, userManagerBean.getCurrentUser());
-        query.setParameter(GroupMembership.GROUP, group1);
-        for (GroupMembership membership : query.getResultList()) {
-
-            System.out.println(membership.getGroup().getPath());
-            System.out.println(membership.getGroup().getPartition().getName());
-            System.out.println(membership.getMember().getPartition().getName());
-            membership.getAttributes().forEach(attr->{
-                System.out.println(attr.getName());
-                System.out.println(attr.getValue());
-            });
-
-            authorizationManager.getRelationshipManager().remove(membership);
+        String jmxConnStr = null;
+        switch (appNom){
+            case 0 : jmxConnStr = "java:global/federation/cu"; break;
+            case 1 : jmxConnStr = "java:global/federation/disp"; break;
+            case 5 : jmxConnStr = "java:global/federation/inv"; break;
+            case 6 : jmxConnStr = "java:global/federation/repair"; break;
         }
-        */
+        if (jmxConnStr==null) throw new Exception("No active application!");
+        InitialContext initialContext = null;
+        InitialDirContext initalDirContext = null;
+        LdapContext ldapContext = null;
+        try {
+            initialContext = new InitialContext();
+            initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
+            ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
+            LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
+            ldapWriter.removeUserFromGroup(userManagerBean.getCurrentUser(), group1);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }finally{
+            if (ldapContext!=null) ldapContext.close();
+            if (initalDirContext!=null) initalDirContext.close();
+            if (initialContext!=null) initialContext.close();
+        }
     }
 
     public List<Group> getListInvGroup(){
@@ -62,7 +68,6 @@ public class UserGroupBean implements Serializable {
         return this.getListModuleGroup(ModuleEnum.REPAIR_DN);
     }
     private List<Group> getListModuleGroup(ModuleEnum moduleEnum){
-        final String oustr = GROUPS_OU.getTxt()+moduleEnum.getTxt()+BASE_DN.getTxt()+ROOT_DN.getTxt();
         List<Group> list = new ArrayList<>();
         groupMemberShip.stream().filter(
              groupMemb ->
@@ -81,10 +86,10 @@ public class UserGroupBean implements Serializable {
 
     @PostConstruct
     public void init(){
-        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
         Objects.requireNonNull(userManagerBean.getCurrentUser());
         User currentUser = userManagerBean.getCurrentUser();
-        groupMemberShip = relationshipManager.createRelationshipQuery(GroupMembership.class)
+        groupMemberShip = authorizationManager.getRelationshipManager()
+                .createRelationshipQuery(GroupMembership.class)
                 .setParameter(GroupMembership.MEMBER , currentUser)
                 .getResultList();
     }

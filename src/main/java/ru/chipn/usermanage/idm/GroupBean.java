@@ -43,7 +43,6 @@ public class GroupBean implements Serializable{
         AttributeParameter objectClassParameter = Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
         AttributeParameter oParameter = Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
         IdentityQuery<Group> query = iqb.createIdentityQuery(Group.class);
-        Class<Group> clas1 = query.getIdentityType();
         List<Group> group = query
                 .where(
                     iqb.equal(objectClassParameter, GROUP_OF_UNIQUE_NAMES),

@@ -2,7 +2,6 @@ package ru.chipn.usermanage.login;
 
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.model.Account;
 import org.picketlink.idm.model.basic.BasicModel;
@@ -24,17 +23,8 @@ public class AuthorizationManager implements Serializable{
     @Inject
     private IdentityManager identityManager;
     @Inject
-    private PartitionManager partitionManager;
-    @Inject
     private RelationshipManager relationshipManager;
-    /*
-    @Inject
-    private AttributedTypeManager attributedTypeManager;
-    /*
-    public boolean isAdmin0() {
-        return hasRole(ApplicationRole.FG_ADMIN0);
-    }
-    */
+
     public IdentityManager getIdentityManager(){
         return identityManager;
     }
@@ -44,12 +34,8 @@ public class AuthorizationManager implements Serializable{
     public boolean isOperator0() {
         return hasRole(ApplicationRole.FG_OPERATOR0);
     }
-    /*
-    public boolean isViewer0() {
-        return hasRole(ApplicationRole.FG_VIEWER0);
-    }
-    */
-    private Identity getIdentity() {
+
+    public Identity getIdentity() {
         return this.identityInstance.get();
     }
 

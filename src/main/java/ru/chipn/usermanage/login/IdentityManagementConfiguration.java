@@ -6,8 +6,7 @@ package ru.chipn.usermanage.login;
 
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.credential.encoder.SHAPasswordEncoder;
-import org.picketlink.idm.credential.handler.PasswordCredentialHandler;
+import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.*;
 import ru.chipn.usermanage.idm.LDAPATTRS;
 
@@ -19,6 +18,7 @@ import static ru.chipn.usermanage.login.ConfigurationEnum.*;
 
 @ApplicationScoped
 public class IdentityManagementConfiguration {
+
     @Produces
     public IdentityConfiguration configure() {
         IdentityConfigurationBuilder builder = new IdentityConfigurationBuilder();
@@ -29,9 +29,11 @@ public class IdentityManagementConfiguration {
                 .bindDN("cn=admin," + BASE_DN.getTxt() + ROOT_DN.getTxt())
                 .bindCredential("admin")
                 .url(LDAP_URL.getTxt())
-                .supportAllFeatures()
-                .setCredentialHandlerProperty(PasswordCredentialHandler.PASSWORD_ENCODER, new SHAPasswordEncoder(512))
-
+                .supportCredentials(true)
+                .supportType(IdentityType.class)
+                .supportGlobalRelationship(Grant.class, GroupMembership.class)
+                //.supportSelfRelationship(GroupMembership.class)
+                //.setCredentialHandlerProperty(PasswordCredentialHandler.PASSWORD_ENCODER, new SHAPasswordEncoder(512))
                 .mapping(User.class)
                 .baseDN(USERS_OU.getTxt() + BASE_DN.getTxt() + ROOT_DN.getTxt())
                 .objectClasses("top", LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.PERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt())
@@ -50,28 +52,30 @@ public class IdentityManagementConfiguration {
                 .attribute(LDAPATTRS.POSTALCODE.getTxt(), LDAPATTRS.POSTALCODE.getTxt())
                 .attribute(LDAPATTRS.POSTALADDRESS.getTxt(), LDAPATTRS.POSTALADDRESS.getTxt())
                 .readOnlyAttribute(LDAPATTRS.CREATEDDATE.getTxt(), CREATE_TIMESTAMP)
+
                 .mapping(Role.class)
                 .baseDN(ROLES_OU.getTxt() + ModuleEnum.MANAGE_DN.getTxt() + BASE_DN.getTxt() + ROOT_DN.getTxt())
                 .objectClasses("top", GROUP_OF_UNIQUE_NAMES)
                 .attribute(LDAPATTRS.NAME.getTxt(), CN, true)
                 .readOnlyAttribute(LDAPATTRS.CREATEDDATE.getTxt(), CREATE_TIMESTAMP)
-                .mapping(Grant.class).forMapping(Role.class)
-                .attribute("assignee", LDAPATTRS.UNIQUEMEMBER.getTxt())
 
                 .mapping(Group.class)
                 .baseDN(BASE_DN.getTxt() + ROOT_DN.getTxt())
+                .hierarchySearchDepth(8)
                 .objectClasses("top", GROUP_OF_UNIQUE_NAMES)
                 .attribute(LDAPATTRS.NAME.getTxt(), CN, true)
                 .attribute("businessCategory", "businessCategory")
                 .attribute(LDAPATTRS.DESCRIPTION.getTxt(), LDAPATTRS.DESCRIPTION.getTxt())
                 .attribute(LDAPATTRS.ORGANIZATIONNAME.getTxt(), LDAPATTRS.ORGANIZATIONNAME.getTxt())
-                .attribute("member", LDAPATTRS.UNIQUEMEMBER.getTxt())
+                .attribute("member", "uniqueMember")
                 .readOnlyAttribute(LDAPATTRS.CREATEDDATE.getTxt(), CREATE_TIMESTAMP)
                 .attribute("ou", "ou")
+
+                .mapping(Grant.class).forMapping(Role.class)
+                .attribute("assignee", "uniqueMember")
+
                 .mapping(GroupMembership.class).forMapping(Group.class)
-                .hierarchySearchDepth(8)
-                .parentMembershipAttributeName("member")
-                .attribute("member", LDAPATTRS.UNIQUEMEMBER.getTxt());
+                .attribute("member", "uniqueMember");
         return builder.build();
     }
 }

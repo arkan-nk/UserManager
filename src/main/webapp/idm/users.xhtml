@@ -43,8 +43,9 @@
                 <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.cardUser)}" />
                 <h:graphicImage value="../resources/images/pencil.png" alt="edit" styleClass="tool-image_padding" />
             </p:commandLink>
-            <p:commandLink title="#{msgs.groupUser}" action="usergroup.xhtml"
-                           actionListener="#{userManagerBean.setCurrentUser(userIt)}">
+            <p:commandLink title="#{msgs.groupUser}"
+                           actionListener="#{userManagerBean.setCurrentUser(userIt)}"
+                           action="#{userGroupBean.loadMemberShip}">
                 <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.groupUser)}" />
                 <h:graphicImage value="../resources/images/permission.png" alt="edit" styleClass="tool-image_padding" />
             </p:commandLink>

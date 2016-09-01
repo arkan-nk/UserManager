@@ -9,19 +9,20 @@
 <ui:fragment id="toolheader">
     <p:toolbar >
         <f:facet name="left">
-            <h:outputText value="#{userManagerBean.pageName}" />
+            <h:outputText value="#{userManagerBean.pageName}"/>
         </f:facet>
         <f:facet name="right">
-            <p:menuButton value="[...]">
-                <p:menuitem value="#{msgs.home}" url="home.xhtml" icon="ui-icon-extlink"
-                            actionListener="#{userManageBean.setPageName(msgs.home)}"
-                            update="@form">
-                </p:menuitem>
-                <p:menuitem value="#{msgs.allUsers}" url="users.xhtml" icon="ui-icon-extlink"
-                            actionListener="#{userManageBean.setPageName(msgs.allUsers)}"
-                            update="@form" >
-                </p:menuitem>
-                <p:menuitem value="#{msgs.quit}" action="#{loginController.logout()}" ajax="false" icon="ui-icon-close" />
+            <p:menuButton value="Навигация">
+                <p:menuitem value="#{msgs.home}"
+                            actionListener="#{userManagerBean.setPageName('msgs.home')}"
+                            action="#{groupBean.toHome()}"
+                            icon="ui-icon-extlink" update="toolheader"/>
+                <p:menuitem value="#{msgs.allUsers}"
+                            actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
+                            action="#{groupBean.toUsers()}"
+                            icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.quit}" ajax="false" icon="ui-icon-close"
+                            action="#{loginController.logout()}"/>
             </p:menuButton>
         </f:facet>
     </p:toolbar>

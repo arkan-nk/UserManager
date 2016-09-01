@@ -18,9 +18,11 @@ public class SecurityInitializer {
     @Inject
     private PartitionManager partitionManager;
 
-    @PostConstruct
+
+    //@PostConstruct
     public void init(){
-        IdentityManager identityManager = this.partitionManager.createIdentityManager();
-        RelationshipManager relationshipManager = this.partitionManager.createRelationshipManager();
+        boolean tt =(this.partitionManager.getConfigurations()!=null);
+        //this.partitionManager.createIdentityManager();
+        //this.partitionManager.createRelationshipManager();
     }
 }

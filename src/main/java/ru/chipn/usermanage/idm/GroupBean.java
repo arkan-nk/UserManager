@@ -63,4 +63,10 @@ public class GroupBean implements Serializable{
     public List<Group> getGroupRepairList() {
         return groupRepairList;
     }
+    public String toHome(){
+        return "home.xhtml?faces-redirect=true";
+    }
+    public String toUsers(){
+        return "users.xhtml?faces-redrect=true";
+    }
 }

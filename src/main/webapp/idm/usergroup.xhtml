@@ -3,25 +3,35 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title><h:outputText value="#{msgs.groupUser}"/></title>
 </h:head>
 <h:body>
 <h:form>
     <ui:include src="../resources/fragment/toolheader.xhtml"/>
+    <br/>
+    <p:commandLink actionListener="#{userManagerBean.setCurrentUser(null)}"
+                   action="users.xhtml?faces-redirect=true">
+        <p:ajax event="click" listener="#{userManagerBean.setPageName(msgs.allUsers)}"/>
+        <h:outputText value="К списку пользователей"/>
+    </p:commandLink>
 </h:form>
 <h:panelGrid columns="2">
     <h:outputText value="#{msgs.inputName} :"/>
     <h:outputText value="#{userManagerBean.currentUser.loginName}" styleClass="order-table-header"/>
+    <h:outputText value="#{msgs.userName1}"/>
     <h:outputText value="#{userManagerBean.currentUser.firstName}"/>
+    <h:outputText value="#{msgs.userName2}"/>
     <h:outputText value="#{userManagerBean.currentUser.lastName}"/>
+    <h:outputText value="#{msgs.email}"/>
     <h:outputText value="#{userManagerBean.currentUser.email}"/>
+    <h:outputText value="#{msgs.telephoneNumber}"/>
     <h:outputText value="#{userManagerBean.currentUser.getAttribute('telephoneNumber').value}"/>
 </h:panelGrid>
 <br/>
 <h:form>
-    <h:outputText value="#{msgs.cuName}" rendered="#{not empty userGroupBean.listCuGroup}"/>
+<h3><h:outputText value="#{msgs.cuName}" rendered="#{not empty userGroupBean.listCuGroup}"/></h3>
 <table>
     <ui:repeat value="#{userGroupBean.listCuGroup}" var="gCu">
         <tr><td>
@@ -34,7 +44,7 @@
 </h:form>
 <br/>
 <h:form>
-<h:outputText value="#{msgs.invName}" rendered="#{not empty userGroupBean.listInvGroup}"/>
+<h3><h:outputText value="#{msgs.invName}" rendered="#{not empty userGroupBean.listInvGroup}"/></h3>
 <table>
     <ui:repeat value="#{userGroupBean.listInvGroup}" var="gInv">
         <tr><td>
@@ -47,7 +57,7 @@
 </h:form>
 <br/>
 <h:form>
-<h:outputText value="#{msgs.dispName}" rendered="#{not empty userGroupBean.listDispGroup}"/>
+<h3><h:outputText value="#{msgs.dispName}" rendered="#{not empty userGroupBean.listDispGroup}"/></h3>
 <table>
        <ui:repeat value="#{userGroupBean.listDispGroup}" var="gDisp">
        <tr><td>
@@ -60,7 +70,7 @@
 </h:form>
 <br/>
 <h:form>
-<h:outputText value="#{msgs.repairName}" rendered="#{not empty userGroupBean.listRepairGroup}"/>
+<h3><h:outputText value="#{msgs.repairName}" rendered="#{not empty userGroupBean.listRepairGroup}"/></h3>
 <table>
     <ui:repeat value="#{userGroupBean.listRepairGroup}" var="gRepair">
         <tr><td>
@@ -70,6 +80,13 @@
         </td></tr>
     </ui:repeat>
 </table>
+</h:form>
+<h:form>
+    <p:commandLink actionListener="#{userManagerBean.setCurrentUser(null)}"
+                   action="users.xhtml?faces-redirect=true">
+        <p:ajax event="click" listener="#{userManagerBean.setPageName(msgs.allUsers)}"/>
+        <h:outputText value="К списку пользователей"/>
+    </p:commandLink>
 </h:form>
 </h:body>
 </html>

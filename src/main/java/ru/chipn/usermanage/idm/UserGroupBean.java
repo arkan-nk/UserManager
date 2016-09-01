@@ -1,13 +1,14 @@
 package ru.chipn.usermanage.idm;
 
+import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.GroupMembership;
 import org.picketlink.idm.model.basic.User;
+import org.picketlink.idm.query.RelationshipQuery;
 import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
-import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.InitialContext;
@@ -17,6 +18,7 @@ import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +26,7 @@ import java.util.Objects;
  * Created by arkan on 15.08.2016.
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class UserGroupBean implements Serializable{
     public void doGetOut(Group group1, int appNom) throws Exception{
         Objects.requireNonNull(group1);
@@ -53,6 +55,10 @@ public class UserGroupBean implements Serializable{
             if (initalDirContext!=null) initalDirContext.close();
             if (initialContext!=null) initialContext.close();
         }
+        for (Iterator<GroupMembership> itt = groupMemberShip.iterator(); itt.hasNext();){
+            GroupMembership groupMembershipItem = itt.next();
+            if (groupMembershipItem.getGroup()==group1) itt.remove();
+        }
     }
 
     public List<Group> getListInvGroup(){
@@ -79,18 +85,22 @@ public class UserGroupBean implements Serializable{
     }
 
     @Inject
-    private UserManagerBean userManagerBean;
-    @Inject
     private AuthorizationManager authorizationManager;
-    private List<GroupMembership> groupMemberShip;
+    @Inject
+    private UserManagerBean userManagerBean;
 
-    @PostConstruct
-    public void init(){
+
+
+    private List<GroupMembership> groupMemberShip=new ArrayList<>();
+
+    public String loadMemberShip(){
         Objects.requireNonNull(userManagerBean.getCurrentUser());
         User currentUser = userManagerBean.getCurrentUser();
-        groupMemberShip = authorizationManager.getRelationshipManager()
-                .createRelationshipQuery(GroupMembership.class)
-                .setParameter(GroupMembership.MEMBER , currentUser)
-                .getResultList();
+        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
+        RelationshipQuery<GroupMembership> relationshipQuery = relationshipManager.createRelationshipQuery(GroupMembership.class);
+        relationshipQuery.setParameter(GroupMembership.MEMBER , currentUser);
+        groupMemberShip.clear();
+        groupMemberShip.addAll(relationshipQuery.getResultList());
+        return "usergroup.xhtml?faces-redirect=true";
     }
 }

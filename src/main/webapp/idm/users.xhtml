@@ -39,6 +39,10 @@
             <h:outputText value="#{userIt.lastName}"/>
         </p:column>
         <p:column>
+            <f:facet name="header"><h:outputText value="#{msgs.telephoneNumber}"/></f:facet>
+            <h:outputText value="#{userIt.getAttribute('telephoneNumber').value}" />
+        </p:column>
+        <p:column width="10%">
             <p:commandLink title="#{msgs.cardUser}" action="person.xhtml"
                            actionListener="#{userManagerBean.setCurrentUser(userIt)}">
                 <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.cardUser)}" />

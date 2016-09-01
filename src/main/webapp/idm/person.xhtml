@@ -87,12 +87,15 @@
 </td></tr>
 </table>
     <h:outputText value="Пользователь с таким входным именем уже зарегистрирован!"
-                  rendered="#{userAttributeBean.registered}" style="color:red;">
-        <br/>
-    </h:outputText>
+                  rendered="#{userAttributeBean.registered}" style="color:red;"/>
+    <br/>
     <h:commandButton actionListener="#{userManagerBean.saveUser()}"
                      value="#{msgs.save}" update="@form"
                      disabled="#{userAttributeBean.saveDisabled}"/>
+    <h:commandButton title="#{msgs.allUsers}" value="#{msgs.allUsers}"
+                     actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
+                     action="users.xhtml?faces-redirect=true">
+    </h:commandButton>
 </h:form>
 </h:body>
 </html>

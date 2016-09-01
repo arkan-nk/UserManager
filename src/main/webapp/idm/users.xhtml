@@ -18,6 +18,7 @@
 <h:form>
     <p:dataTable id="userDT" var="userIt" value="#{userManagerBean.users}" paginator="true"
         emptyMessage="#{msgs.no_data}" styleClass="order-table"
+        selectionMode="single" selection="#{userManagerBean.currentUser}" rowKey="#{userIt.id}"
         headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row"
         filteredValue="#{userManagerBean.foundUsers}" widgetVar="userTable" rows="25">
         <f:facet name="header">

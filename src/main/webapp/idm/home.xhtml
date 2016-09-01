@@ -2,6 +2,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <head>
+    <title><h:outputText value="#{msgs.home}"/></title>
     <ui:fragment rendered="#{not identity.loggedIn}">
         <meta http-equiv="refresh" content="0; URL=#{facesContext.externalContext.requestContextPath}/login.jsf"/>
     </ui:fragment>
@@ -21,9 +22,9 @@
                         <h:outputText value="#{msgs.allUsers}"/>
                     </h:commandLink>
                     <br/>
-                    <h:outputLink value="#">
+                    <h:commandLink action="group_inv.xhtml" actionListener="#{userManagerBean.setPageName(msgs.invName)}">
                         <h:outputText value="#{msgs.invName}"/>
-                    </h:outputLink>
+                    </h:commandLink>
                     <br/>
                     <h:outputLink value="#">
                         <h:outputText value="#{msgs.cuName}"/>

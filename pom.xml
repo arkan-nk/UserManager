@@ -170,7 +170,6 @@
                     <archive>
                         <manifestEntries>
                             <Dependencies>
-                                javax.servlet.api
                                 javax.enterprise.api,
                                 javax.faces.api, javax.ejb.api
                             </Dependencies>
@@ -185,7 +184,10 @@
                 <version>${version.jboss.maven.plugin}</version>
                 <configuration>
                     <filename>${artifactId}.${packaging}</filename>
-                    <port>9998</port>
+                    <hostname>localhost</hostname>
+                    <username>arkan</username>
+                    <password>123</password>
+                    <port>9990</port>
                 </configuration>
                 <executions>
                     <execution>

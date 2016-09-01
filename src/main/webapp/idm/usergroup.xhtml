@@ -3,19 +3,13 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
     <title><h:outputText value="#{msgs.groupUser}"/></title>
 </h:head>
 <h:body>
 <h:form>
     <ui:include src="../resources/fragment/toolheader.xhtml"/>
-    <br/>
-    <p:commandLink actionListener="#{userManagerBean.setCurrentUser(null)}"
-                   action="users.xhtml?faces-redirect=true">
-        <p:ajax event="click" listener="#{userManagerBean.setPageName(msgs.allUsers)}"/>
-        <h:outputText value="К списку пользователей"/>
-    </p:commandLink>
 </h:form>
 <h:panelGrid columns="2">
     <h:outputText value="#{msgs.inputName} :"/>
@@ -37,7 +31,9 @@
         <tr><td>
             <h:outputText value="#{gCu.getAttribute('description').value}"/>
         </td><td>
-            <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gCu, 0)}"/>
+            <h:commandButton value="#{msgs.toGetOut}"
+                actionListener="#{groupBean.doGetOut(gCu, userManagerBean.currentUser, 0)}"
+                action="#{userGroupBean.cleanMembership(gCu)}"/>
         </td></tr>
     </ui:repeat>
 </table>
@@ -50,7 +46,9 @@
         <tr><td>
         <h:outputText value="#{gInv.getAttribute('description').value}"/>
         </td><td>
-        <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gInv, 5)}"/>
+        <h:commandButton value="#{msgs.toGetOut}"
+            actionListener="#{groupBean.doGetOut(gInv, userManager.currentUser, 5)}"
+            action="#{userGroupBean.cleanMembership(gInv)}"/>
         </td></tr>
     </ui:repeat>
 </table>
@@ -63,7 +61,9 @@
        <tr><td>
             <h:outputText value="#{gDisp.getAttribute('description').value}"/>
        </td><td>
-            <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gDisp, 1)}"/>
+            <h:commandButton value="#{msgs.toGetOut}"
+                actionListener="#{groupBean.doGetOut(gDisp, userManagerBean.currentUser, 1)}"
+                action="#{userGroupBean.cleanMembership(gDisp)}"/>
        </td></tr>
        </ui:repeat>
 </table>
@@ -76,17 +76,21 @@
         <tr><td>
             <h:outputText value="#{gRepair.getAttribute('description').value}"/>
         </td><td>
-            <h:commandButton value="#{msgs.toGetOut}" action="#{userGroupBean.doGetOut(gRepair, 6)}"/>
+            <h:commandButton value="#{msgs.toGetOut}"
+                actionListener="#{groupBean.doGetOut(gRepair, userManager.currentUser, 6)}"
+                action="#{userGroupBean.cleanMembership(gRepair)}"/>
         </td></tr>
     </ui:repeat>
 </table>
 </h:form>
 <h:form>
-    <p:commandLink actionListener="#{userManagerBean.setCurrentUser(null)}"
-                   action="users.xhtml?faces-redirect=true">
-        <p:ajax event="click" listener="#{userManagerBean.setPageName(msgs.allUsers)}"/>
-        <h:outputText value="К списку пользователей"/>
-    </p:commandLink>
+    <h:commandButton title="#{msgs.dropUser}" value="#{msgs.dropUser}"
+        disabled="#{not userGroupBean.isNoMemberShip()}"
+        actionListener="#{userManagerBean.dropUser()}" action="users.xhtml?faces-redirect=true"/>
+    <h:commandButton title="#{msgs.allUsers}" value="#{msgs.allUsers}"
+        actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
+        action="users.xhtml?faces-redirect=true">
+    </h:commandButton>
 </h:form>
 </h:body>
 </html>

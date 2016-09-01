@@ -9,6 +9,8 @@ import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.InitialContext;
@@ -22,42 +24,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import static com.sun.corba.se.impl.util.Utility.printStackTrace;
+
 /**
  * Created by arkan on 15.08.2016.
  */
 @Named
 @SessionScoped
 public class UserGroupBean implements Serializable{
-    public void doGetOut(Group group1, int appNom) throws Exception{
-        Objects.requireNonNull(group1);
-        Objects.requireNonNull(userManagerBean.getCurrentUser());
-        String jmxConnStr = null;
-        switch (appNom){
-            case 0 : jmxConnStr = "java:global/federation/cu"; break;
-            case 1 : jmxConnStr = "java:global/federation/disp"; break;
-            case 5 : jmxConnStr = "java:global/federation/inv"; break;
-            case 6 : jmxConnStr = "java:global/federation/repair"; break;
-        }
-        if (jmxConnStr==null) throw new Exception("No active application!");
-        InitialContext initialContext = null;
-        InitialDirContext initalDirContext = null;
-        LdapContext ldapContext = null;
-        try {
-            initialContext = new InitialContext();
-            initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
-            ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
-            LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
-            ldapWriter.removeUserFromGroup(userManagerBean.getCurrentUser(), group1);
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }finally{
-            if (ldapContext!=null) ldapContext.close();
-            if (initalDirContext!=null) initalDirContext.close();
-            if (initialContext!=null) initialContext.close();
-        }
-        for (Iterator<GroupMembership> itt = groupMemberShip.iterator(); itt.hasNext();){
+
+    public void cleanMembership(Group group1){
+        for (Iterator<GroupMembership> itt = groupMemberShip.iterator(); itt.hasNext(); ) {
             GroupMembership groupMembershipItem = itt.next();
-            if (groupMembershipItem.getGroup()==group1) itt.remove();
+            if (groupMembershipItem.getGroup() == group1) itt.remove();
         }
     }
 
@@ -82,6 +61,9 @@ public class UserGroupBean implements Serializable{
                          .getValue().equals(moduleEnum.getModule())
         ).forEach(groupMemb ->list.add(groupMemb.getGroup()));
         return list;
+    }
+    public Boolean isNoMemberShip(){
+        return groupMemberShip.isEmpty();
     }
 
     @Inject

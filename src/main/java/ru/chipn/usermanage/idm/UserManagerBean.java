@@ -59,6 +59,14 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     public User getUser(String loginName){
         return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
     }
+    public void dropUser(){
+        Objects.requireNonNull(currentUser);
+        if (currentUser.getId()!=null || currentUser.getId().length()>1) {
+            authorizationManager.getIdentityManager().remove(currentUser);
+            init();
+        }
+        currentUser=null;
+    }
 
     public void newUser(){
         currentUser = new User();
@@ -88,6 +96,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     }
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+        this.password=null;
     }
     public List<User> getUsers(){
         return users;

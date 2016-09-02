@@ -12,9 +12,10 @@ In this case user_manager can authenticate and authorize in application and perf
  1. show all users in ou=Users, dc=a2,dc=chipn,dc=ru 
  2. add new user to ou=Users, dc=a2,dc=chipn,dc=ru 
  3. edit some attributes of *selected user* (cn, sn, telephoneNumber, postalAddress and others) 
- 4. replace password of selected user put *selected user* to any group in ldap except сn=fg_operator0, ou=Roles, dc=manage, dc=a2, dc=chipn, dc=ru
- 5. remove *seleted user* from any group in ldap except  cn=fg_operator0,ou=Roles,dc=manage,dc=a2,dc=chipn,dc=ru
- 6. remove *seleted user* from ldap if user have no membership in any group
+ 4. replace password of *selected user* 
+ 5. put *selected user* to any group in ldap except сn=fg_operator0, ou=Roles, dc=manage, dc=a2, dc=chipn, dc=ru 
+ 6. remove *seleted user* from any group in ldap except  cn=fg_operator0,ou=Roles,dc=manage,dc=a2,dc=chipn,dc=ru 
+ 7. remove *seleted user* from ldap if user have no membership in any group
 
 Application has developed by JDK8u101, PicketLink-2.7.1.Final, CDI, JSF-2.2.12,
 Primefaces-6.0, OpenLDAP, and can deploy to JBoss Application Server

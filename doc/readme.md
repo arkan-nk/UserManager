@@ -1,7 +1,7 @@
 **User Manager**
 This application is service for other project to manage users in LDAP.
 Ldap-domain has a structure:
-![enter image description here](https://lh3.googleusercontent.com/fmsNgidPNJvS0KzKfKO_JIWojiI_5uGBnUjAReRdTjNYKqvwMRfQ4WOzb5dnhLdsryinc3YJ=s0 "domain.png")
+![enter image description here](https://github.com/arkan-nk/UserManager/tree/master/doc/domain.png)
 
 
 Admin of domain is **cn=admin,dc=a2,dc=chipn,dc=ru**
@@ -19,7 +19,7 @@ In this case user_manager can authenticate and authorize in application and perf
 
 Application has developed by JDK8u101, PicketLink-2.7.1.Final, CDI, JSF-2.2.12,
 Primefaces-6.0, OpenLDAP, and can deploy to JBoss Application Server
-(WildFly-9.0.2.Final or WildFly-10.1.0.Final)
+(WildFly-9.0.2.Final or WildFly-10.1.0.Final) with standalone.xml as sample configuration. 
 
 
 

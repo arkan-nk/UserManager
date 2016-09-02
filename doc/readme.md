@@ -1,7 +1,7 @@
 **User Manager**
 This application is service for other project to manage users in LDAP.
 Ldap-domain has a structure:
-![enter image description here](https://github.com/arkan-nk/UserManager/tree/master/doc/domain.png)
+!(https://github.com/arkan-nk/UserManager/tree/master/doc/domain.png)
 
 
 Admin of domain is **cn=admin,dc=a2,dc=chipn,dc=ru**

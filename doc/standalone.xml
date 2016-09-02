@@ -410,14 +410,6 @@
                         <property name="attrReqPasswToken" value="registeredAddress"/>
                     </environment>
                 </external-context>
-                <lookup name="java:global/inv-sec-ds" lookup="java:jboss/datasources/inv-sec-ds"/>
-                <lookup name="java:global/cu-sec-ds" lookup="java:jboss/datasources/cu-sec-ds"/>
-                <lookup name="java:global/disp-sec-ds" lookup="java:jboss/datasources/disp-sec-ds"/>
-                <lookup name="java:global/repair-sec-ds" lookup="java:jboss/datasources/repair-sec-ds"/>
-                <lookup name="java:global/inv-local-ds" lookup="java:jboss/datasources/inv-local-ds"/>
-                <lookup name="java:global/cu-local-ds" lookup="java:jboss/datasources/cu-local-ds"/>
-                <lookup name="java:global/disp-local-ds" lookup="java:jboss/datasources/disp-local-ds"/>
-                <lookup name="java:global/repair-local-ds" lookup="java:jboss/datasources/repair-local-ds"/>
             </bindings>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>

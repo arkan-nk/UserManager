@@ -5,6 +5,8 @@ import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.Visibility;
 import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
@@ -32,6 +34,9 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 @Named
 @SessionScoped
 public class GroupBean implements Serializable{
+    public void onCollapse(ToggleEvent event) {
+        this.collapsed= event.getVisibility().equals(Visibility.VISIBLE);
+    }
     public void doGetOut(Group group1, User currentUser, final int appNom) throws Exception{
         Objects.requireNonNull(group1);
         Objects.requireNonNull(currentUser);
@@ -99,6 +104,12 @@ public class GroupBean implements Serializable{
     public String toUsers(){
         return "users.xhtml?faces-redrect=true";
     }
+    public Boolean getCollapsed(){
+        return collapsed;
+    }
+    public void setCollapsed(Boolean collapsed) {
+        this.collapsed = collapsed;
+    }
     public String getTxt() {return "Управление пользователями!";}
     private List<Group> groupCuList;
     private List<Group> groupInvList;
@@ -108,4 +119,5 @@ public class GroupBean implements Serializable{
     private FacesContext facesContext;
     @Inject
     private AuthorizationManager authorizationManager;
+    private Boolean collapsed = false;
 }

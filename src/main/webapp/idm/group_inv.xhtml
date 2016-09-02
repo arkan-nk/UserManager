@@ -2,11 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <title><h:outputText value="#{msgs.invName}"/></title>
 </h:head>
 <h:body>
-
+<p:layout collapseTitle="Свернуть" expandTitle="Развернуть"
+          fullPage="true" style="border: 0px;" widgetVar="layoutVar">
+    <p:ajax event="toggle" listener="#{groupBean.onCollapse}"/>
+    <p:layoutUnit position="north" size="45" resizable="false"
+                  closable="false" collapsible="false">
+        <h:form>
+            <ui:include src="../resources/fragment/toolheader.xhtml"/>
+        </h:form>
+    </p:layoutUnit>
+    <p:layoutUnit id="leftunit" position="west" size="350"
+                  header="Выбор группы" resizable="false" closable="false"
+                  collapsible="true" collapsed="#{groupBean.collapsed}">
+        <h:form>
+         <h:outputText value="Выбиралка для групп"/>
+        </h:form>
+    </p:layoutUnit>
+    <p:layoutUnit id="centerunit" position="center" resizable="true"
+                  header="Пользователи в выбранной группе" closable="false" collapsible="false">
+        <h:outputText value="Таблица с пользователями"/>
+    </p:layoutUnit>
+</p:layout>
 </h:body>
 </html>

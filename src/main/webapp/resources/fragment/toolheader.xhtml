@@ -15,11 +15,15 @@
             <p:menuButton value="Навигация">
                 <p:menuitem value="#{msgs.home}"
                             actionListener="#{userManagerBean.setPageName('msgs.home')}"
-                            action="#{groupBean.toHome()}"
+                            action="home.xhtml?faces-redirect=true"
                             icon="ui-icon-extlink" update="toolheader"/>
                 <p:menuitem value="#{msgs.allUsers}"
                             actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
-                            action="#{groupBean.toUsers()}"
+                            action="users.xhtml?faces-redrect=true"
+                            icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.invName}"
+                            actionListener="#{userManagerBean.setPageName(msgs.invName)}"
+                            action="group_inv.xhtml?faces-redirect=true"
                             icon="ui-icon-extlink" update="toolheader" />
                 <p:menuitem value="#{msgs.quit}" ajax="false" icon="ui-icon-close"
                             action="#{loginController.logout()}"/>

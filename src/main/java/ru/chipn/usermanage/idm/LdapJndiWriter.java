@@ -10,7 +10,6 @@ import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
 
 import static org.picketlink.common.constants.LDAPConstants.CN;
-import static org.picketlink.common.constants.LDAPConstants.UID;
 
 /**
  * Created by arkan on 29.08.2016.
@@ -36,7 +35,30 @@ class LdapJndiWriter {
         dtx.addToEnvironment(Context.SECURITY_PRINCIPAL, sb0.toString());
         dtx.addToEnvironment(Context.SECURITY_CREDENTIALS, adminPsw!=null ? adminPsw : "admin");
     }
-
+    public void operate(User user, Group group, final int dirContextAttribute) throws NamingException{
+        Hashtable ht = dtx.getEnvironment();
+        StringBuilder groupSb = new StringBuilder(CN);
+        groupSb.append("=").append(group.getName());
+        groupSb.append(",").append(ht.get("groupsDN"));
+        Attribute attr = new BasicAttribute((String) ht.get("attrMember"));
+        attr.add(user.getAttribute("org.picketlink.idm.ldap.entry.dn").getValue());
+        Attributes attrs = new BasicAttributes();
+        attrs.put(attr);
+        dtx.modifyAttributes(groupSb.toString(), dirContextAttribute, attrs);
+    }
+    /*
+    public void addUserToGroup(User user, Group group) throws NamingException{
+        System.out.println("addUserToGroup");
+        Hashtable ht = dtx.getEnvironment();
+        StringBuilder groupSb = new StringBuilder(CN);
+        groupSb.append("=").append(group.getName());
+        groupSb.append(",").append(ht.get("groupsDN"));
+        Attribute attr = new BasicAttribute((String) ht.get("attrMember"));
+        attr.add(user.getAttribute("org.picketlink.idm.ldap.entry.dn").getValue());
+        Attributes attrs = new BasicAttributes();
+        attrs.put(attr);
+        dtx.modifyAttributes(groupSb.toString(), DirContext.ADD_ATTRIBUTE, attrs);
+    }
     public void removeUserFromGroup(User currentUser, Group group1) throws NamingException {
         System.out.println("removeUserFromGroup");
         Hashtable ht = dtx.getEnvironment();
@@ -49,4 +71,5 @@ class LdapJndiWriter {
         attrs.put(attr);
         dtx.modifyAttributes(groupSb.toString(), DirContext.REMOVE_ATTRIBUTE, attrs);
     }
+    */
 }

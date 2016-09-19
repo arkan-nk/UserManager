@@ -9,22 +9,13 @@ import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.ldap.InitialLdapContext;
-import javax.naming.ldap.LdapContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-
-import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 
 /**
  * Created by arkan on 15.08.2016.
@@ -33,8 +24,8 @@ import static com.sun.corba.se.impl.util.Utility.printStackTrace;
 @SessionScoped
 public class UserGroupBean implements Serializable{
 
-    public void cleanMembership(Group group1){
-        for (Iterator<GroupMembership> itt = groupMemberShip.iterator(); itt.hasNext(); ) {
+    public void dropMembershipUser(Group group1){
+        for (Iterator<GroupMembership> itt = userMemberShip.iterator(); itt.hasNext(); ) {
             GroupMembership groupMembershipItem = itt.next();
             if (groupMembershipItem.getGroup() == group1) itt.remove();
         }
@@ -54,7 +45,7 @@ public class UserGroupBean implements Serializable{
     }
     private List<Group> getListModuleGroup(ModuleEnum moduleEnum){
         List<Group> list = new ArrayList<>();
-        groupMemberShip.stream().filter(
+        userMemberShip.stream().filter(
              groupMemb ->
                  groupMemb.getGroup()
                          .getAttribute(LDAPATTRS.ORGANIZATIONNAME.getTxt())
@@ -63,7 +54,7 @@ public class UserGroupBean implements Serializable{
         return list;
     }
     public Boolean isNoMemberShip(){
-        return groupMemberShip.isEmpty();
+        return userMemberShip.isEmpty();
     }
 
     @Inject
@@ -73,7 +64,7 @@ public class UserGroupBean implements Serializable{
 
 
 
-    private List<GroupMembership> groupMemberShip=new ArrayList<>();
+    private List<GroupMembership> userMemberShip = new ArrayList<>();
 
     public String loadMemberShip(){
         Objects.requireNonNull(userManagerBean.getCurrentUser());
@@ -81,8 +72,8 @@ public class UserGroupBean implements Serializable{
         RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
         RelationshipQuery<GroupMembership> relationshipQuery = relationshipManager.createRelationshipQuery(GroupMembership.class);
         relationshipQuery.setParameter(GroupMembership.MEMBER , currentUser);
-        groupMemberShip.clear();
-        groupMemberShip.addAll(relationshipQuery.getResultList());
+        userMemberShip.clear();
+        userMemberShip.addAll(relationshipQuery.getResultList());
         return "usergroup.xhtml?faces-redirect=true";
     }
 }

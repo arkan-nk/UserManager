@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Named
 @SessionScoped
 public class UserManagerBean implements UserManagerIf, Serializable{
+
     private User currentUser;
     private List<User> users;
     private List<User> foundUsers;
@@ -56,9 +57,11 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         authorizationManager.getIdentityManager().update(currentUser);
         if (isNew) init();
     }
+    @Override
     public User getUser(String loginName){
         return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
     }
+    @Override
     public void dropUser(){
         Objects.requireNonNull(currentUser);
         if (currentUser.getId()!=null || currentUser.getId().length()>1) {
@@ -67,7 +70,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         }
         currentUser=null;
     }
-
+    @Override
     public void newUser(){
         currentUser = new User();
     }
@@ -85,6 +88,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     public void setPassword(String p){
         password = p;
     }
+
 
     public UserManagerBean(){}
     @PostConstruct
@@ -107,4 +111,5 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     public void setFoundUsers(List<User> foundUsers){
         this.foundUsers = foundUsers;
     }
+
 }

@@ -1,7 +1,6 @@
 package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.model.basic.Group;
-import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
@@ -12,18 +11,15 @@ import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.ldap.InitialLdapContext;
-import javax.naming.ldap.LdapContext;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.picketlink.common.constants.LDAPConstants.GROUP_OF_UNIQUE_NAMES;
 import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
@@ -34,75 +30,96 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 @Named
 @SessionScoped
 public class GroupBean implements Serializable{
-    public void onCollapse(ToggleEvent event) {
-        this.collapsed= event.getVisibility().equals(Visibility.VISIBLE);
-    }
-    public void doGetOut(Group group1, User currentUser, final int appNom) throws Exception{
-        Objects.requireNonNull(group1);
-        Objects.requireNonNull(currentUser);
-        String jmxConnStr = null;
-        switch (appNom){
-            case 0 : jmxConnStr = "java:global/federation/cu"; break;
-            case 1 : jmxConnStr = "java:global/federation/disp"; break;
-            case 5 : jmxConnStr = "java:global/federation/inv"; break;
-            case 6 : jmxConnStr = "java:global/federation/repair"; break;
-        }
-        if (jmxConnStr==null) throw new Exception("No active application!");
-        InitialContext initialContext = null;
-        InitialDirContext initalDirContext = null;
-        LdapContext ldapContext = null;
-        try {
-            initialContext = new InitialContext();
-            initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
-            ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
-            LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
-            ldapWriter.removeUserFromGroup(currentUser, group1);
-        } catch (NamingException e) {
-            facesContext.addMessage(null, new FacesMessage(e.getExplanation()));
-        }finally{
-            if (ldapContext!=null) ldapContext.close();
-            if (initalDirContext!=null) initalDirContext.close();
-            if (initialContext!=null) initialContext.close();
-        }
+    /*
+    public GroupBean(){
+        moduleTgOptions = new HashMap<>();
+        moduleFgOptions = new HashMap<>();
     }
 
     @PostConstruct
     public void init(){
-        groupCuList = (List<Group>) getListGroups(ModuleEnum.CU_DN);
-        groupInvList = (List<Group>)getListGroups(ModuleEnum.INV_DN);
-        groupDispList = (List<Group>)getListGroups(ModuleEnum.DISP_DN);
-        groupRepairList = (List<Group>)getListGroups(ModuleEnum.REPAIR_DN);
+        groupCuListFg = loadListGroups(ModuleEnum.CU_DN, "fg");
+        groupInvList = loadListGroups(ModuleEnum.INV_DN, "fg");
+        groupDispList = loadListGroups(ModuleEnum.DISP_DN, "fg");
+        groupRepairList = loadListGroups(ModuleEnum.REPAIR_DN, "fg");
+        groupCuListTg = loadListGroups(ModuleEnum.CU_DN, "tg");
+        this.fillGroupOptions(groupInvList, ModuleEnum.INV_DN, moduleFgOptions);
+        this.fillGroupOptions(groupCuListFg, ModuleEnum.CU_DN, moduleFgOptions);
+        this.fillGroupOptions(groupCuListTg, ModuleEnum.CU_DN, moduleTgOptions);
+        this.fillGroupOptions(groupDispList, ModuleEnum.DISP_DN, moduleFgOptions);
+        this.fillGroupOptions(groupRepairList, ModuleEnum.REPAIR_DN, moduleFgOptions);
     }
-    private List<Group> getListGroups(ModuleEnum moduleEnum){
-        IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
-        AttributeParameter objectClassParameter = Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
-        AttributeParameter oParameter = Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
-        IdentityQuery<Group> query = iqb.createIdentityQuery(Group.class);
-        List<Group> group = query
-                .where(
-                    iqb.equal(objectClassParameter, GROUP_OF_UNIQUE_NAMES),
-                    iqb.equal(oParameter, moduleEnum.getModule())
-                )
-                .getResultList();
+    */
+
+
+    public void onCollapse(ToggleEvent event) {
+        this.collapsed= event.getVisibility().equals(Visibility.VISIBLE);
+    }
+    public String getNameSelectedGroup(){
+        if (groupId==null) return null;
+        String nameGroup = this.findName(ModuleEnum.CU_DN);
+        if (nameGroup==null) nameGroup=this.findName(ModuleEnum.INV_DN);
+        if (nameGroup==null) nameGroup=this.findName(ModuleEnum.DISP_DN);
+        if (nameGroup==null) nameGroup=this.findName(ModuleEnum.REPAIR_DN);
+        return nameGroup;
+    }
+    private String findName(ModuleEnum moduleEnum){
+        List<SelectItem> listToFind = appBean.getModuleFgOptions().get(moduleEnum);
+        if (listToFind==null) appBean.getModuleTgOptions().get(moduleEnum);
+        if (listToFind==null) return null;
+        final SelectItem selectedItem = listToFind.stream()
+                .filter(si->si.getValue().equals(groupId)).findFirst().get();
+        return selectedItem!=null ? selectedItem.getLabel(): null;
+    }
+    public Group getSelectedGroup(){
+        if (groupId==null) return null;
+        Group selectedGroup = null;
+        selectedGroup = appBean.getGroupCuListFg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
+        if (selectedGroup!=null) return selectedGroup;
+        selectedGroup = appBean.getGroupInvList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
+        if (selectedGroup!=null) return selectedGroup;
+        selectedGroup = appBean.getGroupDispList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
+        if (selectedGroup!=null) return selectedGroup;
+        selectedGroup = appBean.getGroupRepairList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
+        if (selectedGroup!=null) return selectedGroup;
+        selectedGroup = appBean.getGroupCuListTg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
+        return selectedGroup;
+    }
+
+
+    /*
+    public void fillGroupOptions(List<org.picketlink.idm.model.basic.Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
+        final List<SelectItem> list = listGroup.stream()
+                .map(g->new SelectItem(g.getId(), g.getAttribute("description").getValue().toString()))
+                .collect(Collectors.toList());
+        moduleOptions.put(moduleEnum, list);
+    }
+    public List<org.picketlink.idm.model.basic.Group> loadListGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
+        final IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
+        final IdentityQuery<org.picketlink.idm.model.basic.Group> query = iqb.createIdentityQuery(org.picketlink.idm.model.basic.Group.class);
+        final AttributeParameter objectClassParameter = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
+        final AttributeParameter oParameter = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
+        final AttributeParameter bc = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName("businessCategory");
+        final List<org.picketlink.idm.model.basic.Group> group = query.where(
+             iqb.equal(objectClassParameter, GROUP_OF_UNIQUE_NAMES),
+             iqb.equal(oParameter, moduleEnum.getModule()),
+             iqb.equal(bc, businessCategoryValue)
+        ).getResultList();
         return group;
     }
-    public List<Group> getGroupCuList() {
-        return groupCuList;
-    }
-    public List<Group> getGroupInvList() {
-        return groupInvList;
-    }
-    public List<Group> getGroupDispList() {
-        return groupDispList;
-    }
-    public List<Group> getGroupRepairList() {
-        return groupRepairList;
-    }
+    */
+
     public String toHome(){
         return "home.xhtml?faces-redirect=true";
     }
     public String toUsers(){
         return "users.xhtml?faces-redrect=true";
+    }
+    public String getGroupId(){
+        return groupId;
+    }
+    public void setGroupId(String groupId1){
+        groupId=groupId1;
     }
     public Boolean getCollapsed(){
         return collapsed;
@@ -111,13 +128,17 @@ public class GroupBean implements Serializable{
         this.collapsed = collapsed;
     }
     public String getTxt() {return "Управление пользователями!";}
-    private List<Group> groupCuList;
-    private List<Group> groupInvList;
-    private List<Group> groupDispList;
-    private List<Group> groupRepairList;
-    @Inject
-    private FacesContext facesContext;
-    @Inject
-    private AuthorizationManager authorizationManager;
+    /*
+    private Map<ModuleEnum, List<SelectItem>> moduleFgOptions;
+    private Map<ModuleEnum, List<SelectItem>> moduleTgOptions;
+    private List<org.picketlink.idm.model.basic.Group> groupCuListFg;
+    private List<org.picketlink.idm.model.basic.Group> groupCuListTg;
+    private List<org.picketlink.idm.model.basic.Group> groupInvList;
+    private List<org.picketlink.idm.model.basic.Group> groupDispList;
+    private List<org.picketlink.idm.model.basic.Group> groupRepairList;
+    */
     private Boolean collapsed = false;
+    private String groupId;
+    @Inject
+    private AppBean appBean;
 }

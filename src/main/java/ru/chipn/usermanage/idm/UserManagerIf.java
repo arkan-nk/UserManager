@@ -10,4 +10,7 @@ import java.util.List;
 public interface UserManagerIf {
     List<User> getAll();
     void saveUser();
+    void dropUser();
+    void newUser();
+    User getUser(String loginName);
 }

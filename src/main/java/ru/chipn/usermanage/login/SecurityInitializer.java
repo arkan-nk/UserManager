@@ -1,13 +1,22 @@
 package ru.chipn.usermanage.login;
 
-import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
-import org.picketlink.idm.RelationshipManager;
+import org.picketlink.idm.config.IdentityConfiguration;
+import org.picketlink.idm.config.IdentityConfigurationBuilder;
+import org.picketlink.idm.credential.handler.PasswordCredentialHandler;
+import org.picketlink.idm.internal.DefaultPartitionManager;
+import org.picketlink.idm.model.IdentityType;
+import org.picketlink.idm.model.basic.*;
+import ru.chipn.usermanage.idm.LDAPATTRS;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.util.List;
+
+import static org.picketlink.common.constants.LDAPConstants.*;
+import static ru.chipn.usermanage.login.ConfigurationEnum.*;
 
 /**
  * Created by arkan on 30.08.2016.
@@ -19,10 +28,10 @@ public class SecurityInitializer {
     private PartitionManager partitionManager;
 
 
-    //@PostConstruct
+    @PostConstruct
     public void init(){
-        boolean tt =(this.partitionManager.getConfigurations()!=null);
-        //this.partitionManager.createIdentityManager();
+        //List<IdentityConfiguration> listConfigurations = this.configureList();
+        this.partitionManager.getConfigurations();
         //this.partitionManager.createRelationshipManager();
     }
 }

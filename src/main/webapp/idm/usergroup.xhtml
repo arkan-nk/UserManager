@@ -1,17 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version='1.0' encoding="UTF-8" ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title><h:outputText value="#{msgs.groupUser}"/></title>
+    <meta content="text/html; charset=UTF-8"/>
 </h:head>
 <h:body>
+<p:fragment autoUpdate="true">
+    <p:dialog id="dropUserDialogId" header="#{msgs.dropUser}" widgetVar="dropUserDialog"
+              modal="true" showEffect="fade"
+              hideEffect="fade" resizable="false" width="400">
+        <h:form>
+            <h:panelGrid columns="2" style="text-align:center;">
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{userManagerBean.currentUser.loginName} #{userManagerBean.currentUser.firstName} #{userManagerBean.currentUser.lastName}"/>
+                </f:facet>
+                <p:commandButton value="#{msgs.yes}" onsuccess="PF('dropUserDialog').hide()"
+                                 actionListener="#{userManagerBean.dropUser()}"
+                                 action="users.xhtml?faces-redirect=true"/>
+                <p:commandButton value="#{msgs.no}" onclick="PF('dropUserDialog').hide()"/>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+</p:fragment>
+<p:fragment autoUpdate="true">
+    <p:dialog id="roleDialogId" for="roleBtn" dynamic="true"
+              width="auto" widgetVar="roleDialogVgt">
+        <h:form id="roleDialogForm">
+
+
+            <h:panelGrid columns="2" style="text-align:center;">
+                <p:commandButton value="#{msgs.yes}" oncomplete="PF('roleDialogVgt').hide()"
+                                 actionListener="#{groupOldSchoolBean.addUserToGroup(groupBean.selectedGroup, userManagerBean.currentUser, groupBean.jmxConnStr)}"/>
+                <p:commandButton value="#{msgs.no}" actionListener="#{groupBean.setGroupId(null)}" action="#"
+                                 onclick="PF('roleDialogVgt').hide()"/>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+</p:fragment>
 <h:form>
     <ui:include src="../resources/fragment/toolheader.xhtml"/>
-</h:form>
+<br/>
 <h:panelGrid columns="2">
     <h:outputText value="#{msgs.inputName} :"/>
     <h:outputText value="#{userManagerBean.currentUser.loginName}" styleClass="order-table-header"/>
@@ -23,86 +56,87 @@
     <h:outputText value="#{userManagerBean.currentUser.email}"/>
     <h:outputText value="#{msgs.telephoneNumber}"/>
     <h:outputText value="#{userManagerBean.currentUser.getAttribute('telephoneNumber').value}"/>
+    <h:outputText />
+    <p:commandButton title="#{msgs.grantRoleCaption}" value="#{msgs.grantRoleCaption}"
+                     form="roleDialogForm" oncomplete="PF('roleDialogVgt').show();"/>
 </h:panelGrid>
+</h:form>
 <br/>
 <h:form rendered="#{not empty userGroupBean.listCuGroup}">
 <h3><h:outputText value="#{msgs.cuName}" /></h3>
+<p:panel>
 <table>
     <ui:repeat value="#{userGroupBean.listCuGroup}" var="gCu">
         <tr><td>
             <h:outputText value="#{gCu.getAttribute('description').value}"/>
         </td><td>
             <h:commandButton value="#{msgs.toGetOut}"
-                actionListener="#{groupBean.doGetOut(gCu, userManagerBean.currentUser, 0)}"
-                action="#{userGroupBean.cleanMembership(gCu)}"/>
+                actionListener="#{groupOldSchoolBean.doGetOut(gCu, userManagerBean.currentUser, 'java:global/federation/cu')}"
+                action="#{userGroupBean.dropMembershipUser(gCu)}"/>
         </td></tr>
     </ui:repeat>
 </table>
+</p:panel>
 </h:form>
 <br/>
 <h:form rendered="#{not empty userGroupBean.listInvGroup}">
 <h3><h:outputText value="#{msgs.invName}" /></h3>
-<table>
+<p:panel>
+    <table>
     <ui:repeat value="#{userGroupBean.listInvGroup}" var="gInv">
         <tr><td>
         <h:outputText value="#{gInv.getAttribute('description').value}"/>
         </td><td>
         <h:commandButton value="#{msgs.toGetOut}"
-            actionListener="#{groupBean.doGetOut(gInv, userManager.currentUser, 5)}"
-            action="#{userGroupBean.cleanMembership(gInv)}"/>
+            actionListener="#{groupOldSchoolBean.doGetOut(gInv, userManager.currentUser, 'java:global/federation/inv')}"
+            action="#{userGroupBean.dropMembershipUser(gInv)}"/>
         </td></tr>
     </ui:repeat>
-</table>
+    </table>
+</p:panel>
 </h:form>
 <br/>
 <h:form rendered="#{not empty userGroupBean.listDispGroup}">
 <h3><h:outputText value="#{msgs.dispName}" /></h3>
+<p:panel>
 <table>
-       <ui:repeat value="#{userGroupBean.listDispGroup}" var="gDisp">
-       <tr><td>
-            <h:outputText value="#{gDisp.getAttribute('description').value}"/>
-       </td><td>
+    <ui:repeat value="#{userGroupBean.listDispGroup}" var="gDisp">
+    <tr><td>
+         <h:outputText value="#{gDisp.getAttribute('description').value}"/>
+    </td><td>
             <h:commandButton value="#{msgs.toGetOut}"
-                actionListener="#{groupBean.doGetOut(gDisp, userManagerBean.currentUser, 1)}"
-                action="#{userGroupBean.cleanMembership(gDisp)}"/>
-       </td></tr>
-       </ui:repeat>
+                actionListener="#{groupOldSchoolBean.doGetOut(gDisp, userManagerBean.currentUser, 'java:global/federation/disp')}"
+                action="#{userGroupBean.dropMembershipUser(gDisp)}"/>
+    </td></tr>
+    </ui:repeat>
 </table>
+</p:panel>
 </h:form>
 <br/>
 <h:form rendered="#{not empty userGroupBean.listRepairGroup}">
 <h3><h:outputText value="#{msgs.repairName}" /></h3>
+<p:panel>
 <table>
     <ui:repeat value="#{userGroupBean.listRepairGroup}" var="gRepair">
         <tr><td>
             <h:outputText value="#{gRepair.getAttribute('description').value}"/>
         </td><td>
             <h:commandButton value="#{msgs.toGetOut}"
-                actionListener="#{groupBean.doGetOut(gRepair, userManager.currentUser, 6)}"
-                action="#{userGroupBean.cleanMembership(gRepair)}"/>
+                actionListener="#{groupOldSchoolBean.doGetOut(gRepair, userManager.currentUser, 'java:global/federation/repair')}"
+                action="#{userGroupBean.dropMembershipUser(gRepair)}"/>
         </td></tr>
     </ui:repeat>
 </table>
+</p:panel>
 </h:form>
 <h:form>
     <p:commandButton title="#{msgs.dropUser}" value="#{msgs.dropUser}"
-        oncomplete="PF('dropUserDialog').show()"
-        disabled="#{not userGroupBean.isNoMemberShip()}"/>
+                     oncomplete="PF('dropUserDialog').show()"
+                     disabled="#{not userGroupBean.isNoMemberShip()}"/>
     <p:commandButton title="#{msgs.allUsers}" value="#{msgs.allUsers}"
-        actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
-        action="users.xhtml?faces-redirect=true"/>
-    <p:dialog id="dropUserDialog" header="#{msgs.dropUser}" widgetVar="dropUserDialog"
-              modal="true" showEffect="fade"
-              hideEffect="fade" resizable="false" width="400">
-        <h:panelGrid columns="2" style="text-align:center;">
-            <f:facet name="header">
-                <h:outputText value="#{userManagerBean.currentUser.loginName} #{userManagerBean.currentUser.firstName} #{userManagerBean.currentUser.lastName}"/>
-            </f:facet>
-            <p:commandButton value="#{msgs.yes}" oncomplete="PF('dropUserDialog').hide()"
-                  actionListener="#{userManagerBean.dropUser()}" action="users.xhtml?faces-redirect=true"/>
-            <p:commandButton value="#{msgs.no}" onclick="PF('dropUserDialog').hide()"/>
-        </h:panelGrid>
-    </p:dialog>
+                     actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
+                     action="users.xhtml?faces-redirect=true"/>
 </h:form>
+
 </h:body>
 </html>

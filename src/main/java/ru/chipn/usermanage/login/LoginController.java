@@ -19,7 +19,6 @@ public class LoginController implements Serializable{
     @Inject
     private IdentityManager identityManager;
 
-
     @Inject
     private Identity identity;
     @Inject

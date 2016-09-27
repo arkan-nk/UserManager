@@ -15,6 +15,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,7 +26,29 @@ import java.util.Objects;
 public class GroupOldSchoolBean implements Serializable {
     @Inject
     private FacesContext facesContext;
-
+    public void addUserToListGroup(Group oneGroup, List<Group> groupList, User user, String jmxConnStr) throws Exception{
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(jmxConnStr);
+        Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
+        InitialContext initialContext = new InitialContext();
+        try {
+            if (oneGroup!=null){
+                operate(initialContext, oneGroup, user, jmxConnStr, DirContext.ADD_ATTRIBUTE);
+            }
+            if (groupList!=null && !groupList.isEmpty()) {
+                groupList.forEach(group -> {
+                    try {
+                        operate(initialContext, group, user, jmxConnStr, DirContext.ADD_ATTRIBUTE);
+                    } catch (NamingException ne) {
+                        facesContext.addMessage(null, new FacesMessage(ne.getExplanation()));
+                    }
+                });
+            }
+        } finally{
+            if (initialContext!=null) initialContext.close();
+        }
+    }
+    /*
     public void addUserToGroup(Group group, User user, String jmxConnStr) throws Exception {
         Objects.requireNonNull(group);
         Objects.requireNonNull(user);
@@ -33,30 +56,29 @@ public class GroupOldSchoolBean implements Serializable {
         Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
         operate(group,user,jmxConnStr,DirContext.ADD_ATTRIBUTE);
     }
+    */
+
     public void doGetOut(Group group, User user, String jmxConnStr) throws Exception{
         Objects.requireNonNull(group);
         Objects.requireNonNull(user);
         Objects.requireNonNull(jmxConnStr);
         Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
-        operate(group,user,jmxConnStr,DirContext.REMOVE_ATTRIBUTE);
-    }
-
-    private void operate(Group group, User user, String jmxConnStr, final int dirContextOperation) throws Exception {
-        InitialContext initialContext = null;
-        InitialDirContext initalDirContext = null;
-        LdapContext ldapContext = null;
-        try {
-            initialContext = new InitialContext();
-            initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
-            ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
-            LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
-            ldapWriter.operate(user,group,dirContextOperation);
-        } catch (NamingException e) {
-            facesContext.addMessage(null, new FacesMessage(e.getExplanation()));
+        InitialContext initialContext = new InitialContext();
+        try{
+            operate(initialContext, group,user,jmxConnStr,DirContext.REMOVE_ATTRIBUTE);
+        }catch (NamingException ne){
+            facesContext.addMessage(null, new FacesMessage(ne.getExplanation()));
         }finally{
-            if (ldapContext!=null) ldapContext.close();
-            if (initalDirContext!=null) initalDirContext.close();
             if (initialContext!=null) initialContext.close();
         }
+    }
+
+    private void operate(InitialContext initialContext, Group group, User user, String jmxConnStr, final int dirContextOperation) throws NamingException {
+        InitialDirContext initalDirContext = null;
+        LdapContext ldapContext = null;
+        initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
+        ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
+        LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
+        ldapWriter.operate(user,group,dirContextOperation);
     }
 }

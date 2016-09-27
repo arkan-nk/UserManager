@@ -7,6 +7,7 @@ import org.picketlink.idm.credential.handler.PasswordCredentialHandler;
 import org.picketlink.idm.internal.DefaultPartitionManager;
 import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.*;
+import ru.chipn.usermanage.idm.AppBean;
 import ru.chipn.usermanage.idm.LDAPATTRS;
 
 import javax.annotation.PostConstruct;
@@ -26,12 +27,8 @@ import static ru.chipn.usermanage.login.ConfigurationEnum.*;
 public class SecurityInitializer {
     @Inject
     private PartitionManager partitionManager;
-
-
     @PostConstruct
     public void init(){
-        //List<IdentityConfiguration> listConfigurations = this.configureList();
-        this.partitionManager.getConfigurations();
-        //this.partitionManager.createRelationshipManager();
+
     }
 }

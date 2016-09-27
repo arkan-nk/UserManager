@@ -30,13 +30,44 @@
 <p:fragment autoUpdate="true">
     <p:dialog id="roleDialogId" for="roleBtn" dynamic="true"
               width="auto" widgetVar="roleDialogVgt">
-        <h:form id="roleDialogForm">
-
-
-            <h:panelGrid columns="2" style="text-align:center;">
-                <p:commandButton value="#{msgs.yes}" oncomplete="PF('roleDialogVgt').hide()"
-                                 actionListener="#{groupOldSchoolBean.addUserToGroup(groupBean.selectedGroup, userManagerBean.currentUser, groupBean.jmxConnStr)}"/>
-                <p:commandButton value="#{msgs.no}" actionListener="#{groupBean.setGroupId(null)}" action="#"
+        <h:form id="roleDialogForm" style="height:800px;">
+            <h:panelGrid columns="2">
+            <h:selectOneMenu value="#{groupBean.selectedApp}"
+                             valueChangeListener="#{groupBean.changeAppListener}">
+                <f:selectItem itemValue="" itemLabel=""/>
+                <f:selectItems value="#{appBean.appSelectList}" />
+                <p:ajax event="valueChange" process="@this" update="@form"/>
+            </h:selectOneMenu>
+            <p:commandButton value="#{msgs.clearSelected}" process="@form" update="@form"
+                        action="#{groupBean.selectedTGroupList.clear()}"/>
+            </h:panelGrid>
+            <p:tabView id="groupsTabId"
+                       rendered="#{not empty groupBean.appFg or not empty groupBean.appTg }">
+                <p:tab title="#{msgs.chooseRoles}" rendered="#{not empty groupBean.appFg}">
+                    <p:dataTable value="#{groupBean.appFg}" var="fg" rowKey="#{fg.id}"
+                                 selection="#{groupBean.selectedFgroup}">
+                        <p:column selectionMode="single" style="text-align:center; width:16px;"/>
+                        <p:column>
+                            <h:outputText value="#{fg.getAttribute('description').value}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="#{msgs.chooseTg}" rendered="#{not empty groupBean.appTg}">
+                    <p:dataTable value="#{groupBean.appTg}" var="tg"
+                                 selection="#{groupBean.selectedTGroupList}"
+                                 paginator="true" rows="12" rowKey="#{tg.id}">
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column>
+                            <h:outputText value="#{tg.getAttribute('description').value}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:tabView>
+            <h:panelGrid columns="2">
+                <p:commandButton update="@all" value="#{msgs.yes}" oncomplete="PF('roleDialogVgt').hide()"
+                                 actionListener="#{groupOldSchoolBean.addUserToListGroup(groupBean.selectedFgroup, groupBean.selectedTGroupList, userManagerBean.currentUser, groupBean.jmxConnStr)}"
+                                 action="#{userGroupBean.loadMemberShip()}"/>
+                <p:commandButton value="#{msgs.no}" actionListener="#{groupBean.setGroupId(null)}"
                                  onclick="PF('roleDialogVgt').hide()"/>
             </h:panelGrid>
         </h:form>
@@ -62,7 +93,8 @@
 </h:panelGrid>
 </h:form>
 <br/>
-<h:form rendered="#{not empty userGroupBean.listCuGroup}">
+<ui:fragment rendered="#{not empty userGroupBean.listCuGroup}">
+<h:form>
 <h3><h:outputText value="#{msgs.cuName}" /></h3>
 <p:panel>
 <table>
@@ -78,8 +110,10 @@
 </table>
 </p:panel>
 </h:form>
+</ui:fragment>
 <br/>
-<h:form rendered="#{not empty userGroupBean.listInvGroup}">
+<ui:fragment rendered="#{not empty userGroupBean.listInvGroup}">
+<h:form >
 <h3><h:outputText value="#{msgs.invName}" /></h3>
 <p:panel>
     <table>
@@ -95,8 +129,10 @@
     </table>
 </p:panel>
 </h:form>
+</ui:fragment>
 <br/>
-<h:form rendered="#{not empty userGroupBean.listDispGroup}">
+<ui:fragment rendered="#{not empty userGroupBean.listDispGroup}">
+<h:form>
 <h3><h:outputText value="#{msgs.dispName}" /></h3>
 <p:panel>
 <table>
@@ -112,8 +148,10 @@
 </table>
 </p:panel>
 </h:form>
+</ui:fragment>
 <br/>
-<h:form rendered="#{not empty userGroupBean.listRepairGroup}">
+<ui:fragment rendered="#{not empty userGroupBean.listRepairGroup}">
+<h:form>
 <h3><h:outputText value="#{msgs.repairName}" /></h3>
 <p:panel>
 <table>
@@ -129,6 +167,7 @@
 </table>
 </p:panel>
 </h:form>
+</ui:fragment>
 <h:form>
     <p:commandButton title="#{msgs.dropUser}" value="#{msgs.dropUser}"
                      oncomplete="PF('dropUserDialog').show()"

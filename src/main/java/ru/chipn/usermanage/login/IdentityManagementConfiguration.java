@@ -6,10 +6,8 @@ package ru.chipn.usermanage.login;
 
 import org.picketlink.idm.config.IdentityConfiguration;
 import org.picketlink.idm.config.IdentityConfigurationBuilder;
-import org.picketlink.idm.config.LDAPIdentityStoreConfiguration;
 import org.picketlink.idm.credential.encoder.SHAPasswordEncoder;
 import org.picketlink.idm.credential.handler.PasswordCredentialHandler;
-import org.picketlink.idm.internal.DefaultPartitionManager;
 import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.*;
 import ru.chipn.usermanage.idm.LDAPATTRS;
@@ -17,7 +15,6 @@ import ru.chipn.usermanage.idm.LDAPATTRS;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-import java.util.List;
 
 import static org.picketlink.common.constants.LDAPConstants.*;
 import static ru.chipn.usermanage.login.ConfigurationEnum.*;
@@ -181,6 +178,7 @@ public class IdentityManagementConfiguration {
         builder.named("default")
                 .stores()
                 .ldap()
+
                 .baseDN(BASE_DN.getTxt() + ROOT_DN.getTxt())
                 .bindDN("cn=admin," + BASE_DN.getTxt() + ROOT_DN.getTxt())
                 .bindCredential("admin")
@@ -188,7 +186,7 @@ public class IdentityManagementConfiguration {
                 .supportCredentials(true)
                 .supportType(IdentityType.class)
                 .supportGlobalRelationship(Grant.class, GroupMembership.class)
-                //.supportSelfRelationship(GroupMembership.class)
+
                 .setCredentialHandlerProperty(PasswordCredentialHandler.PASSWORD_ENCODER, new SHAPasswordEncoder(512))
                 .mapping(User.class)
                 .baseDN(USERS_OU.getTxt() + BASE_DN.getTxt() + ROOT_DN.getTxt())
@@ -229,15 +227,15 @@ public class IdentityManagementConfiguration {
 
 
                 .mapping(Grant.class).forMapping(Role.class)
-                .baseDN(ROLES_OU.getTxt() + ModuleEnum.MANAGE_DN.getTxt() + BASE_DN.getTxt() + ROOT_DN.getTxt())
+                //.baseDN(ROLES_OU.getTxt() + ModuleEnum.MANAGE_DN.getTxt() + BASE_DN.getTxt() + ROOT_DN.getTxt())
                 //.objectClasses("top", GROUP_OF_UNIQUE_NAMES, LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.PERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt())
                 //.objectClasses("top", GROUP_OF_UNIQUE_NAMES)
                 .attribute("assignee", LDAPATTRS.UNIQUEMEMBER.getTxt())
 
                 .mapping(GroupMembership.class).forMapping(Group.class)
-                .hierarchySearchDepth(8)
-                .baseDN(BASE_DN.getTxt() + ROOT_DN.getTxt())
-                .objectClasses("top", GROUP_OF_UNIQUE_NAMES, LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.PERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt())
+                //.hierarchySearchDepth(8)
+                //.baseDN(BASE_DN.getTxt() + ROOT_DN.getTxt())
+                //.objectClasses("top", GROUP_OF_UNIQUE_NAMES, LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.PERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt())
                 //.objectClasses("top", GROUP_OF_UNIQUE_NAMES)
                 .attribute("member", LDAPATTRS.UNIQUEMEMBER.getTxt());
 

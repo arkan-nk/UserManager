@@ -10,7 +10,6 @@ import ru.chipn.usermanage.login.ModuleEnum;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.model.SelectItem;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Arrays;
@@ -41,6 +40,7 @@ public class AppBean {
     @PostConstruct
     public void init(){
         appSelectList = Arrays.stream(ModuleEnum.values())
+                .filter(moduleEnum-> ModuleEnum.MANAGE_DN!=moduleEnum)
                 .map(moduleEnum->new SelectItem(moduleEnum.getModule(), moduleEnum.getDescr()))
                 .collect(Collectors.toList());
         moduleTgOptions = new HashMap<>();
@@ -58,7 +58,10 @@ public class AppBean {
     }
     public void fillGroupOptions(List<org.picketlink.idm.model.basic.Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
         final List<SelectItem> list = listGroup.stream()
-                .map(g->new SelectItem(g.getId(), g.getAttribute("description").getValue().toString()))
+                .map(g->new SelectItem(g.getId(),
+                        g.getAttribute("description").getValue().toString()
+                                .replace("Пользователи", "").replace("района","")
+                ))
                 .collect(Collectors.toList());
         moduleOptions.put(moduleEnum, list);
     }

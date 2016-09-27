@@ -1,28 +1,22 @@
 package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.model.basic.Group;
-import org.picketlink.idm.query.AttributeParameter;
-import org.picketlink.idm.query.IdentityQuery;
-import org.picketlink.idm.query.IdentityQueryBuilder;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
-import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.picketlink.common.constants.LDAPConstants.GROUP_OF_UNIQUE_NAMES;
-import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
+import static ru.chipn.usermanage.login.ModuleEnum.*;
 
 /**
  * Created by arkan on 02.08.2016.
@@ -30,37 +24,62 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 @Named
 @SessionScoped
 public class GroupBean implements Serializable{
-    /*
-    public GroupBean(){
-        moduleTgOptions = new HashMap<>();
-        moduleFgOptions = new HashMap<>();
+
+
+    public void changeAppListener(ValueChangeEvent event){
+        appFg=null;
+        appTg=null;
+        jmxConnStr = null;
+        selectedFgroup = null;
+        if (selectedTGroupList ==null) selectedTGroupList =new ArrayList<>();
+        else selectedTGroupList.clear();
+        if (event.getNewValue()==null || ((String) event.getNewValue()).length()<1) return;
+        String app = (String) event.getNewValue();
+        ModuleEnum selectedModule = null;
+        for (ModuleEnum module: values()){
+            if (module.getModule().equals(app)) selectedModule = module;
+            if (selectedModule!=null) break;
+        }
+        if (selectedModule==null) return;
+
+        jmxConnStr = selectedModule.getJmxStr();
+        switch (selectedModule){
+            case INV_DN:{
+                appFg = appBean.getGroupInvList();
+                break;
+            }
+            case DISP_DN:{
+                appFg = appBean.getGroupDispList();
+                break;
+            }
+            case REPAIR_DN:{
+                appFg = appBean.getGroupRepairList();
+                break;
+            }
+            default:{ //CU_DN
+                appFg = appBean.getGroupCuListFg();
+                appTg = appBean.getGroupCuListTg();
+            }
+        }
+        this.filterMembershipGroup(appFg);
+        if (this.appTg!=null && !this.appTg.isEmpty()) this.filterMembershipGroup(appTg);
     }
-
-    @PostConstruct
-    public void init(){
-        groupCuListFg = loadListGroups(ModuleEnum.CU_DN, "fg");
-        groupInvList = loadListGroups(ModuleEnum.INV_DN, "fg");
-        groupDispList = loadListGroups(ModuleEnum.DISP_DN, "fg");
-        groupRepairList = loadListGroups(ModuleEnum.REPAIR_DN, "fg");
-        groupCuListTg = loadListGroups(ModuleEnum.CU_DN, "tg");
-        this.fillGroupOptions(groupInvList, ModuleEnum.INV_DN, moduleFgOptions);
-        this.fillGroupOptions(groupCuListFg, ModuleEnum.CU_DN, moduleFgOptions);
-        this.fillGroupOptions(groupCuListTg, ModuleEnum.CU_DN, moduleTgOptions);
-        this.fillGroupOptions(groupDispList, ModuleEnum.DISP_DN, moduleFgOptions);
-        this.fillGroupOptions(groupRepairList, ModuleEnum.REPAIR_DN, moduleFgOptions);
-    }
-    */
-
-
-    public void onCollapse(ToggleEvent event) {
-        this.collapsed= event.getVisibility().equals(Visibility.VISIBLE);
+    private void filterMembershipGroup(List<Group> groupList){
+        groupList.removeIf(
+                group -> {
+                    Set<Group> membershipGroup = userGroupBean.getUserMemberShip()
+                            .stream().map(membership->membership.getGroup())
+                            .collect(Collectors.toSet());
+                    return membershipGroup.contains(group);
+                }
+        );
     }
     public String getNameSelectedGroup(){
         if (groupId==null) return null;
-        String nameGroup = this.findName(ModuleEnum.CU_DN);
-        if (nameGroup==null) nameGroup=this.findName(ModuleEnum.INV_DN);
-        if (nameGroup==null) nameGroup=this.findName(ModuleEnum.DISP_DN);
-        if (nameGroup==null) nameGroup=this.findName(ModuleEnum.REPAIR_DN);
+        String nameGroup = this.findName(CU_DN);
+        if (nameGroup==null) nameGroup=this.findName(INV_DN);
+        if (nameGroup==null) nameGroup=this.findName(DISP_DN);
+        if (nameGroup==null) nameGroup=this.findName(REPAIR_DN);
         return nameGroup;
     }
     private String findName(ModuleEnum moduleEnum){
@@ -71,6 +90,7 @@ public class GroupBean implements Serializable{
                 .filter(si->si.getValue().equals(groupId)).findFirst().get();
         return selectedItem!=null ? selectedItem.getLabel(): null;
     }
+    /*
     public Group getSelectedGroup(){
         if (groupId==null) return null;
         Group selectedGroup = null;
@@ -85,30 +105,16 @@ public class GroupBean implements Serializable{
         selectedGroup = appBean.getGroupCuListTg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
         return selectedGroup;
     }
-
-
-    /*
-    public void fillGroupOptions(List<org.picketlink.idm.model.basic.Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
-        final List<SelectItem> list = listGroup.stream()
-                .map(g->new SelectItem(g.getId(), g.getAttribute("description").getValue().toString()))
-                .collect(Collectors.toList());
-        moduleOptions.put(moduleEnum, list);
-    }
-    public List<org.picketlink.idm.model.basic.Group> loadListGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
-        final IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
-        final IdentityQuery<org.picketlink.idm.model.basic.Group> query = iqb.createIdentityQuery(org.picketlink.idm.model.basic.Group.class);
-        final AttributeParameter objectClassParameter = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
-        final AttributeParameter oParameter = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
-        final AttributeParameter bc = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName("businessCategory");
-        final List<org.picketlink.idm.model.basic.Group> group = query.where(
-             iqb.equal(objectClassParameter, GROUP_OF_UNIQUE_NAMES),
-             iqb.equal(oParameter, moduleEnum.getModule()),
-             iqb.equal(bc, businessCategoryValue)
-        ).getResultList();
-        return group;
-    }
     */
-
+    public List<Group> getAppFg(){
+        return appFg;
+    }
+    public List<Group> getAppTg(){
+        return appTg;
+    }
+    public String getJmxConnStr(){
+        return jmxConnStr;
+    }
     public String toHome(){
         return "home.xhtml?faces-redirect=true";
     }
@@ -128,17 +134,41 @@ public class GroupBean implements Serializable{
         this.collapsed = collapsed;
     }
     public String getTxt() {return "Управление пользователями!";}
-    /*
-    private Map<ModuleEnum, List<SelectItem>> moduleFgOptions;
-    private Map<ModuleEnum, List<SelectItem>> moduleTgOptions;
-    private List<org.picketlink.idm.model.basic.Group> groupCuListFg;
-    private List<org.picketlink.idm.model.basic.Group> groupCuListTg;
-    private List<org.picketlink.idm.model.basic.Group> groupInvList;
-    private List<org.picketlink.idm.model.basic.Group> groupDispList;
-    private List<org.picketlink.idm.model.basic.Group> groupRepairList;
-    */
+    public void onCollapse(ToggleEvent event) {
+        this.collapsed= event.getVisibility().equals(Visibility.VISIBLE);
+    }
+    public String getSelectedApp(){
+        return selectedApp;
+    }
+    public void setSelectedApp(String selectedApp1){
+        selectedApp=selectedApp1;
+    }
+    public List<Group> getSelectedTGroupList(){
+        return selectedTGroupList;
+    }
+    public void setSelectedTGroupList(List<Group> listGroup){
+        selectedTGroupList =listGroup;
+    }
+    public GroupBean(){
+        appFg = new ArrayList<>();
+        appTg = new ArrayList<>();
+    }
+    public Group getSelectedFgroup(){
+        return selectedFgroup;
+    }
+    public void setSelectedFgroup(Group group){
+        selectedFgroup = group;
+    }
+    private String jmxConnStr;
+    private List<Group> selectedTGroupList =new ArrayList<>();
+    private Group selectedFgroup;
+    private String selectedApp;
     private Boolean collapsed = false;
     private String groupId;
+    private List<Group> appFg;
+    private List<Group> appTg;
     @Inject
     private AppBean appBean;
+    @Inject
+    private UserGroupBean userGroupBean;
 }

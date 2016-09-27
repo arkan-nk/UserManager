@@ -47,7 +47,7 @@
             </p:commandLink>
             <p:commandLink title="#{msgs.groupUser}"
                            actionListener="#{userManagerBean.setCurrentUser(userIt)}"
-                           action="#{userGroupBean.loadMemberShip}">
+                           action="#{userGroupBean.loadMemberShipGo}">
                 <p:ajax event="click" update="topForm" listener="#{userManagerBean.setPageName(msgs.groupUser)}" />
                 <h:graphicImage value="../resources/images/permission.png" alt="edit" styleClass="tool-image_padding" />
             </p:commandLink>

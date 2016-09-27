@@ -5,7 +5,6 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.model.Account;
 import org.picketlink.idm.model.basic.BasicModel;
-import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.Role;
 
 import javax.enterprise.context.RequestScoped;

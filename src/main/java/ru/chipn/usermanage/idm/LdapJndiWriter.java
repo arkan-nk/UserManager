@@ -10,6 +10,8 @@ import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
 
 import static org.picketlink.common.constants.LDAPConstants.CN;
+import static ru.chipn.usermanage.login.ConfigurationEnum.BASE_DN;
+import static ru.chipn.usermanage.login.ConfigurationEnum.ROOT_DN;
 
 /**
  * Created by arkan on 29.08.2016.
@@ -31,7 +33,7 @@ class LdapJndiWriter {
         sb0.append("=");
         sb0.append(adminDN!=null && adminDN.length()>1 ? adminDN : "admin");
         sb0.append(",");
-        sb0.append(adminSfx!=null && adminSfx.length()>1 ? adminSfx : "dc=a2,dc=chipn,dc=ru");
+        sb0.append(adminSfx!=null && adminSfx.length()>1 ? adminSfx : BASE_DN.getTxt() + ROOT_DN.getTxt());
         dtx.addToEnvironment(Context.SECURITY_PRINCIPAL, sb0.toString());
         dtx.addToEnvironment(Context.SECURITY_CREDENTIALS, adminPsw!=null ? adminPsw : "admin");
     }

@@ -30,7 +30,9 @@ public class UserGroupBean implements Serializable{
             if (groupMembershipItem.getGroup() == group1) itt.remove();
         }
     }
-
+    public List<GroupMembership> getUserMemberShip(){
+        return userMemberShip;
+    }
     public List<Group> getListInvGroup(){
         return this.getListModuleGroup(ModuleEnum.INV_DN);
     }
@@ -66,7 +68,11 @@ public class UserGroupBean implements Serializable{
 
     private List<GroupMembership> userMemberShip = new ArrayList<>();
 
-    public String loadMemberShip(){
+    public String loadMemberShipGo(){
+        loadMemberShip();
+        return "usergroup.xhtml?faces-redirect=true";
+    }
+    public void loadMemberShip(){
         Objects.requireNonNull(userManagerBean.getCurrentUser());
         User currentUser = userManagerBean.getCurrentUser();
         RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
@@ -74,6 +80,5 @@ public class UserGroupBean implements Serializable{
         relationshipQuery.setParameter(GroupMembership.MEMBER , currentUser);
         userMemberShip.clear();
         userMemberShip.addAll(relationshipQuery.getResultList());
-        return "usergroup.xhtml?faces-redirect=true";
     }
 }

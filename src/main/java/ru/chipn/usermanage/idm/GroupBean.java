@@ -25,7 +25,13 @@ import static ru.chipn.usermanage.login.ModuleEnum.*;
 @SessionScoped
 public class GroupBean implements Serializable{
 
-
+    public void clearSelected(){
+        selectedTGroupList.clear();
+        selectedFgroup=null;
+        selectedApp=null;
+        appFg=null; //именно null а не clear()
+        appTg=null; //именно null а не clear()
+    }
     public void changeAppListener(ValueChangeEvent event){
         appFg=null;
         appTg=null;

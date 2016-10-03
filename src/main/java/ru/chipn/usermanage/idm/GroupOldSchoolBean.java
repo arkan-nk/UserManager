@@ -15,6 +15,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,18 +26,20 @@ import java.util.Objects;
 @RequestScoped
 public class GroupOldSchoolBean implements Serializable {
     @Inject
+    private GroupBean groupBean;
+    @Inject
     private FacesContext facesContext;
-    public void addUserToListGroup(Group oneGroup, List<Group> groupList, User user, String jmxConnStr) throws Exception{
+    public void addUserToSelectedGroups(User user, String jmxConnStr) throws Exception{
         Objects.requireNonNull(user);
         Objects.requireNonNull(jmxConnStr);
         Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
         InitialContext initialContext = new InitialContext();
         try {
-            if (oneGroup!=null){
-                operate(initialContext, oneGroup, user, jmxConnStr, DirContext.ADD_ATTRIBUTE);
-            }
-            if (groupList!=null && !groupList.isEmpty()) {
-                groupList.forEach(group -> {
+            List<Group> groups = new ArrayList<>();
+            if (groupBean.getSelectedFgroup()!=null) groups.add(groupBean.getSelectedFgroup());
+            if (groupBean.getSelectedTGroupList()!=null && !groupBean.getSelectedTGroupList().isEmpty()) groups.addAll(groupBean.getSelectedTGroupList());
+            if (!groups.isEmpty()) {
+                groups.forEach(group->{
                     try {
                         operate(initialContext, group, user, jmxConnStr, DirContext.ADD_ATTRIBUTE);
                     } catch (NamingException ne) {
@@ -46,6 +49,7 @@ public class GroupOldSchoolBean implements Serializable {
             }
         } finally{
             if (initialContext!=null) initialContext.close();
+            groupBean.clearSelected();
         }
     }
     /*

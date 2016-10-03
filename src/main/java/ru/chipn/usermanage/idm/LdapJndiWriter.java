@@ -10,7 +10,7 @@ import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
 
 import static org.picketlink.common.constants.LDAPConstants.CN;
-import static ru.chipn.usermanage.login.ConfigurationEnum.BASE_DN;
+import static org.picketlink.common.constants.LDAPConstants.UID;
 import static ru.chipn.usermanage.login.ConfigurationEnum.ROOT_DN;
 
 /**
@@ -28,12 +28,12 @@ class LdapJndiWriter {
         String adminDN = (String) ht.get("adminDN");
         String adminSfx = (String) ht.get("adminSfx");
         String adminPsw = (String) ht.get("adminPsw");
-        if (adminPrfx==null || adminPrfx.length()<1) adminPrfx=CN;
+        if (adminPrfx==null || adminPrfx.length()<1) adminPrfx=UID;
         sb0.append(adminPrfx);
         sb0.append("=");
         sb0.append(adminDN!=null && adminDN.length()>1 ? adminDN : "admin");
         sb0.append(",");
-        sb0.append(adminSfx!=null && adminSfx.length()>1 ? adminSfx : BASE_DN.getTxt() + ROOT_DN.getTxt());
+        sb0.append(adminSfx!=null && adminSfx.length()>1 ? adminSfx : /*BASE_DN.getTxt() +*/ ROOT_DN.getTxt());
         dtx.addToEnvironment(Context.SECURITY_PRINCIPAL, sb0.toString());
         dtx.addToEnvironment(Context.SECURITY_CREDENTIALS, adminPsw!=null ? adminPsw : "admin");
     }

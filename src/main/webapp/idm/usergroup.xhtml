@@ -38,8 +38,8 @@
                 <f:selectItems value="#{appBean.appSelectList}" />
                 <p:ajax event="valueChange" process="@this" update="@form"/>
             </h:selectOneMenu>
-            <p:commandButton value="#{msgs.clearSelected}" process="@form" update="@form"
-                        action="#{groupBean.selectedTGroupList.clear()}"/>
+            <p:commandButton value="#{msgs.clearSelected}" process="@this"
+                        update="@form" action="#{groupBean.clearSelected}"/>
             </h:panelGrid>
             <p:tabView id="groupsTabId"
                        rendered="#{not empty groupBean.appFg or not empty groupBean.appTg }">
@@ -65,9 +65,9 @@
             </p:tabView>
             <h:panelGrid columns="2">
                 <p:commandButton update="@all" value="#{msgs.yes}" oncomplete="PF('roleDialogVgt').hide()"
-                                 actionListener="#{groupOldSchoolBean.addUserToListGroup(groupBean.selectedFgroup, groupBean.selectedTGroupList, userManagerBean.currentUser, groupBean.jmxConnStr)}"
+                                 actionListener="#{groupOldSchoolBean.addUserToSelectedGroups(userManagerBean.currentUser, groupBean.jmxConnStr)}"
                                  action="#{userGroupBean.loadMemberShip()}"/>
-                <p:commandButton value="#{msgs.no}" actionListener="#{groupBean.setGroupId(null)}"
+                <p:commandButton value="#{msgs.no}" action="#{groupBean.clearSelected}"
                                  onclick="PF('roleDialogVgt').hide()"/>
             </h:panelGrid>
         </h:form>

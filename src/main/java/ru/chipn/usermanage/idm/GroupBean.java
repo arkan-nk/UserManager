@@ -25,7 +25,13 @@ import static ru.chipn.usermanage.login.ModuleEnum.*;
 @SessionScoped
 public class GroupBean implements Serializable{
 
-
+    public void clearSelected(){
+        selectedTGroupList.clear();
+        selectedFgroup=null;
+        selectedApp=null;
+        appFg=null; //именно null а не clear()
+        appTg=null; //именно null а не clear()
+    }
     public void changeAppListener(ValueChangeEvent event){
         appFg=null;
         appTg=null;
@@ -87,7 +93,7 @@ public class GroupBean implements Serializable{
         if (listToFind==null) appBean.getModuleTgOptions().get(moduleEnum);
         if (listToFind==null) return null;
         final SelectItem selectedItem = listToFind.stream()
-                .filter(si->si.getValue().equals(groupId)).findFirst().get();
+                .filter(si->si.getValue().equals(groupId)).findFirst().orElse(null);
         return selectedItem!=null ? selectedItem.getLabel(): null;
     }
     /*

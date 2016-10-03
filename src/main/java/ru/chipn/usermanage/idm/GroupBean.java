@@ -93,7 +93,7 @@ public class GroupBean implements Serializable{
         if (listToFind==null) appBean.getModuleTgOptions().get(moduleEnum);
         if (listToFind==null) return null;
         final SelectItem selectedItem = listToFind.stream()
-                .filter(si->si.getValue().equals(groupId)).findFirst().get();
+                .filter(si->si.getValue().equals(groupId)).findFirst().orElse(null);
         return selectedItem!=null ? selectedItem.getLabel(): null;
     }
     /*

@@ -52,15 +52,6 @@ public class GroupOldSchoolBean implements Serializable {
             groupBean.clearSelected();
         }
     }
-    /*
-    public void addUserToGroup(Group group, User user, String jmxConnStr) throws Exception {
-        Objects.requireNonNull(group);
-        Objects.requireNonNull(user);
-        Objects.requireNonNull(jmxConnStr);
-        Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
-        operate(group,user,jmxConnStr,DirContext.ADD_ATTRIBUTE);
-    }
-    */
 
     public void doGetOut(Group group, User user, String jmxConnStr) throws Exception{
         Objects.requireNonNull(group);

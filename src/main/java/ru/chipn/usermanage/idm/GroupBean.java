@@ -29,8 +29,8 @@ public class GroupBean implements Serializable{
         selectedTGroupList.clear();
         selectedFgroup=null;
         selectedApp=null;
-        appFg=null; //именно null а не clear()
-        appTg=null; //именно null а не clear()
+        appFg=null; //exactly set null do not clear() !
+        appTg=null; //exactly set null do not clear() !
     }
     public void changeAppListener(ValueChangeEvent event){
         appFg=null;
@@ -47,7 +47,9 @@ public class GroupBean implements Serializable{
             if (selectedModule!=null) break;
         }
         if (selectedModule==null) return;
-
+        this.changeApp(selectedModule);
+    }
+    private void changeApp(ModuleEnum selectedModule){
         jmxConnStr = selectedModule.getJmxStr();
         switch (selectedModule){
             case INV_DN:{
@@ -81,7 +83,7 @@ public class GroupBean implements Serializable{
         );
     }
     public String getNameSelectedGroup(){
-        if (groupId==null) return null;
+        if (groupId==null || groupId.length()<1) return null;
         String nameGroup = this.findName(CU_DN);
         if (nameGroup==null) nameGroup=this.findName(INV_DN);
         if (nameGroup==null) nameGroup=this.findName(DISP_DN);
@@ -96,22 +98,6 @@ public class GroupBean implements Serializable{
                 .filter(si->si.getValue().equals(groupId)).findFirst().orElse(null);
         return selectedItem!=null ? selectedItem.getLabel(): null;
     }
-    /*
-    public Group getSelectedGroup(){
-        if (groupId==null) return null;
-        Group selectedGroup = null;
-        selectedGroup = appBean.getGroupCuListFg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
-        if (selectedGroup!=null) return selectedGroup;
-        selectedGroup = appBean.getGroupInvList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
-        if (selectedGroup!=null) return selectedGroup;
-        selectedGroup = appBean.getGroupDispList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
-        if (selectedGroup!=null) return selectedGroup;
-        selectedGroup = appBean.getGroupRepairList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
-        if (selectedGroup!=null) return selectedGroup;
-        selectedGroup = appBean.getGroupCuListTg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().get();
-        return selectedGroup;
-    }
-    */
     public List<Group> getAppFg(){
         return appFg;
     }
@@ -121,27 +107,19 @@ public class GroupBean implements Serializable{
     public String getJmxConnStr(){
         return jmxConnStr;
     }
+    /*
     public String toHome(){
         return "home.xhtml?faces-redirect=true";
     }
     public String toUsers(){
         return "users.xhtml?faces-redrect=true";
     }
+    */
     public String getGroupId(){
         return groupId;
     }
     public void setGroupId(String groupId1){
         groupId=groupId1;
-    }
-    public Boolean getCollapsed(){
-        return collapsed;
-    }
-    public void setCollapsed(Boolean collapsed) {
-        this.collapsed = collapsed;
-    }
-    public String getTxt() {return "Управление пользователями!";}
-    public void onCollapse(ToggleEvent event) {
-        this.collapsed= event.getVisibility().equals(Visibility.VISIBLE);
     }
     public String getSelectedApp(){
         return selectedApp;
@@ -165,11 +143,11 @@ public class GroupBean implements Serializable{
     public void setSelectedFgroup(Group group){
         selectedFgroup = group;
     }
+    public String getTxt() {return "Управление пользователями!";}
     private String jmxConnStr;
     private List<Group> selectedTGroupList =new ArrayList<>();
     private Group selectedFgroup;
     private String selectedApp;
-    private Boolean collapsed = false;
     private String groupId;
     private List<Group> appFg;
     private List<Group> appTg;

@@ -22,6 +22,18 @@
                             actionListener="#{userManagerBean.setPageName(msgs.invName)}"
                             action="group_inv.xhtml?faces-redirect=true"
                             icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.cuName}"
+                            actionListener="#{userManagerBean.setPageName(msgs.cuName)}"
+                            action="group_cu.xhtml?faces-redirect=true"
+                            icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.dispName}"
+                            actionListener="#{userManagerBean.setPageName(msgs.dispName)}"
+                            action="group_disp.xhtml?faces-redirect=true"
+                            icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.repairName}"
+                            actionListener="#{userManagerBean.setPageName(msgs.repairName)}"
+                            action="group_repair.xhtml?faces-redirect=true"
+                            icon="ui-icon-extlink" update="toolheader" />
                 <p:menuitem value="#{msgs.quit}" ajax="false" icon="ui-icon-close"
                             action="#{loginController.logout()}"/>
             </p:menuButton>

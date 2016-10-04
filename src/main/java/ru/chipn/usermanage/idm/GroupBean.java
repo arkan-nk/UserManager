@@ -29,8 +29,8 @@ public class GroupBean implements Serializable{
         selectedTGroupList.clear();
         selectedFgroup=null;
         selectedApp=null;
-        appFg=null; //именно null а не clear()
-        appTg=null; //именно null а не clear()
+        appFg=null; //exactly set null do not clear() !
+        appTg=null; //exactly set null do not clear() !
     }
     public void changeAppListener(ValueChangeEvent event){
         appFg=null;

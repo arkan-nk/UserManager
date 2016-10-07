@@ -53,7 +53,11 @@ public class UserGroupBean implements Serializable{
                          .getAttribute(LDAPATTRS.ORGANIZATIONNAME.getTxt())
                          .getValue().equals(moduleEnum.getModule())
         ).forEach(groupMemb ->list.add(groupMemb.getGroup()));
+        currentModule = moduleEnum;
         return list;
+    }
+    public String getJmxConn(){
+        return currentModule!=null ? currentModule.getJmxStr() : null;
     }
     public Boolean isNoMemberShip(){
         return userMemberShip.isEmpty();
@@ -63,7 +67,7 @@ public class UserGroupBean implements Serializable{
     private AuthorizationManager authorizationManager;
     @Inject
     private UserManagerBean userManagerBean;
-
+    private ModuleEnum currentModule;
 
 
     private List<GroupMembership> userMemberShip = new ArrayList<>();

@@ -25,19 +25,54 @@ import java.util.Objects;
 @Named
 @RequestScoped
 public class GroupOldSchoolBean implements Serializable {
-    @Inject
-    private GroupBean groupBean;
-    @Inject
-    private FacesContext facesContext;
-    public void addUserToSelectedGroups(User user, String jmxConnStr) throws Exception{
+    public void massGrant(Group selectedFgroup, List<User> selectedUsers, String jmxConnStr) throws NamingException{
+        Objects.requireNonNull(selectedFgroup);
+        Objects.requireNonNull(selectedUsers);
+        Objects.requireNonNull(jmxConnStr);
+        Objects.requireNonNull(selectedUsers.isEmpty() ? null: selectedUsers);
+        Objects.requireNonNull(jmxConnStr.isEmpty() ? null : jmxConnStr);
+        InitialContext initialContext = new InitialContext();
+        try{
+            selectedUsers.forEach(userItem -> {
+                try {
+                    this.operate(initialContext, selectedFgroup, userItem, jmxConnStr, DirContext.ADD_ATTRIBUTE);
+                } catch (NamingException ne) {
+                    facesContext.addMessage(null, new FacesMessage(ne.getExplanation()));
+                }
+            });
+        }finally{
+            if (initialContext!=null) initialContext.close();
+        }
+    }
+
+    public void massRevoke(Group selectedFgroup, List<User> selectedUsers, String jmxConnStr) throws NamingException{
+        Objects.requireNonNull(selectedFgroup);
+        Objects.requireNonNull(selectedUsers);
+        Objects.requireNonNull(jmxConnStr);
+        Objects.requireNonNull(selectedUsers.isEmpty() ? null: selectedUsers);
+        Objects.requireNonNull(jmxConnStr.isEmpty() ? null : jmxConnStr);
+        InitialContext initialContext = new InitialContext();
+        try{
+            selectedUsers.forEach(userItem ->{
+                try {
+                    this.operate(initialContext, selectedFgroup, userItem, jmxConnStr, DirContext.REMOVE_ATTRIBUTE);
+                }catch(NamingException ne){
+                    facesContext.addMessage(null, new FacesMessage(ne.getExplanation()));
+                }
+            });
+        }finally{
+            if (initialContext!=null) initialContext.close();
+        }
+    }
+    public void addUserToSelectedGroups(Group selectedFgroup, List<Group> selectedTGroupList, User user, String jmxConnStr) throws NamingException{
         Objects.requireNonNull(user);
         Objects.requireNonNull(jmxConnStr);
         Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
         InitialContext initialContext = new InitialContext();
         try {
             List<Group> groups = new ArrayList<>();
-            if (groupBean.getSelectedFgroup()!=null) groups.add(groupBean.getSelectedFgroup());
-            if (groupBean.getSelectedTGroupList()!=null && !groupBean.getSelectedTGroupList().isEmpty()) groups.addAll(groupBean.getSelectedTGroupList());
+            if (selectedFgroup!=null) groups.add(selectedFgroup);
+            if (selectedTGroupList!=null && !selectedTGroupList.isEmpty()) groups.addAll(selectedTGroupList);
             if (!groups.isEmpty()) {
                 groups.forEach(group->{
                     try {
@@ -49,11 +84,11 @@ public class GroupOldSchoolBean implements Serializable {
             }
         } finally{
             if (initialContext!=null) initialContext.close();
-            groupBean.clearSelected();
+            //groupBean.clearSelected();
         }
     }
 
-    public void doGetOut(Group group, User user, String jmxConnStr) throws Exception{
+    public void doGetOut(Group group, User user, String jmxConnStr) throws NamingException{
         Objects.requireNonNull(group);
         Objects.requireNonNull(user);
         Objects.requireNonNull(jmxConnStr);
@@ -76,4 +111,6 @@ public class GroupOldSchoolBean implements Serializable {
         LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
         ldapWriter.operate(user,group,dirContextOperation);
     }
+    @Inject
+    private FacesContext facesContext;
 }

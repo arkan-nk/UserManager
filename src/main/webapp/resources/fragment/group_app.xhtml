@@ -15,9 +15,79 @@
     <meta content="text/html; charset=UTF-8"/>
 </h:head>
 <h:body>
+
+<p:fragment autoUpdate="true">
+        <p:dialog id="confirmRevokeDialogId" for="revokeBtn" dynamic="true" width="auto"
+                  widgetVar="confirmRevokeDialogVgt">
+            <h:form>
+                <p:dataTable var="userIt" value="#{groupMassBean.selection}"
+                             paginator="true" rowKey="#{userIt.id}"
+                             emptyMessage="#{msgs.no_data}" rows="#{groupMassBean.count}">
+                    <f:facet name="header"><h:outputText value="#{msgs.captionRevokeWarning}"/></f:facet>
+                    <p:column>
+                        <h:outputText value="#{userIt.loginName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="#{msgs.userName1}"/></f:facet>
+                        <h:outputText value="#{userIt.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="#{msgs.userName2}"/></f:facet>
+                        <h:outputText value="#{userIt.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header"><h:outputText value="#{msgs.telephoneNumber}"/></f:facet>
+                        <h:outputText value="#{userIt.getAttribute('telephoneNumber').value}" />
+                    </p:column>
+                </p:dataTable>
+                <h:panelGrid columns="2">
+                    <p:commandButton update="@all" value="#{msgs.yes}" oncomplete="PF('confirmRevokeDialogVgt').hide()"
+                        actionListener="#{groupOldSchoolBean.massRevoke(groupMassBean.selectedFG, groupMassBean.selection, groupMassBean.jmxConn)}"
+                                     action="#{groupMassBean.massRevokeStep2}"/>
+                    <p:commandButton value="#{msgs.no}" onclick="PF('confirmRevokeDialogVgt').hide()"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+</p:fragment>
+
+<p:fragment autoUpdate="true">
+    <p:dialog id="allUserDialogId" for="grantBtn" dynamic="true" width="auto"
+              widgetVar="allUserDialogVgt" onHide="">
+    <h:form>
+        <p:dataTable id="candidateDT" var="userIt" value="#{groupMassBean.allUsers}" paginator="true"
+                     emptyMessage="#{msgs.no_data}" styleClass="order-table"
+                     selectionMode="multiple" selection="#{groupMassBean.candidates}" rowKey="#{userIt.id}"
+                     headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row"
+                     widgetVar="candidateTable" rows="#{groupMassBean.count}">
+            <p:column filterBy="#{userIt.loginName}" headerText="#{msgs.filter}">
+                <h:outputText value="#{userIt.loginName}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msgs.userName1}"/></f:facet>
+                <h:outputText value="#{userIt.firstName}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msgs.userName2}"/></f:facet>
+                <h:outputText value="#{userIt.lastName}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header"><h:outputText value="#{msgs.telephoneNumber}"/></f:facet>
+                <h:outputText value="#{userIt.getAttribute('telephoneNumber').value}" />
+            </p:column>
+        </p:dataTable>
+        <h:panelGrid columns="2">
+            <p:commandButton update="@all" value="#{msgs.yes}" oncomplete="PF('allUserDialogVgt').hide()"
+                             actionListener="#{groupOldSchoolBean.massGrant(groupMassBean.selectedFG, groupMassBean.candidates, groupMassBean.jmxConn)}"
+                             action="#{groupMassBean.grantStep2}"/>
+            <p:commandButton value="#{msgs.no}" action="#{groupMassBean.candidates.clear()}"
+                             onclick="PF('allUserDialogVgt').hide()"/>
+        </h:panelGrid>
+    </h:form>
+    </p:dialog>
+</p:fragment>
     <p:layout collapseTitle="#{msgs.captionCollapse}" expandTitle="#{msgs.captionUncollapse}"
               fullPage="true" style="border: 0px;" widgetVar="layoutVar">
-        <p:ajax event="toggle" listener="#{groupUIBean.onCollapse}"/>
+        <p:ajax event="toggle" listener="#{groupMassBean.onCollapse}"/>
         <p:layoutUnit position="north" size="45" resizable="false"
                       closable="false" collapsible="false">
             <h:form>
@@ -26,21 +96,53 @@
         </p:layoutUnit>
         <p:layoutUnit id="leftunit" position="west" size="350"
                       header="#{msgs.captionChooseGroup}" resizable="false" closable="false"
-                      collapsible="true" collapsed="#{groupUIBean.collapsed}">
+                      collapsible="true" collapsed="#{groupMassBean.collapsed}">
             <h:form>
-                <h:selectOneMenu value="#{groupBean.groupId}">
+                <h:selectOneMenu value="#{groupMassBean.groupId}">
                     <f:selectItem itemValue='null' itemLabel="" />
                     <f:selectItems value="#{cc.attrs.listFGroups}" />
                     <p:ajax event="valueChange" process="@this" update="@all"/>
                 </h:selectOneMenu>
             </h:form>
-
         </p:layoutUnit>
         <p:layoutUnit id="centerunit" position="center" resizable="true"
-                      header="#{msgs.captionUsersMemeber} #{groupBean.nameSelectedGroup}"
+                      header="#{msgs.captionUsersMemeber} #{groupMassBean.nameSelectedGroup}"
                       closable="false" collapsible="false">
             <h:form id="centerform">
-                <h:outputText value="#{groupBean.nameSelectedGroup}"/>
+                <p:dataTable id="memberTableId" var="cg" value="#{groupMassBean.members}"
+                             paginator="true" selection="#{groupMassBean.selection}"
+                             rows="#{groupMassBean.count}" rowKey="#{cg.id}"
+                             emptyMessage="#{msgs.no_data}">
+                    <f:facet name="footer">
+                        <h:panelGrid columns="3" style="width:100%;">
+                            <h:selectOneMenu value="#{groupMassBean.count}">
+                                <f:selectItem itemValue="10" itemLabel="10"/>
+                                <f:selectItem itemValue="20" itemLabel="20"/>
+                                <f:selectItem itemValue="30" itemLabel="30"/>
+                                <p:ajax event="valueChange" update="@form" process="memberTableId"/>
+                            </h:selectOneMenu>
+                            <p:commandButton id="grantBtn" value="#{msgs.allUsers}" oncomplete="PF('allUserDialogVgt').show()"/>
+                            <p:commandButton id="revokeBtn" value="#{msgs.unMemberFrom}" update="@form" process="memberTableId"
+                                oncomplete="PF('confirmRevokeDialogVgt').show()" disabled="#{empty groupMassBean.selectedFG}"/>
+                        </h:panelGrid>
+                    </f:facet>
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column>
+                        <h:outputText value="#{cg.loginName}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{cg.firstName}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{cg.lastName}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{cg.email}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{cg.getAttribute('telephoneNumber').value}"/>
+                    </p:column>
+                </p:dataTable>
             </h:form>
         </p:layoutUnit>
     </p:layout>

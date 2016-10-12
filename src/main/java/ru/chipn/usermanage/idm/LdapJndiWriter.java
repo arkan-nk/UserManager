@@ -48,30 +48,4 @@ class LdapJndiWriter {
         attrs.put(attr);
         dtx.modifyAttributes(groupSb.toString(), dirContextAttribute, attrs);
     }
-    /*
-    public void addUserToGroup(User user, Group group) throws NamingException{
-        System.out.println("addUserToGroup");
-        Hashtable ht = dtx.getEnvironment();
-        StringBuilder groupSb = new StringBuilder(CN);
-        groupSb.append("=").append(group.getName());
-        groupSb.append(",").append(ht.get("groupsDN"));
-        Attribute attr = new BasicAttribute((String) ht.get("attrMember"));
-        attr.add(user.getAttribute("org.picketlink.idm.ldap.entry.dn").getValue());
-        Attributes attrs = new BasicAttributes();
-        attrs.put(attr);
-        dtx.modifyAttributes(groupSb.toString(), DirContext.ADD_ATTRIBUTE, attrs);
-    }
-    public void removeUserFromGroup(User currentUser, Group group1) throws NamingException {
-        System.out.println("removeUserFromGroup");
-        Hashtable ht = dtx.getEnvironment();
-        StringBuilder groupSb = new StringBuilder(CN);
-        groupSb.append("=").append(group1.getName());
-        groupSb.append(",").append(ht.get("groupsDN"));
-        Attribute attr = new BasicAttribute((String) ht.get("attrMember"));
-        attr.add(currentUser.getAttribute("org.picketlink.idm.ldap.entry.dn").getValue());
-        Attributes attrs = new BasicAttributes();
-        attrs.put(attr);
-        dtx.modifyAttributes(groupSb.toString(), DirContext.REMOVE_ATTRIBUTE, attrs);
-    }
-    */
 }

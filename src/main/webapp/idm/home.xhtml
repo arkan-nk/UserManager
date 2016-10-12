@@ -8,7 +8,7 @@
     </ui:fragment>
 </head>
 <body>
-    <ui:fragment rendered="#{identity.loggedIn}">
+    <ui:fragment>
         <p>
             Welcome <b>#{identity.account.loginName}</b> !
             <br/><h:outputText value="#{groupBean.txt}"/>
@@ -27,7 +27,11 @@
                     </h:commandLink>
                     <br/>
                     <h:commandLink action="group_cu.xhtml" actionListener="#{userManagerBean.setPageName(msgs.cuName)}">
-                        <h:outputText value="#{msgs.cuName}"/>
+                        <h:outputText value="#{msgs.cuName} #{msgs.captionFRole}"/>
+                    </h:commandLink>
+                    <br/>
+                    <h:commandLink action="group_cutg.xhtml" actionListener="#{userManagerBean.setPageName(msgs.cuName)}">
+                        <h:outputText value="#{msgs.cuName} #{msgs.captionAtd}"/>
                     </h:commandLink>
                     <br/>
                     <h:commandLink action="group_disp.xhtml" actionListener="#{userManagerBean.setPageName(msgs.dispName)}">

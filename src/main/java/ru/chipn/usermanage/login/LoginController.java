@@ -1,6 +1,7 @@
 package ru.chipn.usermanage.login;
 
 import org.picketlink.Identity;
+import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 
@@ -9,11 +10,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 @Named
 @RequestScoped
-public class LoginController implements Serializable{
+public class LoginController implements Serializable {
     @Inject
     private PartitionManager partitionManager;
     @Inject
@@ -23,22 +26,38 @@ public class LoginController implements Serializable{
     private Identity identity;
     @Inject
     private FacesContext facesContext;
+    @Inject
+    private DefaultLoginCredentials loginCredentials;
 
     public String login() {
         this.identity.login();
-        String result = null;
-        if (this.identity.isLoggedIn()) {
-            result = "idm/home.xhtml?faces-redirect=true";
-        } else {
+        if (!this.identity.isLoggedIn()) {
             this.facesContext.addMessage(null,
-                new FacesMessage("Authentication was unsuccessful.  Please check your username and password " + "before trying again."));
+                    new FacesMessage("Authentication was unsuccessful.  Please check your username and password " + "before trying again."));
+            this.facesContext.getExternalContext().invalidateSession();
+            return "";
         }
-        return result;
+        boolean result=false;
+        try {
+            HttpServletRequest request = (HttpServletRequest) this.facesContext.getExternalContext().getRequest();
+            request.login(loginCredentials.getUserId(), loginCredentials.getPassword());
+            result= true;
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
+        if (!result) return this.logout();
+        return "idm/home.xhtml?faces-redirect=true";
     }
 
     public String logout() {
         if (this.identity.isLoggedIn()) this.identity.logout();
+        try {
+            HttpServletRequest request = (HttpServletRequest) this.facesContext.getExternalContext().getRequest();
+            request.logout();
+        }catch (ServletException se){
+            se.printStackTrace();
+        }
         this.facesContext.getExternalContext().invalidateSession();
-        return "/login.xhtml";
+        return "/login.xhtml?faces-redirect=true";
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition>
+    <p:dataTable value="#{appBean.groupCuTg}" var="fg" rowKey="#{fg.value}" widgetVar="tgVgt"
+                 paginator="true" rows="15" emptyMessage="#{msgs.no_data}"
+                 filteredValue="#{groupMassBean.filteredGroup}"
+                 selectionMode="single" selection="#{groupMassBean.selectedSelItemGroup}">
+        <p:ajax event="rowSelect" listener="#{groupMassBean.onRowSelect}" update="@all" />
+        <p:ajax event="rowUnselect" listener="#{groupMassBean.onRowUnselect}" update="@none" />
+        <p:column filterBy="#{fg.label}" filterMatchMode="contains">
+            <h:outputText value="#{fg.label}"/>
+        </p:column>
+    </p:dataTable>
+</ui:composition>
+</html>

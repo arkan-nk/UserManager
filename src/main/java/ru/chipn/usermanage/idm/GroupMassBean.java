@@ -5,7 +5,9 @@ import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.GroupMembership;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.RelationshipQuery;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.Visibility;
 import ru.chipn.usermanage.login.AuthorizationManager;
 import ru.chipn.usermanage.login.ModuleEnum;
@@ -34,7 +36,6 @@ public class GroupMassBean implements Serializable {
         allUsers.addAll(selection);
         members.removeIf(memb->selection.contains(memb));
         selection.clear();
-        //listRevoke.clear();
     }
     public Boolean getCollapsed(){
         return collapsed;
@@ -54,29 +55,29 @@ public class GroupMassBean implements Serializable {
 
     public String getNameSelectedGroup(){
         this.clear();
-        selectedFG = null;
+        selectedG = null;
         if (groupId==null || groupId.length()<1) return null;
         findSelectedGroup();
         String result = null;
-        if (selectedFG!=null) {
+        if (selectedG !=null) {
             this.loadMembersUser();
-            result = selectedFG.getName();
+            result = selectedG.getAttribute("description").getValue() + " (" + selectedG.getName() + ")";
             allUsers = userManagerBean.getUsers().stream().filter(user -> !members.contains(user)).collect(Collectors.toList());
         }
         return result;
     }
+
     private void clear(){
         allUsers.clear();
         members.clear();
         selection.clear();
         candidates.clear();
-        //listRevoke.clear();
     }
 
     private void loadMembersUser() {
         RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
         RelationshipQuery<GroupMembership> relationshipQuery = relationshipManager.createRelationshipQuery(GroupMembership.class);
-        relationshipQuery.setParameter(GroupMembership.GROUP , selectedFG);
+        relationshipQuery.setParameter(GroupMembership.GROUP , selectedG);
         List<GroupMembership> groupMemberShipList = relationshipQuery.getResultList();
         List<User> userList = groupMemberShipList.stream().map(gm->(User) gm.getMember())
                 .filter(user->!(user.getLoginName().equalsIgnoreCase("nobody") || user.getLoginName().equals("quartzjob@ncserv.ru")))
@@ -85,61 +86,42 @@ public class GroupMassBean implements Serializable {
     }
 
     private void findSelectedGroup(){
-        selectedFG = appBean.getGroupCuListFg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
-        if (selectedFG!=null) {
+        selectedG = appBean.getGroupCuListFg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
+        if (selectedG !=null) {
             selectedModuleEnum = ModuleEnum.CU_DN;
             return;
         }
-        selectedFG = appBean.getGroupInvList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
-        if (selectedFG!=null) {
+        selectedG = appBean.getGroupInvList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
+        if (selectedG !=null) {
             selectedModuleEnum = ModuleEnum.INV_DN;
             return;
         }
-        selectedFG = appBean.getGroupDispList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
-        if (selectedFG!=null) {
+        selectedG = appBean.getGroupDispList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
+        if (selectedG !=null) {
             selectedModuleEnum = ModuleEnum.DISP_DN;
             return;
         }
-        selectedFG = appBean.getGroupRepairList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
-        if (selectedFG!=null) {
+        selectedG = appBean.getGroupRepairList().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
+        if (selectedG !=null) {
             selectedModuleEnum = ModuleEnum.REPAIR_DN;
             return;
         }
+        selectedG = appBean.getGroupCuListTg().stream().filter(gr->gr.getId().equals(groupId)).findFirst().orElse(null);
+        if (selectedG != null) selectedModuleEnum = ModuleEnum.CU_DN;
     }
-    private String findName(ModuleEnum moduleEnum){
-        List<SelectItem> listToFind = appBean.getModuleFgOptions().get(moduleEnum);
-        if (listToFind==null) appBean.getModuleTgOptions().get(moduleEnum);
-        if (listToFind==null) return null;
-        final SelectItem selectedItem = listToFind.stream()
-                .filter(si->si.getValue().equals(groupId)).findFirst().orElse(null);
-        return selectedItem!=null ? selectedItem.getLabel(): null;
-    }
+
     public List<User> getMembers(){
         return members;
     }
     public void setMembers(List<User> ll){
         members = ll;
     }
-    public Integer getCount(){
-        return count;
-    }
-    public void setCount(Integer c){
-        count=c;
-    }
     public String getJmxConn(){
         return selectedModuleEnum!=null ? selectedModuleEnum.getJmxStr() : null;
     }
-    /*
-    public void loadListRevoke(){
-        listRevoke.clear();
-        listRevoke.addAll(selection);
-    }
-    public List<User> getListRevoke(){
-        return listRevoke;
-    }
-    */
-    public Group getSelectedFG(){
-        return selectedFG;
+
+    public Group getSelectedG(){
+        return selectedG;
     }
     public List<User> getSelection(){
         return selection;
@@ -159,17 +141,37 @@ public class GroupMassBean implements Serializable {
     public void setCandidates(List<User> cc){
         candidates = cc;
     }
+    public List<SelectItem> getFilteredGroup() {
+        return filteredGroup;
+    }
+    public void setFilteredGroup(List<SelectItem> filteredGroup) {
+        this.filteredGroup = filteredGroup;
+    }
+    public SelectItem getSelectedSelItemGroup() {
+        return selectedSelItemGroup;
+    }
+    public void setSelectedSelItemGroup(SelectItem selectedSelItemGroup) {
+        this.selectedSelItemGroup = selectedSelItemGroup;
+    }
+    public void onRowSelect(SelectEvent event) {
+        if (this.selectedSelItemGroup!=null) groupId = (String) this.selectedSelItemGroup.getValue();
+        //groupId = ((SelectItem) event.getObject()).getValue().toString();
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+        this.clear();
+    }
     private ModuleEnum selectedModuleEnum;
     private List<User> selection= new ArrayList<>();
     private List<User> members = new ArrayList<>();
     private List<User> allUsers = new ArrayList<>();
     private List<User> candidates= new ArrayList<>();
-    //private List<User> listRevoke= new ArrayList<>();
+    private List<SelectItem> filteredGroup;
 
+    private SelectItem selectedSelItemGroup;
     private String groupId;
-    private Group selectedFG;
+    private Group selectedG;
     private Boolean collapsed = false;
-    private Integer count=10;
     @Inject
     private AppBean appBean;
     @Inject

@@ -1,11 +1,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:mng="http://xmlns.jcp.org/jsf/composite/fragment">
 <h:head>
     <meta content="text/html; charset=UTF-8"/>
 </h:head>
 <h:body>
+    <ui:fragment>
     <mng:group_app captionApp="#{msgs.repairName}"
-                   listFGroups="#{appBean.groupRepairOptions}"/>
+                   listGroups="#{appBean.groupRepairOptions}"
+                   typGroup="fg"/>
+    </ui:fragment>
 </h:body>
 </html>

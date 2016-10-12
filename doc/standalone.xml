@@ -429,6 +429,27 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security:1.2">
             <security-domains>
+                <security-domain name="manage" cache-type="default">
+                    <authentication>
+                        <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">
+                            <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
+                            <module-option name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389"/>
+                            <module-option name="java.naming.security.authentication" value="simple"/>
+                            <module-option name="allowEmptyPasswords" value="false"/>
+                            <module-option name="principalDNPrefix" value="uid="/>
+                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=chipn,dc=ru"/>
+                            <module-option name="rolesCtxDN" value="ou=Roles, dc=manage, dc=a2,dc=chipn,dc=ru"/>
+                            <module-option name="uidAttributeID" value="uniqueMember"/>
+                            <module-option name="matchOnUserDN" value="true"/>
+                            <module-option name="roleAttributeID" value="cn"/>
+                            <module-option name="roleAttributeIsDN" value="false"/>
+                            <module-option name="searchScope" value="SUBTREE_SCOPE"/>
+                        </login-module>
+                        <login-module code="RealmDirect" flag="required">
+                            <module-option name="password-stacking" value="useFirstPass"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
                 <security-domain name="curta_inv" cache-type="default">
                     <authentication>
                         <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">

@@ -45,11 +45,22 @@ public class LoginController implements Serializable {
         } catch (ServletException e) {
             e.printStackTrace();
         }
-        if (!result) return this.logout();
+        if (!result) {
+            this.logoutPrivate();
+            this.facesContext.addMessage(null,
+                    new FacesMessage("Authorization was unsuccessful. Please get permission from administrator to work with the application."));
+            this.facesContext.getExternalContext().invalidateSession();
+            return "";
+        }
         return "idm/home.xhtml?faces-redirect=true";
     }
 
     public String logout() {
+        this.logoutPrivate();
+        this.facesContext.getExternalContext().invalidateSession();
+        return "/login.xhtml?faces-redirect=true";
+    }
+    private void logoutPrivate(){
         if (this.identity.isLoggedIn()) this.identity.logout();
         try {
             HttpServletRequest request = (HttpServletRequest) this.facesContext.getExternalContext().getRequest();
@@ -57,7 +68,5 @@ public class LoginController implements Serializable {
         }catch (ServletException se){
             se.printStackTrace();
         }
-        this.facesContext.getExternalContext().invalidateSession();
-        return "/login.xhtml?faces-redirect=true";
     }
 }

@@ -41,12 +41,15 @@
     </error-page>
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>other</realm-name>
+        <realm-name>manage</realm-name>
         <form-login-config>
             <form-login-page>/login.xhtml</form-login-page>
             <form-error-page>/finished.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    <security-role>
+        <role-name>fg_operator0</role-name>
+    </security-role>
     <security-constraint>
         <web-resource-collection>
             <url-pattern>/resources/css/*</url-pattern>
@@ -58,7 +61,4 @@
             <role-name>fg_operator0</role-name>
         </auth-constraint>
     </security-constraint>
-    <security-role>
-        <role-name>fg_operator0</role-name>
-    </security-role>
 </web-app>

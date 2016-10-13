@@ -120,6 +120,4 @@ public class AppBean implements Serializable {
     private List<org.picketlink.idm.model.basic.Group> groupRepairList;
     @Inject
     private AuthorizationManager authorizationManager;
-    @Inject
-    private LoginController loginController;
 }

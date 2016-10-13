@@ -30,8 +30,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     private String password;
     @Inject
     private AuthorizationManager authorizationManager;
-    @Inject
-    private LoginController loginController;
+
 
     @Override
     public List<User> getAll() {

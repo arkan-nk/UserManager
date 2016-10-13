@@ -9,7 +9,7 @@ objectclass: top
 objectclass: organizationalUnit
 ou: Users
 
-dn: dc=cu, dc=a2,chipn,dc=ru
+dn: dc=cu, dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: dcObject
 objectclass: organization
@@ -17,7 +17,7 @@ o: a2
 dc: cu
 description: Коммерческий учет
 
-dn: dc=inv, dc=a2,chipn,dc=ru
+dn: dc=inv, dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: dcObject
 objectclass: organization
@@ -25,7 +25,7 @@ o: a2
 dc: inv
 description: Инвентаризация КУУТЭ
 
-dn: dc=disp, dc=a2,chipn,dc=ru
+dn: dc=disp, dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: dcObject
 objectclass: organization
@@ -33,7 +33,7 @@ o: a2
 dc: disp
 description: Мониторинг
 
-dn: dc=repair, dc=a2,chipn,dc=ru
+dn: dc=repair, dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: dcObject
 objectclass: organization
@@ -41,7 +41,7 @@ o: a2
 dc: repair
 description: Регламент ТОР
 
-dn: dc=manage, dc=a2,chipn,dc=ru
+dn: dc=manage, dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: dcObject
 objectclass: organization

@@ -45,14 +45,14 @@
             </security-realm>
             <security-realm name="ApplicationRealm">
                 <authentication>
-                    <ldap connection="uniform" base-dn="ou=Users,dc=a2,dc=chipn,dc=ru">
+                    <ldap connection="uniform" base-dn="ou=Users,dc=a2,dc=jboss,dc=org">
                         <username-filter attribute="uid"/>
                     </ldap>
                 </authentication>
             </security-realm>
         </security-realms>
         <outbound-connections>
-            <ldap name="uniform" url="ldap://vm-uniform.chip-n.ru:389" search-dn="cn=admin,dc=a2,dc=chipn,dc=ru" search-credential="admin" initial-context-factory="com.sun.jndi.ldap.LdapCtxFactory"/>
+            <ldap name="uniform" url="ldap://localhost:10389" search-dn="uid=admin,ou=system" search-credential="secret" initial-context-factory="com.sun.jndi.ldap.LdapCtxFactory"/>
         </outbound-connections>
         <audit-log>
             <formatters>
@@ -301,12 +301,12 @@
                 <external-context name="java:global/federation/inv" module="org.jboss.as.naming" class="javax.naming.directory.InitialDirContext" cache="true">
                     <environment>
                         <property name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                        <property name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389/"/>
+                        <property name="java.naming.provider.url" value="ldap://localhost:10389/"/>
                         <property name="java.naming.security.authentication" value="simple"/>
-                        <property name="java.naming.security.principal" value="cn=admin,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="java.naming.security.credentials" value="admin"/>
-                        <property name="groupsDN" value="ou=Groups,dc=inv,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="usersDN" value="ou=Users,dc=a2,dc=chipn,dc=ru"/>
+                        <property name="java.naming.security.principal" value="uid=admin, ou=systen"/>
+                        <property name="java.naming.security.credentials" value="secret"/>
+                        <property name="groupsDN" value="ou=Groups,dc=inv, dc=work,dc=a2,dc=jboss,dc=org"/>
+                        <property name="usersDN" value="ou=Users,dc=a2,dc=jboss,dc=org"/>
                         <property name="attrMember" value="uniqueMember"/>
                         <property name="attrInputUser" value="uid"/>
                         <property name="attrInputGroup" value="cn"/>
@@ -319,22 +319,22 @@
                         <property name="attrObjectClassValUser" value="inetOrgPerson"/>
                         <property name="attrNameAppVal" value="inv"/>
                         <property name="attrIsProduction" value="0"/>
-                        <property name="adminPrfx" value="cn"/>
+                        <property name="adminPrfx" value="uid"/>
                         <property name="adminDN" value="admin"/>
-                        <property name="adminSfx" value="dc=a2,dc=chipn,dc=ru"/>
-                        <property name="adminPsw" value="admin"/>
+                        <property name="adminSfx" value="ou=system"/>
+                        <property name="adminPsw" value="secret"/>
                         <property name="attrReqPasswToken" value="registeredAddress"/>
                     </environment>
                 </external-context>
                 <external-context name="java:global/federation/cu" module="org.jboss.as.naming" class="javax.naming.directory.InitialDirContext" cache="true">
                     <environment>
                         <property name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                        <property name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389/"/>
+                        <property name="java.naming.provider.url" value="ldap://localhost:10389/"/>
                         <property name="java.naming.security.authentication" value="simple"/>
-                        <property name="java.naming.security.principal" value="cn=admin,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="java.naming.security.credentials" value="admin"/>
-                        <property name="groupsDN" value="ou=Groups,dc=cu,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="usersDN" value="ou=Users,dc=a2,dc=chipn,dc=ru"/>
+                        <property name="java.naming.security.principal" value="uid=admin,ou=system"/>
+                        <property name="java.naming.security.credentials" value="secret"/>
+                        <property name="groupsDN" value="ou=Groups,dc=cu, dc=work, dc=a2,dc=jboss,dc=org"/>
+                        <property name="usersDN" value="ou=Users,dc=a2,dc=jboss,dc=org"/>
                         <property name="attrMember" value="uniqueMember"/>
                         <property name="attrInputUser" value="uid"/>
                         <property name="attrInputGroup" value="cn"/>
@@ -347,22 +347,22 @@
                         <property name="attrObjectClassValUser" value="inetOrgPerson"/>
                         <property name="attrNameAppVal" value="cu"/>
                         <property name="attrIsProduction" value="0"/>
-                        <property name="adminPrfx" value="cn"/>
+                        <property name="adminPrfx" value="uid"/>
                         <property name="adminDN" value="admin"/>
-                        <property name="adminSfx" value="dc=a2,dc=chipn,dc=ru"/>
-                        <property name="adminPsw" value="admin"/>
+                        <property name="adminSfx" value="ou=system"/>
+                        <property name="adminPsw" value="secret"/>
                         <property name="attrReqPasswToken" value="registeredAddress"/>
                     </environment>
                 </external-context>
                 <external-context name="java:global/federation/disp" module="org.jboss.as.naming" class="javax.naming.directory.InitialDirContext" cache="true">
                     <environment>
                         <property name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                        <property name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389/"/>
+                        <property name="java.naming.provider.url" value="ldap://localhost:10389/"/>
                         <property name="java.naming.security.authentication" value="simple"/>
-                        <property name="java.naming.security.principal" value="cn=admin,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="java.naming.security.credentials" value="admin"/>
-                        <property name="groupsDN" value="ou=Groups,dc=disp,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="usersDN" value="ou=Users,dc=a2,dc=chipn,dc=ru"/>
+                        <property name="java.naming.security.principal" value="uid=admin,ou=system"/>
+                        <property name="java.naming.security.credentials" value="secret"/>
+                        <property name="groupsDN" value="ou=Groups,dc=disp,dc=work,dc=a2,dc=jboss,dc=org"/>
+                        <property name="usersDN" value="ou=Users,dc=a2,dc=jboss,dc=org"/>
                         <property name="attrMember" value="uniqueMember"/>
                         <property name="attrInputUser" value="uid"/>
                         <property name="attrInputGroup" value="cn"/>
@@ -375,22 +375,22 @@
                         <property name="attrObjectClassValUser" value="inetOrgPerson"/>
                         <property name="attrNameAppVal" value="disp"/>
                         <property name="attrIsProduction" value="0"/>
-                        <property name="adminPrfx" value="cn"/>
+                        <property name="adminPrfx" value="uid"/>
                         <property name="adminDN" value="admin"/>
-                        <property name="adminSfx" value="dc=a2,dc=chipn,dc=ru"/>
-                        <property name="adminPsw" value="admin"/>
+                        <property name="adminSfx" value="ou=system"/>
+                        <property name="adminPsw" value="secret"/>
                         <property name="attrReqPasswToken" value="registeredAddress"/>
                     </environment>
                 </external-context>
                 <external-context name="java:global/federation/repair" module="org.jboss.as.naming" class="javax.naming.directory.InitialDirContext" cache="true">
                     <environment>
                         <property name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                        <property name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389/"/>
+                        <property name="java.naming.provider.url" value="ldap://localhost:10389/"/>
                         <property name="java.naming.security.authentication" value="simple"/>
-                        <property name="java.naming.security.principal" value="cn=admin,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="java.naming.security.credentials" value="admin"/>
-                        <property name="groupsDN" value="ou=Groups,dc=repair,dc=a2,dc=chipn,dc=ru"/>
-                        <property name="usersDN" value="ou=Users,dc=a2,dc=chipn,dc=ru"/>
+                        <property name="java.naming.security.principal" value="uid=admin,ou=system"/>
+                        <property name="java.naming.security.credentials" value="secret"/>
+                        <property name="groupsDN" value="ou=Groups,dc=repair,dc=work,dc=a2,dc=jboss,dc=org"/>
+                        <property name="usersDN" value="ou=Users,dc=a2,dc=jboss,dc=org"/>
                         <property name="attrMember" value="uniqueMember"/>
                         <property name="attrInputUser" value="uid"/>
                         <property name="attrInputGroup" value="cn"/>
@@ -403,10 +403,10 @@
                         <property name="attrObjectClassValUser" value="inetOrgPerson"/>
                         <property name="attrNameAppVal" value="repair"/>
                         <property name="attrIsProduction" value="0"/>
-                        <property name="adminPrfx" value="cn"/>
+                        <property name="adminPrfx" value="uid"/>
                         <property name="adminDN" value="admin"/>
-                        <property name="adminSfx" value="dc=a2,dc=chipn,dc=ru"/>
-                        <property name="adminPsw" value="admin"/>
+                        <property name="adminSfx" value="ou=system"/>
+                        <property name="adminPsw" value="secret"/>
                         <property name="attrReqPasswToken" value="registeredAddress"/>
                     </environment>
                 </external-context>
@@ -429,16 +429,37 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security:1.2">
             <security-domains>
+                <security-domain name="manage" cache-type="default">
+                    <authentication>
+                        <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">
+                            <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
+                            <module-option name="java.naming.provider.url" value="ldap://localhost:10389"/>
+                            <module-option name="java.naming.security.authentication" value="simple"/>
+                            <module-option name="allowEmptyPasswords" value="false"/>
+                            <module-option name="principalDNPrefix" value="uid="/>
+                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=jboss,dc=org"/>
+                            <module-option name="rolesCtxDN" value="ou=Roles,dc=manage,dc=a2,dc=jboss,dc=org"/>
+                            <module-option name="uidAttributeID" value="uniqueMember"/>
+                            <module-option name="matchOnUserDN" value="true"/>
+                            <module-option name="roleAttributeID" value="cn"/>
+                            <module-option name="roleAttributeIsDN" value="false"/>
+                            <module-option name="searchScope" value="SUBTREE_SCOPE"/>
+                        </login-module>
+                        <login-module code="RealmDirect" flag="required">
+                            <module-option name="password-stacking" value="useFirstPass"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
                 <security-domain name="curta_inv" cache-type="default">
                     <authentication>
                         <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">
                             <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                            <module-option name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389"/>
+                            <module-option name="java.naming.provider.url" value="ldap://localhost:10389"/>
                             <module-option name="java.naming.security.authentication" value="simple"/>
                             <module-option name="allowEmptyPasswords" value="false"/>
                             <module-option name="principalDNPrefix" value="uid="/>
-                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=chipn,dc=ru"/>
-                            <module-option name="rolesCtxDN" value="ou=Groups, dc=inv, dc=a2,dc=chipn,dc=ru"/>
+                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=jboss,dc=org"/>
+                            <module-option name="rolesCtxDN" value="ou=Groups, dc=inv, dc=work, dc=a2,dc=jboss,dc=org"/>
                             <module-option name="uidAttributeID" value="uniqueMember"/>
                             <module-option name="matchOnUserDN" value="true"/>
                             <module-option name="roleAttributeID" value="cn"/>
@@ -454,12 +475,12 @@
                     <authentication>
                         <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">
                             <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                            <module-option name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389"/>
+                            <module-option name="java.naming.provider.url" value="ldap://localhost:10389"/>
                             <module-option name="java.naming.security.authentication" value="simple"/>
                             <module-option name="allowEmptyPasswords" value="false"/>
                             <module-option name="principalDNPrefix" value="uid="/>
-                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=chipn,dc=ru"/>
-                            <module-option name="rolesCtxDN" value="ou=Groups, dc=cu, dc=a2,dc=chipn,dc=ru"/>
+                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=jboss,dc=org"/>
+                            <module-option name="rolesCtxDN" value="ou=Groups, dc=cu, dc=work, dc=a2,dc=jboss,dc=org"/>
                             <module-option name="uidAttributeID" value="uniqueMember"/>
                             <module-option name="matchOnUserDN" value="true"/>
                             <module-option name="roleAttributeID" value="cn"/>
@@ -475,12 +496,12 @@
                     <authentication>
                         <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">
                             <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                            <module-option name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389"/>
+                            <module-option name="java.naming.provider.url" value="ldap://localhost:10389"/>
                             <module-option name="java.naming.security.authentication" value="simple"/>
                             <module-option name="allowEmptyPasswords" value="false"/>
                             <module-option name="principalDNPrefix" value="uid="/>
-                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=chipn,dc=ru"/>
-                            <module-option name="rolesCtxDN" value="ou=Groups, dc=disp, dc=a2,dc=chipn,dc=ru"/>
+                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=jboss,dc=org"/>
+                            <module-option name="rolesCtxDN" value="ou=Groups, dc=disp, dc=work, dc=a2,dc=jboss,dc=org"/>
                             <module-option name="uidAttributeID" value="uniqueMember"/>
                             <module-option name="matchOnUserDN" value="true"/>
                             <module-option name="roleAttributeID" value="cn"/>
@@ -496,12 +517,12 @@
                     <authentication>
                         <login-module code="org.jboss.security.auth.spi.LdapLoginModule" flag="optional">
                             <module-option name="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory"/>
-                            <module-option name="java.naming.provider.url" value="ldap://vm-uniform.chip-n.ru:389"/>
+                            <module-option name="java.naming.provider.url" value="ldap://localhost:10389"/>
                             <module-option name="java.naming.security.authentication" value="simple"/>
                             <module-option name="allowEmptyPasswords" value="false"/>
                             <module-option name="principalDNPrefix" value="uid="/>
-                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=chipn,dc=ru"/>
-                            <module-option name="rolesCtxDN" value="ou=Groups, dc=repair, dc=a2,dc=chipn,dc=ru"/>
+                            <module-option name="principalDNSuffix" value=",ou=Users,dc=a2,dc=jboss,dc=org"/>
+                            <module-option name="rolesCtxDN" value="ou=Groups, dc=repair, dc=work, dc=a2,dc=jboss,dc=org"/>
                             <module-option name="uidAttributeID" value="uniqueMember"/>
                             <module-option name="matchOnUserDN" value="true"/>
                             <module-option name="roleAttributeID" value="cn"/>

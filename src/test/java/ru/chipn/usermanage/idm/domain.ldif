@@ -1,0 +1,202 @@
+dn: dc=jboss,dc=org
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: a2
+
+dn: dc=work, dc=jboss,dc=org
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: work
+
+dn: ou=Users, dc=jboss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Users
+
+dn: dc=cu, dc=work, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: cu
+description: Коммерческий учет
+
+dn: dc=inv, dc=work, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: inv
+description: Инвентаризация КУУТЭ
+
+dn: dc=disp, dc=work, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: disp
+description: Мониторинг
+
+dn: dc=repair, dc=work, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: repair
+description: Регламент ТОР
+
+dn: dc=manage, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: dcObject
+objectclass: organization
+o: a2
+dc: manage
+description: Управление доступом
+
+dn: ou=Groups, dc=cu, dc=work, dc=a2, dc=jboss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Groups
+
+dn: ou=Groups, dc=inv, dc=work, dc=a2, dc=jboss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Groups
+
+dn: ou=Groups, dc=disp, dc=work, dc=a2, dc=jboss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Groups
+
+dn: ou=Groups, dc=repair, dc=work, dc=a2, dc=jboss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Groups
+
+dn: ou=Roles, dc=manage, dc=a2, dc=jboss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: Roles
+
+dn: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: inetOrgPerson
+objectclass: posixAccount
+uid: nobody
+cn: nobody
+sn: nobody
+gidNumber: 0
+uidNumber: 0
+homeDirectory: /home/nobody
+displayName: nobody
+givenName: nobody
+
+
+dn: cn=fg_operator0, ou=Roles, dc=manage,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_operator0,
+description: Операторы Manage 0
+o: manage
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_admin0, ou=Groups, dc=inv, dc=work, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_admin0,
+businessCategory: inv
+description: Администраторы INV 0
+o: inv
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_operator0, ou=Groups, dc=inv,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_operator0,
+businessCategory: inv
+description: Операторы INV 0
+o: inv
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_viewer0, ou=Groups, dc=inv,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_viewer0,
+businessCategory: inv
+description: Зрители INV 0
+o: inv
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_admin0, ou=Groups, dc=cu,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_admin0,
+businessCategory: fg
+description: Администраторы CU 0
+o: cu
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_operator0, ou=Groups, dc=cu,dc=work, dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_operator0,
+businessCategory: fg
+description: Операторы CU 0
+o: cu
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_viewer0, ou=Groups, dc=cu,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_viewer0,
+businessCategory: fg
+description: Зрители CU 0
+o: cu
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_admin0, ou=Groups, dc=disp,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_admin0,
+businessCategory: disp
+description: Администраторы DISP 0
+o: disp
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_operator0, ou=Groups, dc=disp,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_operator0,
+businessCategory: disp
+description: Операторы DISP 0
+o: disp
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_viewer0, ou=Groups, dc=disp,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_viewer0,
+businessCategory: disp
+description: Зрители DISP 0
+o: disp
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_operator0, ou=Groups, dc=repair,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_operator0,
+businessCategory: repair
+description: Операторы REPAIR 0
+o: repair
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org
+
+dn: cn=fg_viewer0, ou=Groups, dc=repair,dc=work,dc=a2,dc=jboss,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: fg_viewer0,
+businessCategory: repair
+description: Зрители REPAIR 0
+o: repair
+uniqueMember: uid=nobody, ou=Users,dc=a2,dc=jboss,dc=org

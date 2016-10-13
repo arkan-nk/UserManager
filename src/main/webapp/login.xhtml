@@ -1,9 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <head>
-    <title><h:outputText value="Управление правами пользователей"/></title>
+    <title><h:outputText value="#{msgs.captionManageUserPermission}"/></title>
     <link type="text/css" rel="stylesheet" href="resources/css/style.css"/>
 
     <ui:fragment rendered="#{identity.loggedIn}">
@@ -18,17 +17,17 @@
             </p>
 
             <div class="loginRow">
-                <h:outputLabel for="name" value="Имя: " styleClass="loginLabel"/>
+                <h:outputLabel for="name" value="#{msgs.captionLoginName}" styleClass="loginLabel"/>
                 <h:inputText id="name" value="#{loginCredentials.userId}"/>
             </div>
 
             <div class="loginRow">
-                <h:outputLabel for="password" value="Пароль: " styleClass="loginLabel"/>
+                <h:outputLabel for="password" value="#{msgs.passwd}" styleClass="loginLabel"/>
                 <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true"/>
             </div>
 
             <p>
-                <h:commandButton id="login" value="Вход" action="#{loginController.login}" styleClass="loginButton"/>
+                <h:commandButton id="login" value="#{msgs.captionEnter}" action="#{loginController.login}" styleClass="loginButton"/>
             </p>
         </h:form>
     </ui:fragment>

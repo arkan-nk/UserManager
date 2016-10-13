@@ -9,19 +9,36 @@
             <h:outputText value="#{userManagerBean.pageName}"/>
         </f:facet>
         <f:facet name="right">
-            <p:menuButton value="Навигация">
+            <p:menuButton value="#{msgs.captionNavigation}">
                 <p:menuitem value="#{msgs.home}"
                             actionListener="#{userManagerBean.setPageName('msgs.home')}"
-                            action="home.xhtml?faces-redirect=true"
+                            action="home.jsf?faces-redirect=true"
                             icon="ui-icon-extlink" update="toolheader"/>
                 <p:menuitem value="#{msgs.allUsers}"
                             actionListener="#{userManagerBean.setPageName(msgs.allUsers)}"
-                            action="users.xhtml?faces-redrect=true"
+                            url="users.jsf?faces-redrect=true"
                             icon="ui-icon-extlink" update="toolheader" />
                 <p:menuitem value="#{msgs.invName}"
                             actionListener="#{userManagerBean.setPageName(msgs.invName)}"
-                            action="group_inv.xhtml?faces-redirect=true"
+                            action="group_inv.jsf?faces-redirect=true"
                             icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.cuName} #{msgs.captionFRole}"
+                            actionListener="#{userManagerBean.setPageName(msgs.cuName)}"
+                            action="group_cu.jsf?faces-redirect=true"
+                            update="toolheader"/>
+                <p:menuitem value="#{msgs.cuName} #{msgs.captionAtd}"
+                            actionListener="#{userManagerBean.setPageName(msgs.captionAtd)}"
+                            action="group_cutg.jsf?faces-redirect=true"
+                            update="toolheader"/>
+                <p:menuitem value="#{msgs.dispName}"
+                            actionListener="#{userManagerBean.setPageName(msgs.dispName)}"
+                            action="group_disp.jsf?faces-redirect=true"
+                            icon="ui-icon-extlink" update="toolheader" />
+                <p:menuitem value="#{msgs.repairName}"
+                            actionListener="#{userManagerBean.setPageName(msgs.repairName)}"
+                            action="group_repair.jsf?faces-redirect=true"
+                            icon="ui-icon-extlink" update="toolheader"/>
+                <p:separator/>
                 <p:menuitem value="#{msgs.quit}" ajax="false" icon="ui-icon-close"
                             action="#{loginController.logout()}"/>
             </p:menuButton>

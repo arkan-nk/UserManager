@@ -29,8 +29,9 @@
 </p:fragment>
 <p:fragment autoUpdate="true">
     <p:dialog id="roleDialogId" for="roleBtn" dynamic="true"
-              width="auto" widgetVar="roleDialogVgt">
+              width="auto" widgetVar="roleDialogVgt" onHide="hideRoleDalog()">
         <h:form id="roleDialogForm" style="height:800px;">
+            <p:remoteCommand name="hideRoleDalog" actionListener="#{groupBean.clearSelected}" />
             <h:panelGrid columns="2">
             <h:selectOneMenu value="#{groupBean.selectedApp}"
                              valueChangeListener="#{groupBean.changeAppListener}">
@@ -65,10 +66,9 @@
             </p:tabView>
             <h:panelGrid columns="2">
                 <p:commandButton update="@all" value="#{msgs.yes}" oncomplete="PF('roleDialogVgt').hide()"
-                                 actionListener="#{groupOldSchoolBean.addUserToSelectedGroups(userManagerBean.currentUser, groupBean.jmxConnStr)}"
+                                 actionListener="#{groupOldSchoolBean.addUserToSelectedGroups(groupBean.selectedFgroup, groupBean.selectedTGroupList, userManagerBean.currentUser, groupBean.jmxConnStr)}"
                                  action="#{userGroupBean.loadMemberShip()}"/>
-                <p:commandButton value="#{msgs.no}" actionListener="#{groupBean.setSelectedFgroup(null)}" action="#{groupBean.selectedTGroupList.clear()}"
-                                 onclick="PF('roleDialogVgt').hide()"/>
+                <p:commandButton value="#{msgs.no}" onclick="PF('roleDialogVgt').hide()"/>
             </h:panelGrid>
         </h:form>
     </p:dialog>
@@ -103,7 +103,7 @@
             <h:outputText value="#{gCu.getAttribute('description').value}"/>
         </td><td>
             <h:commandButton value="#{msgs.toGetOut}"
-                actionListener="#{groupOldSchoolBean.doGetOut(gCu, userManagerBean.currentUser, 'java:global/federation/cu')}"
+                actionListener="#{groupOldSchoolBean.doGetOut(gCu, userManagerBean.currentUser, userGroupBean.jmxConn)}"
                 action="#{userGroupBean.dropMembershipUser(gCu)}"/>
         </td></tr>
     </ui:repeat>
@@ -122,7 +122,7 @@
         <h:outputText value="#{gInv.getAttribute('description').value}"/>
         </td><td>
         <h:commandButton value="#{msgs.toGetOut}"
-            actionListener="#{groupOldSchoolBean.doGetOut(gInv, userManager.currentUser, 'java:global/federation/inv')}"
+            actionListener="#{groupOldSchoolBean.doGetOut(gInv, userManager.currentUser, userGroupBean.jmxConn)}"
             action="#{userGroupBean.dropMembershipUser(gInv)}"/>
         </td></tr>
     </ui:repeat>
@@ -141,7 +141,7 @@
          <h:outputText value="#{gDisp.getAttribute('description').value}"/>
     </td><td>
             <h:commandButton value="#{msgs.toGetOut}"
-                actionListener="#{groupOldSchoolBean.doGetOut(gDisp, userManagerBean.currentUser, 'java:global/federation/disp')}"
+                actionListener="#{groupOldSchoolBean.doGetOut(gDisp, userManagerBean.currentUser, userGroupBean.jmxConn)}"
                 action="#{userGroupBean.dropMembershipUser(gDisp)}"/>
     </td></tr>
     </ui:repeat>
@@ -160,7 +160,7 @@
             <h:outputText value="#{gRepair.getAttribute('description').value}"/>
         </td><td>
             <h:commandButton value="#{msgs.toGetOut}"
-                actionListener="#{groupOldSchoolBean.doGetOut(gRepair, userManager.currentUser, 'java:global/federation/repair')}"
+                actionListener="#{groupOldSchoolBean.doGetOut(gRepair, userManager.currentUser, userGroupBean.jmxConn)}"
                 action="#{userGroupBean.dropMembershipUser(gRepair)}"/>
         </td></tr>
     </ui:repeat>

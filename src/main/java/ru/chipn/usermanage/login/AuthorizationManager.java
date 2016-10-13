@@ -24,6 +24,7 @@ public class AuthorizationManager implements Serializable{
     private IdentityManager identityManager;
     @Inject
     private RelationshipManager relationshipManager;
+
     public IdentityManager getIdentityManager(){
         return identityManager;
     }

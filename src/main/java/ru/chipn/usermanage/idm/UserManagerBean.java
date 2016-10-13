@@ -7,6 +7,7 @@ import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
 import ru.chipn.usermanage.login.AuthorizationManager;
+import ru.chipn.usermanage.login.LoginController;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -29,6 +30,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     private String password;
     @Inject
     private AuthorizationManager authorizationManager;
+
 
     @Override
     public List<User> getAll() {

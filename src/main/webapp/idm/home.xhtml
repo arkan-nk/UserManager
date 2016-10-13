@@ -8,7 +8,7 @@
     </ui:fragment>
 </head>
 <body>
-    <ui:fragment rendered="#{identity.loggedIn}">
+    <ui:fragment>
         <p>
             Welcome <b>#{identity.account.loginName}</b> !
             <br/><h:outputText value="#{groupBean.txt}"/>
@@ -26,17 +26,21 @@
                         <h:outputText value="#{msgs.invName}"/>
                     </h:commandLink>
                     <br/>
-                    <h:outputLink value="#">
-                        <h:outputText value="#{msgs.cuName}"/>
-                    </h:outputLink>
+                    <h:commandLink action="group_cu.xhtml" actionListener="#{userManagerBean.setPageName(msgs.cuName)}">
+                        <h:outputText value="#{msgs.cuName} #{msgs.captionFRole}"/>
+                    </h:commandLink>
                     <br/>
-                    <h:outputLink value="#">
+                    <h:commandLink action="group_cutg.xhtml" actionListener="#{userManagerBean.setPageName(msgs.cuName)}">
+                        <h:outputText value="#{msgs.cuName} #{msgs.captionAtd}"/>
+                    </h:commandLink>
+                    <br/>
+                    <h:commandLink action="group_disp.xhtml" actionListener="#{userManagerBean.setPageName(msgs.dispName)}">
                         <h:outputText value="#{msgs.dispName}"/>
-                    </h:outputLink>
+                    </h:commandLink>
                     <br/>
-                    <h:outputLink value="#">
+                    <h:commandLink action="group_repair.xhtml" actionListener="#{userManagerBean.setPageName(msgs.repairName)}">
                         <h:outputText value="#{msgs.repairName}"/>
-                    </h:outputLink>
+                    </h:commandLink>
                 </ui:fragment>
             </h:form>
         </p>

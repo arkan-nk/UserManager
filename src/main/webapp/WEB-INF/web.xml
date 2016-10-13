@@ -35,4 +35,30 @@
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/finished.html</location>
     </error-page>
+    <error-page>
+        <exception-type>javax.enterprise.context.ContextException</exception-type>
+        <location>/finished.html</location>
+    </error-page>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>manage</realm-name>
+        <form-login-config>
+            <form-login-page>/login.xhtml</form-login-page>
+            <form-error-page>/finished.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <role-name>fg_operator0</role-name>
+    </security-role>
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/resources/css/*</url-pattern>
+            <url-pattern>/resources/fragment/*</url-pattern>
+            <url-pattern>/resources/images/*</url-pattern>
+            <url-pattern>/idm/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>fg_operator0</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>

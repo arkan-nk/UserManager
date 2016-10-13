@@ -5,13 +5,15 @@ import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
 import ru.chipn.usermanage.login.AuthorizationManager;
+import ru.chipn.usermanage.login.LoginController;
 import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +27,8 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
  * Created by arkan on 16.09.2016.
  */
 @Named
-@ApplicationScoped
-public class AppBean {
+@SessionScoped
+public class AppBean implements Serializable {
     public List<SelectItem> getAppSelectList(){
         return appSelectList;
     }
@@ -56,7 +58,7 @@ public class AppBean {
         this.fillGroupOptions(groupDispList, ModuleEnum.DISP_DN, moduleFgOptions);
         this.fillGroupOptions(groupRepairList, ModuleEnum.REPAIR_DN, moduleFgOptions);
     }
-    public void fillGroupOptions(List<org.picketlink.idm.model.basic.Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
+    public void fillGroupOptions(List<Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
         final List<SelectItem> list = listGroup.stream()
                 .map(g->new SelectItem(g.getId(),
                         g.getAttribute("description").getValue().toString()
@@ -65,13 +67,13 @@ public class AppBean {
                 .collect(Collectors.toList());
         moduleOptions.put(moduleEnum, list);
     }
-    public List<org.picketlink.idm.model.basic.Group> loadListGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
+    public List<Group> loadListGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
         final IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
         final IdentityQuery<Group> query = iqb.createIdentityQuery(org.picketlink.idm.model.basic.Group.class);
-        final AttributeParameter objectClassParameter = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
-        final AttributeParameter oParameter = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
-        final AttributeParameter bc = org.picketlink.idm.model.basic.Group.QUERY_ATTRIBUTE.byName("businessCategory");
-        final List<org.picketlink.idm.model.basic.Group> group = query.where(
+        final AttributeParameter objectClassParameter = Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
+        final AttributeParameter oParameter = Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
+        final AttributeParameter bc = Group.QUERY_ATTRIBUTE.byName("businessCategory");
+        final List<Group> group = query.where(
                 iqb.equal(objectClassParameter, GROUP_OF_UNIQUE_NAMES),
                 iqb.equal(oParameter, moduleEnum.getModule()),
                 iqb.equal(bc, businessCategoryValue)

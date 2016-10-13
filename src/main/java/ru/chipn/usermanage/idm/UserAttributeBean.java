@@ -31,10 +31,10 @@ public class UserAttributeBean implements Serializable{
             User user1 = userManagerBean.getUser(emailString.toLowerCase());
             if (user1 == null) {
                 userManagerBean.getCurrentUser().setLoginName(emailString.toLowerCase());
-                userManagerBean.getCurrentUser().setAttribute(new Attribute<String[]>(OBJECT_CLASS, new String[]{"top", LDAPATTRS.PERSON.getTxt(), LDAPATTRS.INETORGPERSON.getTxt()/*, LDAPATTRS.POSIXACCOUNT.getTxt()*/}));
-                //userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("gidNumber", "0"));
-                //userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("uidNumber", "0"));
-                //userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("homeDirectory", "/home/" + emailString));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<String[]>(OBJECT_CLASS, new String[]{"top", LDAPATTRS.PERSON.getTxt(), LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt()}));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("gidNumber", "0"));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("uidNumber", "0"));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("homeDirectory", "/home/" + emailString));
                 init();
                 registered=false;
             }

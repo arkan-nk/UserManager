@@ -20,7 +20,7 @@ public class LoginController implements Serializable {
     @Inject
     private PartitionManager partitionManager;
     @Inject
-    private IdentityManager identityManager;
+    private AuthorizationManager authorizationManager;
 
     @Inject
     private Identity identity;
@@ -41,7 +41,7 @@ public class LoginController implements Serializable {
         try {
             HttpServletRequest request = (HttpServletRequest) this.facesContext.getExternalContext().getRequest();
             request.login(loginCredentials.getUserId(), loginCredentials.getPassword());
-            result= true;
+            result = authorizationManager.isOperator0();
         } catch (ServletException e) {
             e.printStackTrace();
         }

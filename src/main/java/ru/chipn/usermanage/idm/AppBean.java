@@ -5,6 +5,7 @@ import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
 import ru.chipn.usermanage.login.AuthorizationManager;
+import ru.chipn.usermanage.login.LoginController;
 import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.annotation.PostConstruct;
@@ -119,4 +120,6 @@ public class AppBean implements Serializable {
     private List<org.picketlink.idm.model.basic.Group> groupRepairList;
     @Inject
     private AuthorizationManager authorizationManager;
+    @Inject
+    private LoginController loginController;
 }

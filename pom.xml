@@ -18,6 +18,7 @@
         <version.picketlink.javaee.bom>2.7.1.Final</version.picketlink.javaee.bom>
         <version.war.plugin>2.2</version.war.plugin>
         <version.compiler.plugin>3.1</version.compiler.plugin>
+        <version.primrfaces>6.0</version.primrfaces>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <deltaspike.version>1.7.1</deltaspike.version>
@@ -115,8 +116,8 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>6.0</version>
-            <scope>compile</scope>
+            <version>${version.primrfaces}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.spec.javax.servlet</groupId>
@@ -167,7 +168,7 @@
                     <archive>
                         <manifestEntries>
                             <Dependencies>
-                                javax.enterprise.api,
+                                javax.enterprise.api
                                 javax.faces.api,
                                 javax.ejb.api
                             </Dependencies>

@@ -12,10 +12,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by arkan on 15.08.2016.
@@ -53,7 +50,6 @@ public class UserGroupBean implements Serializable{
                          .getAttribute(LDAPATTRS.ORGANIZATIONNAME.getTxt())
                          .getValue().equals(moduleEnum.getModule())
         ).forEach(groupMemb ->list.add(groupMemb.getGroup()));
-        currentModule = moduleEnum;
         return list;
     }
     public String getJmxConn(){
@@ -61,6 +57,9 @@ public class UserGroupBean implements Serializable{
     }
     public Boolean isNoMemberShip(){
         return userMemberShip.isEmpty();
+    }
+    public void setCurrentModule(String moduleT){
+        this.currentModule = Arrays.stream(ModuleEnum.values()).filter(me->me.getModule().equals(moduleT)).findFirst().orElse(null);
     }
 
     @Inject

@@ -71,10 +71,12 @@ public class UserManagerBean implements UserManagerIf, Serializable{
             init();
         }
         currentUser=null;
+        this.password=null;
     }
     @Override
     public void newUser(){
         currentUser = new User();
+        this.password=null;
     }
 
 
@@ -102,7 +104,6 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     }
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
-        this.password=null;
     }
     public List<User> getUsers(){
         return users;

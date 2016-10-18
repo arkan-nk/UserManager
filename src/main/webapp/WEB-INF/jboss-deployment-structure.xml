@@ -1,0 +1,11 @@
+<jboss-deployment-structure>
+    <deployment>
+        <dependencies>
+            <!--
+            <module name="org.primefaces" meta-inf="export" />
+              Or use the line below instead --> 
+            <module name="org.primefaces" export="true" meta-inf="export"/>
+            <module name="org.atmosphere" export="true" meta-inf="export"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

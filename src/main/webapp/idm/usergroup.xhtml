@@ -102,9 +102,11 @@
         <tr><td>
             <h:outputText value="#{gCu.getAttribute('description').value}"/>
         </td><td>
-            <h:commandButton value="#{msgs.toGetOut}"
+            <p:commandButton value="#{msgs.toGetOut}" update="@form"
                 actionListener="#{groupOldSchoolBean.doGetOut(gCu, userManagerBean.currentUser, userGroupBean.jmxConn)}"
-                action="#{userGroupBean.dropMembershipUser(gCu)}"/>
+                action="#{userGroupBean.dropMembershipUser(gCu)}">
+                <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('cu')}"/>
+            </p:commandButton>
         </td></tr>
     </ui:repeat>
 </table>
@@ -121,9 +123,11 @@
         <tr><td>
         <h:outputText value="#{gInv.getAttribute('description').value}"/>
         </td><td>
-        <h:commandButton value="#{msgs.toGetOut}"
+        <p:commandButton value="#{msgs.toGetOut}" update="@form"
             actionListener="#{groupOldSchoolBean.doGetOut(gInv, userManager.currentUser, userGroupBean.jmxConn)}"
-            action="#{userGroupBean.dropMembershipUser(gInv)}"/>
+            action="#{userGroupBean.dropMembershipUser(gInv)}">
+            <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('inv')}"/>
+        </p:commandButton>
         </td></tr>
     </ui:repeat>
     </table>
@@ -140,9 +144,11 @@
     <tr><td>
          <h:outputText value="#{gDisp.getAttribute('description').value}"/>
     </td><td>
-            <h:commandButton value="#{msgs.toGetOut}"
+            <p:commandButton value="#{msgs.toGetOut}" update="@form"
                 actionListener="#{groupOldSchoolBean.doGetOut(gDisp, userManagerBean.currentUser, userGroupBean.jmxConn)}"
-                action="#{userGroupBean.dropMembershipUser(gDisp)}"/>
+                action="#{userGroupBean.dropMembershipUser(gDisp)}">
+                <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('disp')}"/>
+            </p:commandButton>
     </td></tr>
     </ui:repeat>
 </table>
@@ -159,9 +165,11 @@
         <tr><td>
             <h:outputText value="#{gRepair.getAttribute('description').value}"/>
         </td><td>
-            <h:commandButton value="#{msgs.toGetOut}"
+            <p:commandButton value="#{msgs.toGetOut}" update="@form"
                 actionListener="#{groupOldSchoolBean.doGetOut(gRepair, userManager.currentUser, userGroupBean.jmxConn)}"
-                action="#{userGroupBean.dropMembershipUser(gRepair)}"/>
+                action="#{userGroupBean.dropMembershipUser(gRepair)}">
+                <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('repair')}"/>
+            </p:commandButton>
         </td></tr>
     </ui:repeat>
 </table>

@@ -33,9 +33,9 @@ public class GroupMassBean implements Serializable {
         candidates.clear();
     }
     public void massRevokeStep2(){
-        allUsers.addAll(selection);
-        members.removeIf(memb->selection.contains(memb));
-        selection.clear();
+        allUsers.addAll(candidates);
+        members.removeIf(memb->candidates.contains(memb));
+        candidates.clear();
     }
     public Boolean getCollapsed(){
         return collapsed;
@@ -70,7 +70,7 @@ public class GroupMassBean implements Serializable {
     private void clear(){
         allUsers.clear();
         members.clear();
-        selection.clear();
+        //selection.clear();
         candidates.clear();
     }
 
@@ -123,12 +123,14 @@ public class GroupMassBean implements Serializable {
     public Group getSelectedG(){
         return selectedG;
     }
+    /*
     public List<User> getSelection(){
         return selection;
     }
     public void setSelection(List<User> li){
         selection = li;
     }
+    */
     public List<User> getAllUsers(){
         return allUsers;
     }
@@ -162,7 +164,7 @@ public class GroupMassBean implements Serializable {
         this.clear();
     }
     private ModuleEnum selectedModuleEnum;
-    private List<User> selection= new ArrayList<>();
+    //private List<User> selection= new ArrayList<>();
     private List<User> members = new ArrayList<>();
     private List<User> allUsers = new ArrayList<>();
     private List<User> candidates= new ArrayList<>();

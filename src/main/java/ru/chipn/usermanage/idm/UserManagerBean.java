@@ -7,7 +7,6 @@ import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
 import ru.chipn.usermanage.login.AuthorizationManager;
-import ru.chipn.usermanage.login.LoginController;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;

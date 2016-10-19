@@ -18,10 +18,10 @@
         <version.picketlink.javaee.bom>2.7.1.Final</version.picketlink.javaee.bom>
         <version.war.plugin>2.2</version.war.plugin>
         <version.compiler.plugin>3.1</version.compiler.plugin>
-        <version.primrfaces>6.0</version.primrfaces>
+        <version.primefaces>6.0</version.primefaces>
+        <version.org.apache.deltaspike>1.7.1</version.org.apache.deltaspike>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <deltaspike.version>1.7.1</deltaspike.version>
     </properties>
 
     <dependencyManagement>
@@ -67,11 +67,85 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- PicketLink Uber JAR dependency 
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink</artifactId>
             <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+
+        <!-- PicketLink Base dependencies-->
+        <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink-api</artifactId>
+            <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink-impl</artifactId>
+            <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- PicketLink IDM dependencies-->
+        <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink-idm-api</artifactId>
+            <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink-idm-impl</artifactId>
+            <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink-idm-simple-schema</artifactId>
+            <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- PicketLink JSON dependencies -->
+        <dependency>
+            <groupId>org.picketlink</groupId>
+            <artifactId>picketlink-json</artifactId>
+            <version>${version.picketlink.javaee.bom}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Deltaspike Core -->
+        <dependency>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-impl</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Security Module -->
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-security-module-api</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.deltaspike.modules</groupId>
+            <artifactId>deltaspike-security-module-impl</artifactId>
+            <version>${version.org.apache.deltaspike}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
@@ -116,7 +190,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>${version.primrfaces}</version>
+            <version>${version.primefaces}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -84,7 +84,7 @@
     </h:panelGrid>
 </td></tr>
 </table>
-    <h:outputText value="Пользователь с таким входным именем уже зарегистрирован!"
+    <h:outputText value="#{msgs.alreadyRegistered}"
                   rendered="#{userAttributeBean.registered}" style="color:red;"/>
     <br/>
     <h:commandButton actionListener="#{userManagerBean.saveUser()}"

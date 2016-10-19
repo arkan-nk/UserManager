@@ -5,7 +5,6 @@ import org.picketlink.idm.query.AttributeParameter;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
 import ru.chipn.usermanage.login.AuthorizationManager;
-import ru.chipn.usermanage.login.LoginController;
 import ru.chipn.usermanage.login.ModuleEnum;
 
 import javax.annotation.PostConstruct;
@@ -31,12 +30,6 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 public class AppBean implements Serializable {
     public List<SelectItem> getAppSelectList(){
         return appSelectList;
-    }
-    public Map<ModuleEnum, List<SelectItem>> getModuleFgOptions(){
-        return moduleFgOptions;
-    }
-    public Map<ModuleEnum, List<SelectItem>> getModuleTgOptions(){
-        return moduleTgOptions;
     }
 
     @PostConstruct

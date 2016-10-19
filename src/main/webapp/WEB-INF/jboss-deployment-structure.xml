@@ -6,6 +6,23 @@
               Or use the line below instead --> 
             <module name="org.primefaces" export="true" meta-inf="export"/>
             <module name="org.atmosphere" export="true" meta-inf="export"/>
+            <module name="org.picketlink.core.api" export="true" meta-inf="export"/>
+            <module name="org.picketlink.core" export="true" meta-inf="export"/>
+            <module name="org.picketlink.config" export="true" meta-inf="export"/>
+            <module name="org.picketlink.common" export="true" meta-inf="export"/>
+            <module name="org.picketlink.federation.bindings" export="true" meta-inf="export"/>
+            <module name="org.picketlink.federation" export="true" meta-inf="export"/>
+            <module name="org.picketlink.idm" export="true" meta-inf="export"/>
+            <module name="org.picketlink.idm.api" export="true" meta-inf="export"/>
+            <module name="org.picketlink.idm.schema" export="true" meta-inf="export"/>
+            <module name="org.picketlink" export="true" meta-inf="export"/>
+
         </dependencies>
+        <resources>
+            <resource-root path="ascupe2.ear:ascupe2.war:lib/deltaspike-core-api-1.7.1.jar"/>
+            <resource-root path="ascupe2.ear:ascupe2.war:lib/deltaspike-core-impl-1.7.1.jar"/>
+            <resource-root path="ascupe2.ear:ascupe2.war:lib/deltaspike-security-module-api-1.7.1.jar"/>
+            <resource-root path="ascupe2.ear:ascupe2.war:lib/deltaspike-security-module-impl-1.7.1.jar"/>
+        </resources>
     </deployment>
 </jboss-deployment-structure>

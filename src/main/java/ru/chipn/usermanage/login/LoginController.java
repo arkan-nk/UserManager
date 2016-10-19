@@ -2,7 +2,6 @@ package ru.chipn.usermanage.login;
 
 import org.picketlink.Identity;
 import org.picketlink.credential.DefaultLoginCredentials;
-import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 
 import javax.enterprise.context.RequestScoped;

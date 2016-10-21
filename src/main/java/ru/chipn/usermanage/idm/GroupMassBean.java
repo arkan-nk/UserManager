@@ -70,7 +70,6 @@ public class GroupMassBean implements Serializable {
     private void clear(){
         allUsers.clear();
         members.clear();
-        //selection.clear();
         candidates.clear();
     }
 
@@ -123,14 +122,7 @@ public class GroupMassBean implements Serializable {
     public Group getSelectedG(){
         return selectedG;
     }
-    /*
-    public List<User> getSelection(){
-        return selection;
-    }
-    public void setSelection(List<User> li){
-        selection = li;
-    }
-    */
+
     public List<User> getAllUsers(){
         return allUsers;
     }
@@ -157,14 +149,12 @@ public class GroupMassBean implements Serializable {
     }
     public void onRowSelect(SelectEvent event) {
         if (this.selectedSelItemGroup!=null) groupId = (String) this.selectedSelItemGroup.getValue();
-        //groupId = ((SelectItem) event.getObject()).getValue().toString();
     }
 
     public void onRowUnselect(UnselectEvent event) {
         this.clear();
     }
     private ModuleEnum selectedModuleEnum;
-    //private List<User> selection= new ArrayList<>();
     private List<User> members = new ArrayList<>();
     private List<User> allUsers = new ArrayList<>();
     private List<User> candidates= new ArrayList<>();

@@ -4,10 +4,10 @@ package ru.chipn.usermanage.login;
  * Created by arkan on 28.06.2016.
  */
 public enum ModuleEnum {
-    CU_DN ("cu", Resources.getCaption("cuName"), Resources.getCaption("connJMXCu")),
-    INV_DN ("inv", Resources.getCaption("invName"), Resources.getCaption("connJMXInv")),
-    DISP_DN ("disp", Resources.getCaption("dispName"), Resources.getCaption("connJMXDisp")),
-    REPAIR_DN ("repair", Resources.getCaption("repairName"), Resources.getCaption("connJMXRepair")),
+    CU_DN ("cu", Resources.getCaption("cuName"), Resources.getParam("connJMXCu")),
+    INV_DN ("inv", Resources.getCaption("invName"), Resources.getParam("connJMXInv")),
+    DISP_DN ("disp", Resources.getCaption("dispName"), Resources.getParam("connJMXDisp")),
+    REPAIR_DN ("repair", Resources.getCaption("repairName"), Resources.getParam("connJMXRepair")),
     MANAGE_DN ("manage", Resources.getCaption("manageName"), null);
     String txt;
     String descr;
@@ -16,9 +16,6 @@ public enum ModuleEnum {
         txt = t;
         descr = d;
         jmxStr = conn;
-    }
-    public String getTxt(){
-        return "dc="+txt+",";
     }
     public String getModule(){
         return txt;

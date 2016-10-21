@@ -2,16 +2,18 @@ package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.model.basic.Group;
 import org.picketlink.idm.model.basic.User;
+import ru.chipn.usermanage.login.Resources;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.naming.directory.*;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
 
 import static org.picketlink.common.constants.LDAPConstants.CN;
-import static org.picketlink.common.constants.LDAPConstants.UID;
-import static ru.chipn.usermanage.login.ConfigurationEnum.ROOT_DN;
 
 /**
  * Created by arkan on 29.08.2016.
@@ -25,17 +27,19 @@ class LdapJndiWriter {
         Hashtable ht = dtx.getEnvironment();
         StringBuilder sb0 = new StringBuilder();
         String adminPrfx = (String) ht.get("adminPrfx");
-        String adminDN = (String) ht.get("adminDN");
-        String adminSfx = (String) ht.get("adminSfx");
-        String adminPsw = (String) ht.get("adminPsw");
-        if (adminPrfx==null || adminPrfx.length()<1) adminPrfx=UID;
-        sb0.append(adminPrfx);
-        sb0.append("=");
-        sb0.append(adminDN!=null && adminDN.length()>1 ? adminDN : "admin");
-        sb0.append(",");
-        sb0.append(adminSfx!=null && adminSfx.length()>1 ? adminSfx : /*BASE_DN.getTxt() +*/ ROOT_DN.getTxt());
+        if (adminPrfx != null && adminPrfx.length() > 1) {
+            String adminDN = (String) ht.get("adminDN");
+            String adminSfx = (String) ht.get("adminSfx");
+            sb0.append(adminPrfx);
+            sb0.append("=");
+            sb0.append(adminDN);
+            sb0.append(",");
+            sb0.append(adminSfx);
+        }
+        if (sb0.length()<1) sb0.append(Resources.getParam("bindDNConfiguration"));
+        String adminPsw = (String) ht.getOrDefault("adminPsw", Resources.getParam("bindCredential"));
         dtx.addToEnvironment(Context.SECURITY_PRINCIPAL, sb0.toString());
-        dtx.addToEnvironment(Context.SECURITY_CREDENTIALS, adminPsw!=null ? adminPsw : "admin");
+        dtx.addToEnvironment(Context.SECURITY_CREDENTIALS, adminPsw);
     }
     public void operate(User user, Group group, final int dirContextAttribute) throws NamingException{
         Hashtable ht = dtx.getEnvironment();

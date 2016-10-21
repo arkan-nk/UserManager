@@ -17,9 +17,15 @@ In this case user_manager can authenticate and authorize in application and perf
  6. remove *seleted user* from any group in ldap except  cn=fg_operator0,ou=Roles,dc=manage,dc=a2,dc=chipn,dc=ru 
  7. remove *seleted user* from ldap if user have no membership in any group
 
+Domain gets configuration from property file. 
+Frameworks picketlink, atmosphere and primefaces removes from artifact and joins to modules in wildfly application server.
+Framework apache deltaspike are built with scope compile.
+Dependencies provided explicitly by jboss-deployment-structure.xml 
+
 Application has developed by JDK8u101, PicketLink-2.7.1.Final, CDI, JSF-2.2.12,
 Primefaces-6.0, OpenLDAP, and can deploy to JBoss Application Server
 (WildFly-9.0.2.Final or WildFly-10.1.0.Final) with standalone.xml as sample configuration. 
 
+ 
 
 

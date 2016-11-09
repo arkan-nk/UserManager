@@ -13,10 +13,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.picketlink.common.constants.LDAPConstants.GROUP_OF_UNIQUE_NAMES;
@@ -38,8 +35,8 @@ public class AppBean implements Serializable {
                 .filter(moduleEnum-> ModuleEnum.MANAGE_DN!=moduleEnum)
                 .map(moduleEnum->new SelectItem(moduleEnum.getModule(), moduleEnum.getDescr()))
                 .collect(Collectors.toList());
-        moduleTgOptions = new HashMap<>();
-        moduleFgOptions = new HashMap<>();
+        moduleTgOptions = new EnumMap<>(ModuleEnum.class);
+        moduleFgOptions = new EnumMap<>(ModuleEnum.class);
         groupCuListFg = loadListGroups(ModuleEnum.CU_DN, "fg");
         groupInvList = loadListGroups(ModuleEnum.INV_DN, "fg");
         groupDispList = loadListGroups(ModuleEnum.DISP_DN, "fg");
@@ -51,7 +48,7 @@ public class AppBean implements Serializable {
         this.fillGroupOptions(groupDispList, ModuleEnum.DISP_DN, moduleFgOptions);
         this.fillGroupOptions(groupRepairList, ModuleEnum.REPAIR_DN, moduleFgOptions);
     }
-    public void fillGroupOptions(List<Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
+    public void fillGroupOptions(final List<Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
         final List<SelectItem> list = listGroup.stream()
                 .map(g->new SelectItem(g.getId(),
                         g.getAttribute("description").getValue().toString()
@@ -62,7 +59,7 @@ public class AppBean implements Serializable {
     }
     public List<Group> loadListGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
         final IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
-        final IdentityQuery<Group> query = iqb.createIdentityQuery(org.picketlink.idm.model.basic.Group.class);
+        final IdentityQuery<Group> query = iqb.createIdentityQuery(Group.class);
         final AttributeParameter objectClassParameter = Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
         final AttributeParameter oParameter = Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
         final AttributeParameter bc = Group.QUERY_ATTRIBUTE.byName("businessCategory");

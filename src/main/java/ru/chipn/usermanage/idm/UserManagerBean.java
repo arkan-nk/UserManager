@@ -59,7 +59,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         if (isNew) init();
     }
     @Override
-    public User getUser(String loginName){
+    public User getUser(final String loginName){
         return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
     }
     @Override
@@ -110,7 +110,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     public List<User> getFoundUsers(){
         return foundUsers;
     }
-    public void setFoundUsers(List<User> foundUsers){
+    public void setFoundUsers(final List<User> foundUsers){
         this.foundUsers = foundUsers;
     }
 

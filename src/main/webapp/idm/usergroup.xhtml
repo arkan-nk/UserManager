@@ -102,7 +102,7 @@
         <tr><td>
             <h:outputText value="#{gCu.getAttribute('description').value}"/>
         </td><td>
-            <p:commandButton value="#{msgs.toGetOut}" update="@form"
+            <p:commandButton value="#{msgs.toGetOut}" update="@all"
                 actionListener="#{groupOldSchoolBean.doGetOut(gCu, userManagerBean.currentUser, userGroupBean.jmxConn)}"
                 action="#{userGroupBean.dropMembershipUser(gCu)}">
                 <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('cu')}"/>
@@ -123,8 +123,8 @@
         <tr><td>
         <h:outputText value="#{gInv.getAttribute('description').value}"/>
         </td><td>
-        <p:commandButton value="#{msgs.toGetOut}" update="@form"
-            actionListener="#{groupOldSchoolBean.doGetOut(gInv, userManager.currentUser, userGroupBean.jmxConn)}"
+        <p:commandButton value="#{msgs.toGetOut}" update="@all"
+            actionListener="#{groupOldSchoolBean.doGetOut(gInv, userManagerBean.currentUser, userGroupBean.jmxConn)}"
             action="#{userGroupBean.dropMembershipUser(gInv)}">
             <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('inv')}"/>
         </p:commandButton>
@@ -144,7 +144,7 @@
     <tr><td>
          <h:outputText value="#{gDisp.getAttribute('description').value}"/>
     </td><td>
-            <p:commandButton value="#{msgs.toGetOut}" update="@form"
+            <p:commandButton value="#{msgs.toGetOut}" update="@all"
                 actionListener="#{groupOldSchoolBean.doGetOut(gDisp, userManagerBean.currentUser, userGroupBean.jmxConn)}"
                 action="#{userGroupBean.dropMembershipUser(gDisp)}">
                 <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('disp')}"/>
@@ -165,8 +165,8 @@
         <tr><td>
             <h:outputText value="#{gRepair.getAttribute('description').value}"/>
         </td><td>
-            <p:commandButton value="#{msgs.toGetOut}" update="@form"
-                actionListener="#{groupOldSchoolBean.doGetOut(gRepair, userManager.currentUser, userGroupBean.jmxConn)}"
+            <p:commandButton value="#{msgs.toGetOut}" update="@all"
+                actionListener="#{groupOldSchoolBean.doGetOut(gRepair, userManagerBean.currentUser, userGroupBean.jmxConn)}"
                 action="#{userGroupBean.dropMembershipUser(gRepair)}">
                 <p:ajax event="click" listener="#{userGroupBean.setCurrentModule('repair')}"/>
             </p:commandButton>

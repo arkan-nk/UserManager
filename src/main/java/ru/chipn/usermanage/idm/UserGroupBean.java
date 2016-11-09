@@ -21,10 +21,10 @@ import java.util.*;
 @SessionScoped
 public class UserGroupBean implements Serializable{
 
-    public void dropMembershipUser(Group group1){
+    public void dropMembershipUser(final Group group1){
         for (Iterator<GroupMembership> itt = userMemberShip.iterator(); itt.hasNext(); ) {
             GroupMembership groupMembershipItem = itt.next();
-            if (groupMembershipItem.getGroup() == group1) itt.remove();
+            if (groupMembershipItem.getGroup().getId().equals(group1.getId())) itt.remove();
         }
     }
     public List<GroupMembership> getUserMemberShip(){
@@ -58,7 +58,7 @@ public class UserGroupBean implements Serializable{
     public Boolean isNoMemberShip(){
         return userMemberShip.isEmpty();
     }
-    public void setCurrentModule(String moduleT){
+    public void setCurrentModule(final String moduleT){
         this.currentModule = Arrays.stream(ModuleEnum.values()).filter(me->me.getModule().equals(moduleT)).findFirst().orElse(null);
     }
 
@@ -77,9 +77,9 @@ public class UserGroupBean implements Serializable{
     }
     public void loadMemberShip(){
         Objects.requireNonNull(userManagerBean.getCurrentUser());
-        User currentUser = userManagerBean.getCurrentUser();
-        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
-        RelationshipQuery<GroupMembership> relationshipQuery = relationshipManager.createRelationshipQuery(GroupMembership.class);
+        final User currentUser = userManagerBean.getCurrentUser();
+        final RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
+        final RelationshipQuery<GroupMembership> relationshipQuery = relationshipManager.createRelationshipQuery(GroupMembership.class);
         relationshipQuery.setParameter(GroupMembership.MEMBER , currentUser);
         userMemberShip.clear();
         userMemberShip.addAll(relationshipQuery.getResultList());

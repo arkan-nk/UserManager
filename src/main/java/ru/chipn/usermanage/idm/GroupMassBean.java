@@ -49,7 +49,7 @@ public class GroupMassBean implements Serializable {
     public String getGroupId(){
         return groupId;
     }
-    public void setGroupId(String groupId1){
+    public void setGroupId(final String groupId1){
         groupId = groupId1;
     }
 
@@ -74,11 +74,11 @@ public class GroupMassBean implements Serializable {
     }
 
     private void loadMembersUser() {
-        RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
+        final RelationshipManager relationshipManager = authorizationManager.getRelationshipManager();
         RelationshipQuery<GroupMembership> relationshipQuery = relationshipManager.createRelationshipQuery(GroupMembership.class);
         relationshipQuery.setParameter(GroupMembership.GROUP , selectedG);
-        List<GroupMembership> groupMemberShipList = relationshipQuery.getResultList();
-        List<User> userList = groupMemberShipList.stream().map(gm->(User) gm.getMember())
+        final List<GroupMembership> groupMemberShipList = relationshipQuery.getResultList();
+        final List<User> userList = groupMemberShipList.stream().map(gm->(User) gm.getMember())
                 .filter(user->!(user.getLoginName().equalsIgnoreCase("nobody") || user.getLoginName().equals("quartzjob@ncserv.ru")))
                 .collect(Collectors.toList());
         members.addAll(userList);
@@ -112,7 +112,7 @@ public class GroupMassBean implements Serializable {
     public List<User> getMembers(){
         return members;
     }
-    public void setMembers(List<User> ll){
+    public void setMembers(final List<User> ll){
         members = ll;
     }
     public String getJmxConn(){
@@ -138,13 +138,13 @@ public class GroupMassBean implements Serializable {
     public List<SelectItem> getFilteredGroup() {
         return filteredGroup;
     }
-    public void setFilteredGroup(List<SelectItem> filteredGroup) {
+    public void setFilteredGroup(final List<SelectItem> filteredGroup) {
         this.filteredGroup = filteredGroup;
     }
     public SelectItem getSelectedSelItemGroup() {
         return selectedSelItemGroup;
     }
-    public void setSelectedSelItemGroup(SelectItem selectedSelItemGroup) {
+    public void setSelectedSelItemGroup(final SelectItem selectedSelItemGroup) {
         this.selectedSelItemGroup = selectedSelItemGroup;
     }
     public void onRowSelect(SelectEvent event) {

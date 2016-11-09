@@ -25,7 +25,8 @@ import java.util.Objects;
 @Named
 @RequestScoped
 public class GroupOldSchoolBean implements Serializable {
-    public void massGrant(Group selectedFgroup, List<User> selectedUsers, String jmxConnStr) throws NamingException{
+    public void massGrant(final Group selectedFgroup, final List<User> selectedUsers,
+        final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(selectedFgroup);
         Objects.requireNonNull(selectedUsers);
         Objects.requireNonNull(jmxConnStr);
@@ -45,7 +46,8 @@ public class GroupOldSchoolBean implements Serializable {
         }
     }
 
-    public void massRevoke(Group selectedFgroup, List<User> selectedUsers, String jmxConnStr) throws NamingException{
+    public void massRevoke(final Group selectedFgroup, final List<User> selectedUsers,
+        final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(selectedFgroup);
         Objects.requireNonNull(selectedUsers);
         Objects.requireNonNull(jmxConnStr);
@@ -64,7 +66,9 @@ public class GroupOldSchoolBean implements Serializable {
             if (initialContext!=null) initialContext.close();
         }
     }
-    public void addUserToSelectedGroups(Group selectedFgroup, List<Group> selectedTGroupList, User user, String jmxConnStr) throws NamingException{
+    public void addUserToSelectedGroups(final Group selectedFgroup,
+        final List<Group> selectedTGroupList, final User user, final String jmxConnStr)
+            throws NamingException{
         Objects.requireNonNull(user);
         Objects.requireNonNull(jmxConnStr);
         Objects.requireNonNull(jmxConnStr.length()<1? null : jmxConnStr);
@@ -88,7 +92,7 @@ public class GroupOldSchoolBean implements Serializable {
         }
     }
 
-    public void doGetOut(Group group, User user, String jmxConnStr) throws NamingException{
+    public void doGetOut(final Group group, final User user, final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(group);
         Objects.requireNonNull(user);
         Objects.requireNonNull(jmxConnStr);
@@ -103,7 +107,8 @@ public class GroupOldSchoolBean implements Serializable {
         }
     }
 
-    private void operate(InitialContext initialContext, Group group, User user, String jmxConnStr, final int dirContextOperation) throws NamingException {
+    private void operate(InitialContext initialContext, final Group group, final User user,
+            final String jmxConnStr, final int dirContextOperation) throws NamingException {
         InitialDirContext initalDirContext = null;
         LdapContext ldapContext = null;
         initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);

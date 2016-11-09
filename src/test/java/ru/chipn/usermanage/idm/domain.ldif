@@ -94,13 +94,14 @@ objectclass: groupOfUniqueNames
 cn: fg_operator0,
 description: Операторы Manage 0
 o: manage
+businessCategory: role
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
 
 dn: cn=fg_admin0, ou=Groups, dc=inv,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_admin0,
-businessCategory: inv
+businessCategory: fg
 description: Администраторы INV 0
 o: inv
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -109,7 +110,7 @@ dn: cn=fg_operator0, ou=Groups, dc=inv,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_operator0,
-businessCategory: inv
+businessCategory: fg
 description: Операторы INV 0
 o: inv
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -118,7 +119,7 @@ dn: cn=fg_viewer0, ou=Groups, dc=inv,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_viewer0,
-businessCategory: inv
+businessCategory: fg
 description: Зрители INV 0
 o: inv
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -154,7 +155,7 @@ dn: cn=fg_admin0, ou=Groups, dc=disp,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_admin0,
-businessCategory: disp
+businessCategory: fg
 description: Администраторы DISP 0
 o: disp
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -163,7 +164,7 @@ dn: cn=fg_operator0, ou=Groups, dc=disp,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_operator0,
-businessCategory: disp
+businessCategory: fg
 description: Операторы DISP 0
 o: disp
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -172,7 +173,7 @@ dn: cn=fg_viewer0, ou=Groups, dc=disp,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_viewer0,
-businessCategory: disp
+businessCategory: fg
 description: Зрители DISP 0
 o: disp
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -181,7 +182,7 @@ dn: cn=fg_operator0, ou=Groups, dc=repair,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_operator0,
-businessCategory: repair
+businessCategory: fg
 description: Операторы REPAIR 0
 o: repair
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru
@@ -190,7 +191,7 @@ dn: cn=fg_viewer0, ou=Groups, dc=repair,dc=a2,dc=chipn,dc=ru
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: fg_viewer0,
-businessCategory: repair
+businessCategory: fg
 description: Зрители REPAIR 0
 o: repair
 uniqueMember: uid=nobody, ou=Users,dc=a2,dc=chipn,dc=ru

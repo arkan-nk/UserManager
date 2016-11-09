@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition>
-    <p:dataTable value="#{appBean.groupCuTg}" var="fg" rowKey="#{fg.value}" widgetVar="tgVgt"
+    <p:dataTable value="#{appBean.groupCuTgOptions}" var="fg" rowKey="#{fg.value}" widgetVar="tgVgt"
                  paginator="true" rows="15" emptyMessage="#{msgs.no_data}"
                  filteredValue="#{groupMassBean.filteredGroup}"
                  selectionMode="single" selection="#{groupMassBean.selectedSelItemGroup}">

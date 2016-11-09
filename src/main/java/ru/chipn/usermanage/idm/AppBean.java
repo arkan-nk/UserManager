@@ -35,27 +35,27 @@ public class AppBean implements Serializable {
                 .filter(moduleEnum-> ModuleEnum.MANAGE_DN!=moduleEnum)
                 .map(moduleEnum->new SelectItem(moduleEnum.getModule(), moduleEnum.getDescr()))
                 .collect(Collectors.toList());
-        moduleTgOptions = new EnumMap<>(ModuleEnum.class);
         moduleFgOptions = new EnumMap<>(ModuleEnum.class);
-        groupCuListFg = loadListGroups(ModuleEnum.CU_DN, "fg");
-        groupInvList = loadListGroups(ModuleEnum.INV_DN, "fg");
-        groupDispList = loadListGroups(ModuleEnum.DISP_DN, "fg");
-        groupRepairList = loadListGroups(ModuleEnum.REPAIR_DN, "fg");
-        groupCuListTg = loadListGroups(ModuleEnum.CU_DN, "tg");
-        this.fillGroupOptions(groupInvList, ModuleEnum.INV_DN, moduleFgOptions);
-        this.fillGroupOptions(groupCuListFg, ModuleEnum.CU_DN, moduleFgOptions);
-        this.fillGroupOptions(groupCuListTg, ModuleEnum.CU_DN, moduleTgOptions);
-        this.fillGroupOptions(groupDispList, ModuleEnum.DISP_DN, moduleFgOptions);
-        this.fillGroupOptions(groupRepairList, ModuleEnum.REPAIR_DN, moduleFgOptions);
+        moduleTgOptions = new EnumMap<>(ModuleEnum.class);
+        final List<Group> groupCuListFg = loadListGroups(ModuleEnum.CU_DN, "fg");
+        final List<Group> groupInvList = loadListGroups(ModuleEnum.INV_DN, "fg");
+        final List<Group> groupDispList = loadListGroups(ModuleEnum.DISP_DN, "fg");
+        final List<Group> groupRepairList = loadListGroups(ModuleEnum.REPAIR_DN, "fg");
+        moduleFgOptions.put(ModuleEnum.CU_DN, groupCuListFg);
+        moduleFgOptions.put(ModuleEnum.INV_DN, groupInvList);
+        moduleFgOptions.put(ModuleEnum.DISP_DN, groupDispList);
+        moduleFgOptions.put(ModuleEnum.REPAIR_DN, groupRepairList);
+        final List<Group> groupCuListTg = loadListGroups(ModuleEnum.CU_DN, "tg");
+        moduleTgOptions.put(ModuleEnum.CU_DN, groupCuListTg);
     }
-    public void fillGroupOptions(final List<Group> listGroup, ModuleEnum moduleEnum, Map<ModuleEnum, List<SelectItem>> moduleOptions){
+    public List<SelectItem> fillGroupOptions(final List<Group> listGroup){
         final List<SelectItem> list = listGroup.stream()
                 .map(g->new SelectItem(g.getId(),
                         g.getAttribute("description").getValue().toString()
                                 .replace("Пользователи", "").replace("района","")
                 ))
                 .collect(Collectors.toList());
-        moduleOptions.put(moduleEnum, list);
+        return list;
     }
     public List<Group> loadListGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
         final IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
@@ -71,43 +71,45 @@ public class AppBean implements Serializable {
         return group;
     }
     public List<SelectItem> getGroupInvOptions(){
-        return moduleFgOptions.get(ModuleEnum.INV_DN);
+        return this.fillGroupOptions(moduleFgOptions.get(ModuleEnum.INV_DN));
     }
     public List<SelectItem> getGroupCuOptions(){
-        return moduleFgOptions.get(ModuleEnum.CU_DN);
+        return this.fillGroupOptions(moduleFgOptions.get(ModuleEnum.CU_DN));
     }
-    public List<SelectItem> getGroupCuTg(){
-        return moduleTgOptions.get(ModuleEnum.CU_DN);
+    public List<SelectItem> getGroupCuTgOptions(){
+        return this.fillGroupOptions(moduleTgOptions.get(ModuleEnum.CU_DN));
     }
     public List<SelectItem> getGroupDispOptions(){
-        return moduleFgOptions.get(ModuleEnum.DISP_DN);
+        return this.fillGroupOptions(moduleFgOptions.get(ModuleEnum.DISP_DN));
     }
     public List<SelectItem> getGroupRepairOptions(){
-        return moduleFgOptions.get(ModuleEnum.REPAIR_DN);
+        return this.fillGroupOptions(moduleFgOptions.get(ModuleEnum.REPAIR_DN));
     }
     public List<Group> getGroupCuListFg(){
-        return groupCuListFg;
+        return moduleFgOptions.get(ModuleEnum.CU_DN);
     }
     public List<Group> getGroupCuListTg(){
-        return groupCuListTg;
+        return moduleTgOptions.get(ModuleEnum.CU_DN);
     }
     public List<Group> getGroupInvList(){
-        return groupInvList;
+        return moduleFgOptions.get(ModuleEnum.INV_DN);
     }
     public List<Group> getGroupDispList(){
-        return groupDispList;
+        return moduleFgOptions.get(ModuleEnum.DISP_DN);
     }
     public List<Group> getGroupRepairList(){
-        return groupRepairList;
+        return moduleFgOptions.get(ModuleEnum.REPAIR_DN);
     }
     private List<SelectItem> appSelectList;
-    private Map<ModuleEnum, List<SelectItem>> moduleFgOptions;
-    private Map<ModuleEnum, List<SelectItem>> moduleTgOptions;
+    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleFgOptions;
+    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleTgOptions;
+    /*
     private List<org.picketlink.idm.model.basic.Group> groupCuListFg;
     private List<org.picketlink.idm.model.basic.Group> groupCuListTg;
     private List<org.picketlink.idm.model.basic.Group> groupInvList;
     private List<org.picketlink.idm.model.basic.Group> groupDispList;
     private List<org.picketlink.idm.model.basic.Group> groupRepairList;
+    */
     @Inject
     private AuthorizationManager authorizationManager;
 }

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,11 +39,7 @@ public class GroupBean implements Serializable{
         else selectedTGroupList.clear();
         if (event.getNewValue()==null || ((String) event.getNewValue()).length()<1) return;
         String app = (String) event.getNewValue();
-        ModuleEnum selectedModule = null;
-        for (ModuleEnum module: values()){
-            if (module.getModule().equals(app)) selectedModule = module;
-            if (selectedModule!=null) break;
-        }
+        ModuleEnum selectedModule = Arrays.stream(ModuleEnum.values()).filter(module->module.getModule().equals(app)).findFirst().orElse(null);
         if (selectedModule==null) return;
         this.changeApp(selectedModule);
     }

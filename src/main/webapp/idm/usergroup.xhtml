@@ -58,7 +58,7 @@
                                  selection="#{groupBean.selectedTGroupList}"
                                  paginator="true" rows="12" rowKey="#{tg.id}">
                         <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                        <p:column>
+                        <p:column filterBy="#{tg.getAttribute('description').value}" filterMatchMode="contains">
                             <h:outputText value="#{tg.getAttribute('description').value}"/>
                         </p:column>
                     </p:dataTable>

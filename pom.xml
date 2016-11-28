@@ -26,28 +26,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.picketlink</groupId>
-                <artifactId>picketlink-javaee-7.0</artifactId>
-                <version>${version.picketlink.javaee.bom}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
 
-            <dependency>
-                <groupId>org.picketbox</groupId>
-                <artifactId>picketbox-ldap</artifactId>
-                <version>${version.picketbox.ldap}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.picketbox</groupId>
-                <artifactId>picketbox-ldap</artifactId>
-                <version>${version.picketbox.ldap}</version>
-                <type>test-jar</type>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -177,10 +156,11 @@
         <dependency>
             <groupId>org.picketbox</groupId>
             <artifactId>picketbox-ldap</artifactId>
+            <version>${version.picketbox.ldap}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -208,13 +188,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>native2ascii-maven-plugin</artifactId>
                 <version>1.0-beta-1</version>
-                <configuration>
-                    <encoding>UTF8</encoding>
-                    <workDir>src/main/resources</workDir>
-                    <includes>
-                        <include>**/*.properties</include>
-                    </includes>
-                </configuration>
                 <executions>
                     <execution>
                         <id>native2ascii-utf-8-resources</id>
@@ -222,6 +195,13 @@
                         <goals>
                             <goal>native2ascii</goal>
                         </goals>
+                        <configuration>
+                            <encoding>UTF8</encoding>
+                            <workDir>src/main/resources</workDir>
+                            <includes>
+                                <include>**/*.properties</include>
+                            </includes>
+                        </configuration>                        
                     </execution>
                 </executions>
             </plugin>

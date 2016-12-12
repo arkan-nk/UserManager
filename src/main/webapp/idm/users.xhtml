@@ -6,11 +6,16 @@
 <h:head>
     <title><h:outputText value="#{msgs.allUsers}"/></title>
     <meta content="text/html; charset=UTF-8"/>
+    <ui:fragment rendered="#{not identity.loggedIn}">
+	    <meta http-equiv="refresh"
+		    content="0; URL=#{facesContext.externalContext.requestContextPath}/login.jsf" />
+    </ui:fragment>
     <h:outputStylesheet library="css" name="style.css"/>
 </h:head>
 <h:body>
+<ui:fragment rendered="#{authorizationManager.operator0}">
 <h:form id="topForm">
-<ui:include src="../resources/fragment/toolheader.xhtml"/>
+    <ui:include src="../resources/fragment/toolheader.xhtml"/>
 </h:form>
 <h:form>
     <p:dataTable id="userDT" var="userIt" value="#{userManagerBean.users}" paginator="true"
@@ -54,5 +59,11 @@
         </p:column>
     </p:dataTable>
 </h:form>
+</ui:fragment>
+<ui:fragment rendered="#{not authorizationManager.operator0}">
+<h:form>
+    <h:commandButton id="logout" value="#{msgs.quit}" action="#{loginController.logout}" />
+</h:form>
+</ui:fragment>
 </h:body>
 </html>

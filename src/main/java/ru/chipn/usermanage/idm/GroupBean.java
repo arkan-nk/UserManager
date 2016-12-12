@@ -1,12 +1,5 @@
 package ru.chipn.usermanage.idm;
 
-import org.picketlink.idm.model.basic.Group;
-import ru.chipn.usermanage.login.ModuleEnum;
-
-import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ValueChangeEvent;
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +7,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.chipn.usermanage.login.ModuleEnum.values;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.picketlink.idm.model.basic.Group;
+
+import ru.chipn.usermanage.login.ModuleEnum;
 
 /**
  * Created by arkan on 02.08.2016.

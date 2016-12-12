@@ -1,8 +1,6 @@
 package ru.chipn.usermanage.login;
 
-import org.picketlink.Identity;
-import org.picketlink.credential.DefaultLoginCredentials;
-import org.picketlink.idm.PartitionManager;
+import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -11,13 +9,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
+
+import org.picketlink.Identity;
+import org.picketlink.credential.DefaultLoginCredentials;
 
 @Named
 @RequestScoped
 public class LoginController implements Serializable {
-    @Inject
-    private PartitionManager partitionManager;
+	private static final long serialVersionUID = -4562927943493722628L;
     @Inject
     private AuthorizationManager authorizationManager;
 
@@ -51,7 +50,7 @@ public class LoginController implements Serializable {
             this.facesContext.getExternalContext().invalidateSession();
             return "";
         }
-        return "idm/home.xhtml?faces-redirect=true";
+        return "idm/users.xhtml?faces-redirect=true";
     }
 
     public String logout() {
@@ -68,4 +67,5 @@ public class LoginController implements Serializable {
             se.printStackTrace();
         }
     }
+	//@Inject private PartitionManager partitionManager;
 }

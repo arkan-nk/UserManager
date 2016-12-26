@@ -56,7 +56,9 @@
     </security-role>
     <security-constraint>
         <web-resource-collection>
-            <url-pattern>/resources/*</url-pattern>
+            <url-pattern>/resources/css/*</url-pattern>
+            <url-pattern>/resources/fragment/*</url-pattern>
+            <url-pattern>/resources/images/*</url-pattern>
             <url-pattern>/idm/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>

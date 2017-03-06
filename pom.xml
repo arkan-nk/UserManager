@@ -26,6 +26,50 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.picketlink</groupId>
+                <artifactId>picketlink-javaee-7.0</artifactId>
+                <version>${version.picketlink.javaee.bom}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-api</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-impl</artifactId>
+                <version>${version.org.apache.deltaspike}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.picketbox</groupId>
+                <artifactId>picketbox-ldap</artifactId>
+                <version>${version.picketbox.ldap}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -45,16 +89,34 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- PicketLink Uber JAR dependency
+
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink</artifactId>
             <version>${version.picketlink.javaee.bom}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.deltaspike.core</groupId>
+                    <artifactId>deltaspike-core-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.deltaspike.modules</groupId>
+                    <artifactId>deltaspike-security-module-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.deltaspike.core</groupId>
+                    <artifactId>deltaspike-core-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.deltaspike.modules</groupId>
+                    <artifactId>deltaspike-security-module-impl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        -->
 
-        <!-- PicketLink Base dependencies-->
+
+        <!-- PicketLink Base dependencies
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-api</artifactId>
@@ -68,7 +130,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- PicketLink IDM dependencies-->
+
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-idm-api</artifactId>
@@ -88,42 +150,39 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- PicketLink JSON dependencies -->
+
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-json</artifactId>
             <version>${version.picketlink.javaee.bom}</version>
             <scope>provided</scope>
         </dependency>
+        -->
 
         <!-- Deltaspike Core -->
         <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Security Module -->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-security-module-api</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-security-module-impl</artifactId>
-            <version>${version.org.apache.deltaspike}</version>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -179,50 +238,18 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>manage</finalName>
+        <finalName>${project.artifactId}</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
-            <!-- 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>native2ascii-maven-plugin</artifactId>
-                <version>1.0-beta-1</version>
-                <executions>
-                    <execution>
-                        <id>native2ascii-utf-8-resources</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>native2ascii</goal>
-                        </goals>
-                        <configuration>
-                            <encoding>UTF8</encoding>
-                            <workDir>src/main/resources</workDir>
-                            <includes>
-                                <include>**/*.properties</include>
-                            </includes>
-                        </configuration>                        
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.compiler.plugin}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${version.war.plugin}</version>
                 <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                     <archive>
                         <manifestEntries>
                             <Dependencies>
-                                javax.enterprise.api
+                                javax.enterprise.api,
                                 javax.faces.api,
                                 javax.ejb.api
                             </Dependencies>
@@ -230,7 +257,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!-- JBoss AS plugin to deploy war -->
             <plugin>
                 <groupId>org.jboss.as.plugins</groupId>
                 <artifactId>jboss-as-maven-plugin</artifactId>
@@ -238,14 +264,6 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -261,21 +279,9 @@
                         <groupId>org.wildfly.plugins</groupId>
                         <artifactId>wildfly-maven-plugin</artifactId>
                         <version>${version.wildfly.maven.plugin}</version>
-                <configuration>
-                    <filename>${project.artifactId}.${project.packaging}</filename>
-                    <hostname>localhost</hostname>
-                    <username>arkan</username>
-                    <password>123</password>
-                    <port>9990</port>
-                </configuration>
-                        <executions>
-                            <execution>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

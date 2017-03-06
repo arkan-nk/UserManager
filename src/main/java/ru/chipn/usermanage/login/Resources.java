@@ -27,16 +27,10 @@ public class Resources {
         return properties.getProperty(key);
     }
     public static String getParam(String key){
+    	String value=FacesContext.getCurrentInstance().getExternalContext().getInitParameter(key);
         if (properties==null) properties = new Properties();
-        if (!properties.contains(key)){
-            try {
-                InputStream is = Resources.class.getResourceAsStream("/config/usermanage.properties");
-                properties.load(is);
-            }catch (IOException ioe){
-                ioe.printStackTrace();
-            }
-        }
-        return properties.getProperty(key);
+        properties.put(key, value);
+        return value;
     }
     private static Properties properties;
 }

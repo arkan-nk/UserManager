@@ -3,6 +3,55 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 <display-name>manage</display-name>
+    <context-param>
+        <param-name>configurationName</param-name>
+        <param-value>default</param-value>
+    </context-param>
+    <context-param>
+        <param-name>baseDNConfiguration</param-name>
+        <param-value>dc=a2,dc=chipn,dc=ru</param-value>
+    </context-param>
+    <context-param>
+        <param-name>bindDNConfiguration</param-name>
+        <param-value>cn=admin,dc=a2,dc=chipn,dc=ru</param-value>
+    </context-param>
+    <context-param>
+        <param-name>bindCredential</param-name>
+        <param-value>admin</param-value>
+    </context-param>
+    <context-param>
+        <param-name>ldapUrl</param-name>
+        <param-value>ldap://vm-uniform.chip-n.ru:389</param-value>
+    </context-param>
+    <context-param>
+        <param-name>usersBase</param-name>
+        <param-value>ou=Users,dc=a2,dc=chipn,dc=ru</param-value>
+    </context-param>
+    <context-param>
+        <param-name>rolesBase</param-name>
+        <param-value>ou=Roles,dc=manage,dc=a2,dc=chipn,dc=ru</param-value>
+    </context-param>
+    <context-param>
+        <param-name>groupsBase</param-name>
+        <param-value>dc=a2,dc=chipn,dc=ru</param-value>
+    </context-param>    
+    <context-param>
+        <param-name>connJMXCu</param-name>
+        <param-value>java:global/federation/cu</param-value>
+    </context-param>
+    <context-param>
+        <param-name>connJMXInv</param-name>
+        <param-value>java:global/federation/inv</param-value>
+    </context-param>
+    <context-param>
+        <param-name>connJMXDisp</param-name>
+        <param-value>java:global/federation/disp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>connJMXRepair</param-name>
+        <param-value>java:global/federation/repair</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -21,11 +70,11 @@
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
     <session-config>
-        <tracking-mode>COOKIE</tracking-mode>
         <session-timeout>15</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
         </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
     <mime-mapping>
@@ -56,6 +105,7 @@
     </security-role>
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name/>
             <url-pattern>/resources/css/*</url-pattern>
             <url-pattern>/resources/fragment/*</url-pattern>
             <url-pattern>/resources/images/*</url-pattern>

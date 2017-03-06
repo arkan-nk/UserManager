@@ -19,6 +19,7 @@ import static org.picketlink.common.constants.LDAPConstants.CN;
  * Created by arkan on 29.08.2016.
  * It is realisation to write into LDAP and will replace to be use PicketLink
  */
+
 class LdapJndiWriter {
     private LdapContext dtx;
 
@@ -41,6 +42,7 @@ class LdapJndiWriter {
         dtx.addToEnvironment(Context.SECURITY_PRINCIPAL, sb0.toString());
         dtx.addToEnvironment(Context.SECURITY_CREDENTIALS, adminPsw);
     }
+
     public void operate(User user, Group group, final int dirContextAttribute) throws NamingException{
         Hashtable ht = dtx.getEnvironment();
         StringBuilder groupSb = new StringBuilder(CN);

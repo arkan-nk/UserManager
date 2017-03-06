@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +42,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
                 .collect(Collectors.toList());
     }
     @Override
+    @Transactional
     public void saveUser(){
         Objects.requireNonNull(currentUser.getLoginName());
         boolean isNew = currentUser.getId()==null || currentUser.getId().length()<1;
@@ -63,6 +65,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
     }
     @Override
+    @Transactional
     public void dropUser(){
         Objects.requireNonNull(currentUser);
         if (currentUser.getId()!=null || currentUser.getId().length()>1) {

@@ -14,6 +14,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.Objects;
  */
 @Named
 @RequestScoped
+@Transactional
 public class GroupOldSchoolBean implements Serializable {
     public void massGrant(final Group selectedFgroup, final List<User> selectedUsers,
         final String jmxConnStr) throws NamingException{
@@ -45,7 +47,6 @@ public class GroupOldSchoolBean implements Serializable {
             if (initialContext!=null) initialContext.close();
         }
     }
-
     public void massRevoke(final Group selectedFgroup, final List<User> selectedUsers,
         final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(selectedFgroup);
@@ -91,7 +92,6 @@ public class GroupOldSchoolBean implements Serializable {
             //groupBean.clearSelected();
         }
     }
-
     public void doGetOut(final Group group, final User user, final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(group);
         Objects.requireNonNull(user);

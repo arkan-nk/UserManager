@@ -1,5 +1,13 @@
 package ru.chipn.usermanage.idm;
 
+import org.picketlink.idm.model.basic.Group;
+import org.picketlink.idm.model.basic.GroupMembership;
+import ru.chipn.usermanage.login.ModuleEnum;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,21 +15,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ValueChangeEvent;
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.picketlink.idm.model.basic.Group;
-
-import ru.chipn.usermanage.login.ModuleEnum;
-
 /**
  * Created by arkan on 02.08.2016.
  */
 @Named
 @SessionScoped
 public class GroupBean implements Serializable{
+    private String jmxConnStr;
+    private List<Group> selectedTGroupList =new ArrayList<>();
+    private Group selectedFgroup;
+    private String selectedApp;
+
+    private List<Group> appFg;
+    private List<Group> appTg;
+    @Inject
+    private AppBean appBean;
+    @Inject
+    private UserGroupBean userGroupBean;
 
     public void clearSelected(){
         selectedTGroupList.clear();
@@ -70,7 +80,7 @@ public class GroupBean implements Serializable{
         groupList.removeIf(
                 group -> {
                     Set<Group> membershipGroup = userGroupBean.getUserMemberShip()
-                            .stream().map(membership->membership.getGroup())
+                            .stream().map(GroupMembership::getGroup)
                             .collect(Collectors.toSet());
                     return membershipGroup.contains(group);
                 }
@@ -110,15 +120,4 @@ public class GroupBean implements Serializable{
         selectedFgroup = group;
     }
     public String getTxt() {return "Управление пользователями!";}
-    private String jmxConnStr;
-    private List<Group> selectedTGroupList =new ArrayList<>();
-    private Group selectedFgroup;
-    private String selectedApp;
-
-    private List<Group> appFg;
-    private List<Group> appTg;
-    @Inject
-    private AppBean appBean;
-    @Inject
-    private UserGroupBean userGroupBean;
 }

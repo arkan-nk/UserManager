@@ -27,6 +27,9 @@ import java.util.Objects;
 @RequestScoped
 @Transactional
 public class GroupOldSchoolBean implements Serializable {
+    @Inject
+    private FacesContext facesContext;
+
     public void massGrant(final Group selectedFgroup, final List<User> selectedUsers,
         final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(selectedFgroup);
@@ -44,7 +47,7 @@ public class GroupOldSchoolBean implements Serializable {
                 }
             });
         }finally{
-            if (initialContext!=null) initialContext.close();
+            initialContext.close();
         }
     }
     public void massRevoke(final Group selectedFgroup, final List<User> selectedUsers,
@@ -64,7 +67,7 @@ public class GroupOldSchoolBean implements Serializable {
                 }
             });
         }finally{
-            if (initialContext!=null) initialContext.close();
+            initialContext.close();
         }
     }
     public void addUserToSelectedGroups(final Group selectedFgroup,
@@ -88,8 +91,7 @@ public class GroupOldSchoolBean implements Serializable {
                 });
             }
         } finally{
-            if (initialContext!=null) initialContext.close();
-            //groupBean.clearSelected();
+            initialContext.close();
         }
     }
     public void doGetOut(final Group group, final User user, final String jmxConnStr) throws NamingException{
@@ -103,19 +105,15 @@ public class GroupOldSchoolBean implements Serializable {
         }catch (NamingException ne){
             facesContext.addMessage(null, new FacesMessage(ne.getExplanation()));
         }finally{
-            if (initialContext!=null) initialContext.close();
+            initialContext.close();
         }
     }
 
     private void operate(InitialContext initialContext, final Group group, final User user,
             final String jmxConnStr, final int dirContextOperation) throws NamingException {
-        InitialDirContext initalDirContext = null;
-        LdapContext ldapContext = null;
-        initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
-        ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
+        InitialDirContext initalDirContext = (InitialDirContext) initialContext.lookup(jmxConnStr);
+        LdapContext ldapContext = new InitialLdapContext(initalDirContext.getEnvironment(), null);
         LdapJndiWriter ldapWriter = new LdapJndiWriter(ldapContext);
         ldapWriter.operate(user,group,dirContextOperation);
     }
-    @Inject
-    private FacesContext facesContext;
 }

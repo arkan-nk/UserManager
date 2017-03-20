@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class Resources {
 
+    private static Properties properties;
     @Produces
     @RequestScoped
     public FacesContext produceFacesContext() {
@@ -32,5 +33,5 @@ public class Resources {
         properties.put(key, value);
         return value;
     }
-    private static Properties properties;
+
 }

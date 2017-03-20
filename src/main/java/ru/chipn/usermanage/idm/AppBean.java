@@ -25,6 +25,12 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 @Named
 @SessionScoped
 public class AppBean implements Serializable {
+    private List<SelectItem> appSelectList;
+    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleFgOptions;
+    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleTgOptions;
+    @Inject
+    private AuthorizationManager authorizationManager;
+
     public List<SelectItem> getAppSelectList(){
         return appSelectList;
     }
@@ -49,13 +55,12 @@ public class AppBean implements Serializable {
         moduleTgOptions.put(ModuleEnum.CU_DN, groupCuListTg);
     }
     private List<SelectItem> takeSelectItemsOptions(final List<Group> listGroup){
-        final List<SelectItem> list = listGroup.stream()
+        return listGroup.stream()
                 .map(g->new SelectItem(g.getId(),
                         g.getAttribute("description").getValue().toString()
                                 .replace("Пользователи", "").replace("района","")
                 ))
                 .collect(Collectors.toList());
-        return list;
     }
     private List<Group> takeGroups(ModuleEnum moduleEnum, final String businessCategoryValue){
         final IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
@@ -63,12 +68,11 @@ public class AppBean implements Serializable {
         final AttributeParameter objectClassParameter = Group.QUERY_ATTRIBUTE.byName(OBJECT_CLASS);
         final AttributeParameter oParameter = Group.QUERY_ATTRIBUTE.byName(LDAPATTRS.ORGANIZATIONNAME.getTxt());
         final AttributeParameter bc = Group.QUERY_ATTRIBUTE.byName("businessCategory");
-        final List<Group> group = query.where(
+        return query.where(
                 iqb.equal(objectClassParameter, GROUP_OF_UNIQUE_NAMES),
                 iqb.equal(oParameter, moduleEnum.getModule()),
                 iqb.equal(bc, businessCategoryValue)
         ).getResultList();
-        return group;
     }
     public List<SelectItem> getGroupInvOptions(){
         return this.takeSelectItemsOptions(moduleFgOptions.get(ModuleEnum.INV_DN));
@@ -100,9 +104,4 @@ public class AppBean implements Serializable {
     public List<Group> getGroupRepairList(){
         return moduleFgOptions.get(ModuleEnum.REPAIR_DN);
     }
-    private List<SelectItem> appSelectList;
-    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleFgOptions;
-    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleTgOptions;
-    @Inject
-    private AuthorizationManager authorizationManager;
 }

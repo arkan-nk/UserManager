@@ -1,6 +1,7 @@
 package ru.chipn.usermanage.login;
 
-import java.io.Serializable;
+import org.picketlink.Identity;
+import org.picketlink.credential.DefaultLoginCredentials;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -9,9 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
-import org.picketlink.Identity;
-import org.picketlink.credential.DefaultLoginCredentials;
+import java.io.Serializable;
 
 @Named
 @RequestScoped
@@ -67,5 +66,4 @@ public class LoginController implements Serializable {
             se.printStackTrace();
         }
     }
-	//@Inject private PartitionManager partitionManager;
 }

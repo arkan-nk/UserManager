@@ -27,6 +27,18 @@ import java.util.stream.Collectors;
 @Named
 @ViewScoped
 public class GroupMassBean implements Serializable {
+    private List<SelectItem> filteredGroup;
+    private SelectItem selectedSelItemGroup;
+    private String groupId;
+    private Group selectedG;
+    private Boolean collapsed = false;
+    @Inject
+    private AppBean appBean;
+    @Inject
+    private AuthorizationManager authorizationManager;
+    @Inject
+    private UserManagerBean userManagerBean;
+
     public void grantStep2(){
         members.addAll(candidates);
         allUsers.removeIf(u->candidates.contains(u));
@@ -158,16 +170,4 @@ public class GroupMassBean implements Serializable {
     private List<User> members = new ArrayList<>();
     private List<User> allUsers = new ArrayList<>();
     private List<User> candidates= new ArrayList<>();
-    private List<SelectItem> filteredGroup;
-
-    private SelectItem selectedSelItemGroup;
-    private String groupId;
-    private Group selectedG;
-    private Boolean collapsed = false;
-    @Inject
-    private AppBean appBean;
-    @Inject
-    private AuthorizationManager authorizationManager;
-    @Inject
-    private UserManagerBean userManagerBean;
 }

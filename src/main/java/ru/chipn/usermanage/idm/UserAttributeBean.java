@@ -22,6 +22,17 @@ import static ru.chipn.usermanage.idm.LDAPATTRS.*;
 @Named
 @ViewScoped
 public class UserAttributeBean implements Serializable{
+    @Inject
+    private UserManagerBean userManagerBean;
+    private String organization;
+    private String telephoneNumber;
+    private String description;
+    private String title;
+    private String postalCode;
+    private String postalAddress;
+    private String mobile;
+    private Boolean registered=false;
+
     public void changeEmail(ValueChangeEvent event){
         String emailString = (String) event.getNewValue();
         if (emailString==null || emailString.trim().length()<1) return;
@@ -31,10 +42,10 @@ public class UserAttributeBean implements Serializable{
             User user1 = userManagerBean.getUser(emailString.toLowerCase());
             if (user1 == null) {
                 userManagerBean.getCurrentUser().setLoginName(emailString.toLowerCase());
-                userManagerBean.getCurrentUser().setAttribute(new Attribute<String[]>(OBJECT_CLASS, new String[]{"top", LDAPATTRS.PERSON.getTxt(), LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt()}));
-                userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("gidNumber", "0"));
-                userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("uidNumber", "0"));
-                userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("homeDirectory", "/home/" + emailString));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<>(OBJECT_CLASS, new String[]{"top", LDAPATTRS.PERSON.getTxt(), LDAPATTRS.INETORGPERSON.getTxt(), LDAPATTRS.POSIXACCOUNT.getTxt()}));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<>("gidNumber", "0"));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<>("uidNumber", "0"));
+                userManagerBean.getCurrentUser().setAttribute(new Attribute<>("homeDirectory", "/home/" + emailString));
                 init();
                 registered=false;
             }
@@ -42,7 +53,7 @@ public class UserAttributeBean implements Serializable{
     }
     public void changeFirstName(ValueChangeEvent event){
         String fN = (String) event.getNewValue();
-        userManagerBean.getCurrentUser().setAttribute(new Attribute<String>("givenName", fN));
+        userManagerBean.getCurrentUser().setAttribute(new Attribute<>("givenName", fN));
     }
     public void changeAttribute(ValueChangeEvent event){
         LDAPATTRS la = null;
@@ -56,11 +67,12 @@ public class UserAttributeBean implements Serializable{
             case "organization" : la = ORGANIZATIONNAME; break;
             case "description" : la = DESCRIPTION; break;
             case "postalCode" : la = POSTALCODE; break;
-            case "postalAddress" : la = POSTALADDRESS;
+            case "postalAddress" : la = POSTALADDRESS; break;
         }
+        if (la==null) return;
         String tn = (String) event.getNewValue();
         if (tn==null || tn.trim().length()<1) tn=stub;
-        userManagerBean.getCurrentUser().setAttribute(new Attribute<String>(la.getTxt(), tn));
+        userManagerBean.getCurrentUser().setAttribute(new Attribute<>(la.getTxt(), tn));
     }
     public Boolean getSaveDisabled(){
         return userManagerBean.getCurrentUser().getFirstName()==null ||
@@ -76,18 +88,6 @@ public class UserAttributeBean implements Serializable{
                );
     }
 
-
-    @Inject
-    private UserManagerBean userManagerBean;
-
-    private String organization;
-    private String telephoneNumber;
-    private String description;
-    private String title;
-    private String postalCode;
-    private String postalAddress;
-    private String mobile;
-    private Boolean registered=false;
 
 
     public String getMobile(){
@@ -151,11 +151,11 @@ public class UserAttributeBean implements Serializable{
         this.telephoneNumber = this.fill("0", TELEPHONENUMBER, mapUserAttr);
     }
     private String fill(String defaultValue, LDAPATTRS la, Map<String, Attribute<? extends Serializable>> mapUserAttr){
-        String value=null;
+        String value;
         if (mapUserAttr.containsKey(la.getTxt())) {
             value = mapUserAttr.get(la.getTxt()).getValue().toString();
         } else {
-            userManagerBean.getCurrentUser().setAttribute(new Attribute<String>(la.getTxt(), defaultValue));
+            userManagerBean.getCurrentUser().setAttribute(new Attribute<>(la.getTxt(), defaultValue));
             value=defaultValue;
         }
         return value;

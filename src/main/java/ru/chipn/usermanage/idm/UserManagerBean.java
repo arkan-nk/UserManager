@@ -2,6 +2,7 @@ package ru.chipn.usermanage.idm;
 
 import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.credential.UsernamePasswordCredentials;
+import org.picketlink.idm.model.basic.Agent;
 import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,15 +32,15 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     private String password;
     @Inject
     private AuthorizationManager authorizationManager;
-
+    public UserManagerBean(){}
 
     @Override
     public List<User> getAll() {
         IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
-        IdentityQuery query = iqb.createIdentityQuery(User.class);
-        List<User> list1 =query.getResultList();
+        IdentityQuery<User> query = iqb.createIdentityQuery(User.class);
+        List<User> list1 = query.getResultList();
         return list1.stream().filter(user-> !user.getLoginName().equals("nobody"))
-                .sorted((user1,user2)->user1.getLoginName().compareTo(user2.getLoginName()))
+                .sorted(Comparator.comparing(Agent::getLoginName))
                 .collect(Collectors.toList());
     }
     @Override
@@ -95,8 +97,6 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         password = p;
     }
 
-
-    public UserManagerBean(){}
     @PostConstruct
     public void init(){
         users = Collections.unmodifiableList(getAll());

@@ -21,11 +21,15 @@ import java.util.*;
 @SessionScoped
 public class UserGroupBean implements Serializable{
 
+    @Inject
+    private AuthorizationManager authorizationManager;
+    @Inject
+    private UserManagerBean userManagerBean;
+    private ModuleEnum currentModule;
+    private List<GroupMembership> userMemberShip = new ArrayList<>();
+
     public void dropMembershipUser(final Group group1){
-        for (Iterator<GroupMembership> itt = userMemberShip.iterator(); itt.hasNext(); ) {
-            GroupMembership groupMembershipItem = itt.next();
-            if (groupMembershipItem.getGroup().getId().equals(group1.getId())) itt.remove();
-        }
+        userMemberShip.removeIf(groupMembershipItem -> groupMembershipItem.getGroup().getId().equals(group1.getId()));
     }
     public List<GroupMembership> getUserMemberShip(){
         return userMemberShip;
@@ -61,15 +65,6 @@ public class UserGroupBean implements Serializable{
     public void setCurrentModule(final String moduleT){
         this.currentModule = Arrays.stream(ModuleEnum.values()).filter(me->me.getModule().equals(moduleT)).findFirst().orElse(null);
     }
-
-    @Inject
-    private AuthorizationManager authorizationManager;
-    @Inject
-    private UserManagerBean userManagerBean;
-    private ModuleEnum currentModule;
-
-
-    private List<GroupMembership> userMemberShip = new ArrayList<>();
 
     public String loadMemberShipGo(){
         loadMemberShip();

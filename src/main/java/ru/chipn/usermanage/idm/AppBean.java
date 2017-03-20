@@ -26,8 +26,8 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 @SessionScoped
 public class AppBean implements Serializable {
     private List<SelectItem> appSelectList;
-    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleFgOptions;
-    private Map<ModuleEnum, List<org.picketlink.idm.model.basic.Group>> moduleTgOptions;
+    private Map<ModuleEnum, List<Group>> moduleFgOptions;
+    private Map<ModuleEnum, List<Group>> moduleTgOptions;
     @Inject
     private AuthorizationManager authorizationManager;
 

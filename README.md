@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c9aba073c11415080b7f558deb919a5)](https://www.codacy.com/app/arkan-nk/UserManager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=arkan-nk/UserManager&amp;utm_campaign=Badge_Grade)
 # User Manager
 Web application is core part for "security/access subsystem" for other project to manage users in LDAP. 
 The subsystem is part of large enterprise JavaEE application which has name "ASCUPE-2.0". 

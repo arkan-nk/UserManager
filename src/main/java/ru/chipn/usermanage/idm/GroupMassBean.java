@@ -38,6 +38,10 @@ public class GroupMassBean implements Serializable {
     private AuthorizationManager authorizationManager;
     @Inject
     private UserManagerBean userManagerBean;
+    private ModuleEnum selectedModuleEnum;
+    private List<User> members = new ArrayList<>();
+    private List<User> allUsers = new ArrayList<>();
+    private List<User> candidates= new ArrayList<>();
 
     public void grantStep2(){
         members.addAll(candidates);
@@ -166,8 +170,5 @@ public class GroupMassBean implements Serializable {
     public void onRowUnselect(UnselectEvent event) {
         this.clear();
     }
-    private ModuleEnum selectedModuleEnum;
-    private List<User> members = new ArrayList<>();
-    private List<User> allUsers = new ArrayList<>();
-    private List<User> candidates= new ArrayList<>();
+
 }

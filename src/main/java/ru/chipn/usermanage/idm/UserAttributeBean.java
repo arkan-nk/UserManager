@@ -68,6 +68,7 @@ public class UserAttributeBean implements Serializable{
             case "description" : la = DESCRIPTION; break;
             case "postalCode" : la = POSTALCODE; break;
             case "postalAddress" : la = POSTALADDRESS; break;
+            default : ;
         }
         if (la==null) return;
         String tn = (String) event.getNewValue();

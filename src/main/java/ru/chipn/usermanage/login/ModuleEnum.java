@@ -1,7 +1,7 @@
 package ru.chipn.usermanage.login;
 
 /**
- * Created by arkan on 28.06.2016.
+ * Каждый элемент enum сопоставлен с приложением в составе АСКУПЭ-2.0
  */
 public enum ModuleEnum {
     CU_DN ("cu", Resources.getCaption("cuName"), Resources.getParam("connJMXCu")),

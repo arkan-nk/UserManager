@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Created by arkan on 15.08.2016.
+ * Класс для операций участия пользователей в группах
  */
 @Named
 @SessionScoped
@@ -25,6 +25,9 @@ public class UserGroupBean implements Serializable{
     private AuthorizationManager authorizationManager;
     @Inject
     private UserManagerBean userManagerBean;
+    /**
+     * Выбранное приложение
+     */
     private ModuleEnum currentModule;
     private List<GroupMembership> userMemberShip = new ArrayList<>();
 

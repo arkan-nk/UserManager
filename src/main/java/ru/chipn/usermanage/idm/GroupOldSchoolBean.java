@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by arkan on 09.09.2016.
+ * Массовые операции с пользователями в группе
  */
 @Named
 @RequestScoped
@@ -30,6 +30,13 @@ public class GroupOldSchoolBean implements Serializable {
     @Inject
     private FacesContext facesContext;
 
+    /**
+     * Массово добавить пользователей в группу
+     * @param selectedFgroup
+     * @param selectedUsers
+     * @param jmxConnStr
+     * @throws NamingException
+     */
     public void massGrant(final Group selectedFgroup, final List<User> selectedUsers,
         final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(selectedFgroup);
@@ -50,6 +57,14 @@ public class GroupOldSchoolBean implements Serializable {
             initialContext.close();
         }
     }
+
+    /**
+     * Массово удалить пользователей из группы
+     * @param selectedFgroup
+     * @param selectedUsers
+     * @param jmxConnStr
+     * @throws NamingException
+     */
     public void massRevoke(final Group selectedFgroup, final List<User> selectedUsers,
         final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(selectedFgroup);
@@ -70,6 +85,15 @@ public class GroupOldSchoolBean implements Serializable {
             initialContext.close();
         }
     }
+
+    /**
+     * добавить пользователя в группы
+     * @param selectedFgroup выбранная ФГ
+     * @param selectedTGroupList выбранные ТГ
+     * @param user
+     * @param jmxConnStr
+     * @throws NamingException
+     */
     public void addUserToSelectedGroups(final Group selectedFgroup,
         final List<Group> selectedTGroupList, final User user, final String jmxConnStr)
             throws NamingException{
@@ -94,6 +118,14 @@ public class GroupOldSchoolBean implements Serializable {
             initialContext.close();
         }
     }
+
+    /**
+     * Удалить пользователя из группы
+     * @param group
+     * @param user
+     * @param jmxConnStr
+     * @throws NamingException
+     */
     public void doGetOut(final Group group, final User user, final String jmxConnStr) throws NamingException{
         Objects.requireNonNull(group);
         Objects.requireNonNull(user);

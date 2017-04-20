@@ -18,6 +18,9 @@ import javax.enterprise.inject.Produces;
 
 import static org.picketlink.common.constants.LDAPConstants.*;
 
+/**
+ * Configuration of the Application. This class works on the application start-phase
+ */
 @Startup
 @ApplicationScoped
 public class IdentityManagementConfiguration {

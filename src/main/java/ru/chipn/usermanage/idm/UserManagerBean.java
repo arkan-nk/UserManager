@@ -21,13 +21,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * ManagedBean работа с пользователями
+ */
 @Named
 @SessionScoped
 public class UserManagerBean implements UserManagerIf, Serializable{
-
+    /**
+     * Текущий пользователь
+     */
     private User currentUser;
+    /**
+     * Все пользователи
+     */
     private List<User> users;
+    /**
+     * найденные пользователи (используется фреймворком в фильтрации в интерфейсе)
+     */
     private List<User> foundUsers;
+
     private String pageName;
     private String password;
     @Inject
@@ -43,6 +55,12 @@ public class UserManagerBean implements UserManagerIf, Serializable{
                 .sorted(Comparator.comparing(Agent::getLoginName))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Сохранение пользователя в каталоге
+     * Новый пользователь записывается,
+     * у существующего обновляется пароль
+     */
     @Override
     @Transactional
     public void saveUser(){
@@ -62,10 +80,20 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         authorizationManager.getIdentityManager().update(currentUser);
         if (isNew) init();
     }
+
+    /**
+     * Поиск пользователя по login в каталоге
+     * @param loginName
+     * @return
+     */
     @Override
     public User getUser(final String loginName){
         return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
     }
+
+    /**
+     * Удаление пользователя из каталога
+     */
     @Override
     @Transactional
     public void dropUser(){

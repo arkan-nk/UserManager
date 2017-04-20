@@ -12,6 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
+/**
+ * Class authenticator
+ */
 @Named
 @RequestScoped
 public class LoginController implements Serializable {
@@ -26,6 +29,10 @@ public class LoginController implements Serializable {
     @Inject
     private DefaultLoginCredentials loginCredentials;
 
+    /**
+     * authentication. Is user belongs in LDAP?
+     * @return URL page to navigate
+     */
     public String login() {
         this.identity.login();
         if (!this.identity.isLoggedIn()) {

@@ -16,17 +16,37 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Created by arkan on 02.08.2016.
+ * Managed Bean для работы с группами
  */
 @Named
 @SessionScoped
 public class GroupBean implements Serializable{
+    /**
+     * JNDI строка соединения заполняется
+     * с помощью ModuleEnum из properties из web.xml
+     * {@link ModuleEnum}
+     */
     private String jmxConnStr;
+    /**
+     * Выбранные территориальные группы для выбранного приложения
+     */
     private List<Group> selectedTGroupList =new ArrayList<>();
+    /**
+     * Выбранная функциональная группа для выбранного приложения
+     */
     private Group selectedFgroup;
+    /**
+     * Выбранное приложение используется поле ModuleEnum.txt
+     * {@link ModuleEnum}
+     */
     private String selectedApp;
-
+    /**
+     * Все функциональные группы для выбранного приложения
+     */
     private List<Group> appFg;
+    /**
+     * Все территориальные группы для выбранного приложения
+     */
     private List<Group> appTg;
     @Inject
     private AppBean appBean;

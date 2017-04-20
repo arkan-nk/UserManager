@@ -20,13 +20,22 @@ import static org.picketlink.common.constants.LDAPConstants.GROUP_OF_UNIQUE_NAME
 import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 
 /**
- * Created by arkan on 16.09.2016.
+ *
  */
 @Named
 @SessionScoped
 public class AppBean implements Serializable {
+    /**
+     * Список приложений - выбиралка в интерфейсе
+     */
     private List<SelectItem> appSelectList;
+    /**
+     * Все Функциональные группы всех приложений, сгруппированы
+     */
     private Map<ModuleEnum, List<Group>> moduleFgOptions;
+    /**
+     * Все территориальные группы всех приложений сгруппированы
+     */
     private Map<ModuleEnum, List<Group>> moduleTgOptions;
     @Inject
     private AuthorizationManager authorizationManager;

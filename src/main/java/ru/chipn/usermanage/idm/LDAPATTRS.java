@@ -1,7 +1,7 @@
 package ru.chipn.usermanage.idm;
 
 /**
- * Created by arkan on 26.07.2016.
+ * Attributes in LDAP
  */
 public enum LDAPATTRS {
     NAME("name"), INETORGPERSON("inetOrgPerson"), PERSON("person"), POSIXACCOUNT("posixAccount"),

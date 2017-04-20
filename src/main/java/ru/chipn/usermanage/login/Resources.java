@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Utility class works with Properties
+ */
 public class Resources {
 
     private static Properties properties;

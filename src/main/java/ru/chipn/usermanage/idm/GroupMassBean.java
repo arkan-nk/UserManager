@@ -22,15 +22,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by arkan on 04.10.2016.
+ * Массовые операции с пользователи в группах
  */
 @Named
 @ViewScoped
 public class GroupMassBean implements Serializable {
+    /**
+     * Отфильтрованные группы с типом результата фильтрации - множество
+     * используется Framework Primefaces для фильтрации в UI
+     */
     private List<SelectItem> filteredGroup;
+    /**
+     * Отфильтрованная группа с типом результата фильтрации - одна запись
+     * используется Framework Primefaces для фильтрации в UI
+     */
     private SelectItem selectedSelItemGroup;
+    /**
+     * Выбранная группа идентификатор
+     */
     private String groupId;
+    /**
+     * Выбранная группа объект
+     */
     private Group selectedG;
+    /**
+     * используется в UI для скрытия боковой панели
+     */
     private Boolean collapsed = false;
     @Inject
     private AppBean appBean;

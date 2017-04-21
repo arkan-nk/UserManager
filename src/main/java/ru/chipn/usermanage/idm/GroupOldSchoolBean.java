@@ -32,9 +32,9 @@ public class GroupOldSchoolBean implements Serializable {
 
     /**
      * Массово добавить пользователей в группу
-     * @param selectedFgroup
-     * @param selectedUsers
-     * @param jmxConnStr
+     * @param selectedFgroup выбранная функциональная группа
+     * @param selectedUsers выбранные пользователи
+     * @param jmxConnStr JNDI строка соединения
      * @throws NamingException
      */
     public void massGrant(final Group selectedFgroup, final List<User> selectedUsers,
@@ -60,7 +60,7 @@ public class GroupOldSchoolBean implements Serializable {
 
     /**
      * Массово удалить пользователей из группы
-     * @param selectedFgroup
+     * @param selectedFgroup ыбранная функциональная группа
      * @param selectedUsers
      * @param jmxConnStr
      * @throws NamingException

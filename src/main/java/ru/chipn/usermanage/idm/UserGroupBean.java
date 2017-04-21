@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Класс для операций участия пользователей в группах
+ * ManagedBean операции для выбранного пользователя с группами
  */
 @Named
 @SessionScoped
@@ -29,6 +29,9 @@ public class UserGroupBean implements Serializable{
      * Выбранное приложение
      */
     private ModuleEnum currentModule;
+    /**
+     * Участие пользователя в группах
+     */
     private List<GroupMembership> userMemberShip = new ArrayList<>();
 
     public void dropMembershipUser(final Group group1){
@@ -73,6 +76,10 @@ public class UserGroupBean implements Serializable{
         loadMemberShip();
         return "usergroup.xhtml?faces-redirect=true";
     }
+
+    /**
+     * Загрузка членства в группах для выбранного пользователя
+     */
     public void loadMemberShip(){
         Objects.requireNonNull(userManagerBean.getCurrentUser());
         final User currentUser = userManagerBean.getCurrentUser();

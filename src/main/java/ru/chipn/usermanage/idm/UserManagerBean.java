@@ -8,6 +8,7 @@ import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.IdentityQuery;
 import org.picketlink.idm.query.IdentityQueryBuilder;
 import ru.chipn.usermanage.login.AuthorizationManager;
+import ru.chipn.usermanage.login.Resources;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -15,10 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,19 +37,35 @@ public class UserManagerBean implements UserManagerIf, Serializable{
      * найденные пользователи (используется фреймворком в фильтрации в интерфейсе)
      */
     private List<User> foundUsers;
-
+    /**
+     * заголовок пользовательского интерфейса с которым пользователь работает в данный момент
+     */
     private String pageName;
+    /**
+     * пароль пользователя
+     */
     private String password;
     @Inject
     private AuthorizationManager authorizationManager;
+
     public UserManagerBean(){}
 
+    /**
+     * возвращает список всех пользователей в LDAP каталоге кроме
+     * служебных, которые необходимы для работы системы
+     * они перечислены в файле rusmessages.properties списком через
+     * запятую как значение свойства notProcessingUsers
+     * @return
+     */
     @Override
     public List<User> getAll() {
+        String caption = Resources.getCaption("notProcessingUsers");
+        String[] captionArray = caption.split(",");
+        List<String> notProcessingUsers = Arrays.asList(captionArray);
         IdentityQueryBuilder iqb = authorizationManager.getIdentityManager().getQueryBuilder();
         IdentityQuery<User> query = iqb.createIdentityQuery(User.class);
         List<User> list1 = query.getResultList();
-        return list1.stream().filter(user-> !user.getLoginName().equals("nobody"))
+        return list1.stream().filter(user-> !notProcessingUsers.contains(user.getLoginName()))
                 .sorted(Comparator.comparing(Agent::getLoginName))
                 .collect(Collectors.toList());
     }
@@ -82,7 +96,7 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     }
 
     /**
-     * Поиск пользователя по login в каталоге
+     * Поиск пользователя по loginName в каталоге
      * @param loginName
      * @return
      */
@@ -105,6 +119,10 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         currentUser=null;
         this.password=null;
     }
+
+    /**
+     * Создание нового пользователя
+     */
     @Override
     public void newUser(){
         currentUser = new User();

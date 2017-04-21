@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 /**
- * Class authenticator
+ * ManagedBean authenticator
  */
 @Named
 @RequestScoped

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Массовые операции с пользователи в группах
+ * ManagedBean операции для выбранной группы с пользователями.
  */
 @Named
 @ViewScoped
@@ -55,9 +55,21 @@ public class GroupMassBean implements Serializable {
     private AuthorizationManager authorizationManager;
     @Inject
     private UserManagerBean userManagerBean;
+    /**
+     * Выбранное приложение
+     */
     private ModuleEnum selectedModuleEnum;
+    /**
+     * Пользователи являющиеся участниками группы
+     */
     private List<User> members = new ArrayList<>();
+    /**
+     * Все пользователи
+     */
     private List<User> allUsers = new ArrayList<>();
+    /**
+     * Пользователи "кандидаты" на включение(исключение) в состав (из состава) группы
+     */
     private List<User> candidates= new ArrayList<>();
 
     public void grantStep2(){

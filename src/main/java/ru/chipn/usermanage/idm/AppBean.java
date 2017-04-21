@@ -20,21 +20,21 @@ import static org.picketlink.common.constants.LDAPConstants.GROUP_OF_UNIQUE_NAME
 import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 
 /**
- *
+ * ManagedBean с приложениям АСКУПЭ-2.0 и группами в LDAP каталоге
  */
 @Named
 @SessionScoped
 public class AppBean implements Serializable {
     /**
-     * Список приложений - выбиралка в интерфейсе
+     * Список приложений АСКУПЭ-2.0 - Используется в UI для выбиралки в интерфейсе
      */
     private List<SelectItem> appSelectList;
     /**
-     * Все Функциональные группы всех приложений, сгруппированы
+     * Все Функциональные группы (ФГ) всех приложений. ФГ сгруппированы по приложениям
      */
     private Map<ModuleEnum, List<Group>> moduleFgOptions;
     /**
-     * Все территориальные группы всех приложений сгруппированы
+     * Все территориальные группы (ТГ) всех приложений сгруппированы. ТГ сгруппированы по приложениям
      */
     private Map<ModuleEnum, List<Group>> moduleTgOptions;
     @Inject

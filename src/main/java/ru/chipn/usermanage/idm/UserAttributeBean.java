@@ -24,13 +24,37 @@ import static ru.chipn.usermanage.idm.LDAPATTRS.*;
 public class UserAttributeBean implements Serializable{
     @Inject
     private UserManagerBean userManagerBean;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String organization;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String telephoneNumber;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String description;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String title;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String postalCode;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String postalAddress;
+    /**
+     * Атрибут в каталоге LDAP
+     */
     private String mobile;
+    /**
+     * Признак того что пользователь с таким же loginName зарегистрирован в каталоге LDAP
+     */
     private Boolean registered=false;
 
     public void changeEmail(ValueChangeEvent event){

@@ -20,7 +20,7 @@ import static org.picketlink.common.constants.LDAPConstants.GROUP_OF_UNIQUE_NAME
 import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 
 /**
- * ManagedBean с приложениям АСКУПЭ-2.0 и группами в LDAP каталоге
+ * ManagedBean с приложениями АСКУПЭ-2.0 и группами в LDAP каталоге
  */
 @Named
 @SessionScoped

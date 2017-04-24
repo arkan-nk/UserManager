@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Managed Bean для работы с группами
+ * Managed Bean для работы с LDAP группами для выбранного приложения
  */
 @Named
 @SessionScoped
@@ -53,6 +53,9 @@ public class GroupBean implements Serializable{
     @Inject
     private UserGroupBean userGroupBean;
 
+    /**
+     * отмена вы
+     */
     public void clearSelected(){
         selectedTGroupList.clear();
         selectedFgroup=null;
@@ -60,6 +63,12 @@ public class GroupBean implements Serializable{
         appFg=null; //exactly set null do not clear() !
         appTg=null; //exactly set null do not clear() !
     }
+
+    /**
+     * Выбор приложения, переключение в интерфейсе между
+     * приложениями АСКУПЭ-2.0
+     * @param event
+     */
     public void changeAppListener(ValueChangeEvent event){
         appFg=null;
         appTg=null;

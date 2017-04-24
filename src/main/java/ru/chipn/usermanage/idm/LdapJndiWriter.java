@@ -16,8 +16,10 @@ import java.util.Hashtable;
 import static org.picketlink.common.constants.LDAPConstants.CN;
 
 /**
- * Created by arkan on 29.08.2016.
- * It is realisation to write into LDAP and will replace to be use PicketLink
+ * Класс в котором скрыты операции записи в LDAP. Средства записи фреймворка
+ * PicketLink не могут корректно работать при нестандартной структуре домена,
+ * которая используется в приложениях АСКУПЭ-2.0. Поэтому запись в LDAP производится
+ * с помощью JNDI службы сервера приложений.
  */
 
 class LdapJndiWriter {

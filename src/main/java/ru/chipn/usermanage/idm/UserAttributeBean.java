@@ -17,7 +17,8 @@ import static org.picketlink.common.constants.LDAPConstants.OBJECT_CLASS;
 import static ru.chipn.usermanage.idm.LDAPATTRS.*;
 
 /**
- * Работа с атрибутами пользователей в LDAP
+ * Работа с атрибутами в LDAP
+ * для выбранного пользователя
  */
 @Named
 @ViewScoped

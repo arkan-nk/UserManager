@@ -60,23 +60,31 @@ public class GroupMassBean implements Serializable {
      */
     private ModuleEnum selectedModuleEnum;
     /**
-     * Пользователи являющиеся участниками группы
+     * Пользователи являющиеся участниками выбранной группы
      */
     private List<User> members = new ArrayList<>();
     /**
-     * Все пользователи
+     * Все пользователи LDAP не являющиеся участниками выбранной группы
      */
     private List<User> allUsers = new ArrayList<>();
     /**
-     * Пользователи "кандидаты" на включение(исключение) в состав (из состава) группы
+     * Пользователи "кандидаты" на включение(исключение) в состав (из состава)
+     * выбранной группы
      */
     private List<User> candidates= new ArrayList<>();
 
+    /**
+     * включение пользователей в состав выбранной группы 2 шаг
+     */
     public void grantStep2(){
         members.addAll(candidates);
         allUsers.removeIf(u->candidates.contains(u));
         candidates.clear();
     }
+
+    /**
+     * исключение пользователей из состава выбранной группы шаг 2
+     */
     public void massRevokeStep2(){
         allUsers.addAll(candidates);
         members.removeIf(memb->candidates.contains(memb));

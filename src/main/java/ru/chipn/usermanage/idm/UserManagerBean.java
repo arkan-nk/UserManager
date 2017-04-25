@@ -49,7 +49,6 @@ public class UserManagerBean implements UserManagerIf, Serializable{
     private AuthorizationManager authorizationManager;
 
     public UserManagerBean(){}
-
     /**
      * возвращает список всех пользователей в LDAP каталоге кроме
      * служебных, которые необходимы для работы системы
@@ -70,11 +69,6 @@ public class UserManagerBean implements UserManagerIf, Serializable{
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Сохранение пользователя в каталоге
-     * Новый пользователь записывается,
-     * у существующего обновляется пароль
-     */
     @Override
     @Transactional
     public void saveUser(){
@@ -95,19 +89,11 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         if (isNew) init();
     }
 
-    /**
-     * Поиск пользователя по loginName в каталоге
-     * @param loginName
-     * @return
-     */
     @Override
     public User getUser(final String loginName){
         return BasicModel.getUser(authorizationManager.getIdentityManager(), loginName);
     }
 
-    /**
-     * Удаление пользователя из каталога
-     */
     @Override
     @Transactional
     public void dropUser(){
@@ -120,9 +106,6 @@ public class UserManagerBean implements UserManagerIf, Serializable{
         this.password=null;
     }
 
-    /**
-     * Создание нового пользователя
-     */
     @Override
     public void newUser(){
         currentUser = new User();

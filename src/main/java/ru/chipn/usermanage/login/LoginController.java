@@ -48,13 +48,14 @@ public class LoginController implements Serializable {
             result = authorizationManager.isOperator0();
         } catch (ServletException e) {
             e.printStackTrace();
-        }
-        if (!result) {
-            this.logoutPrivate();
-            this.facesContext.addMessage(null,
-                    new FacesMessage("Authorization was unsuccessful. Please get permission from administrator to work with the application."));
-            this.facesContext.getExternalContext().invalidateSession();
-            return "";
+        }finally {
+            if (!result) {
+                this.logoutPrivate();
+                this.facesContext.addMessage(null,
+                        new FacesMessage("Authorization was unsuccessful. Please get permission from administrator to work with the application."));
+                this.facesContext.getExternalContext().invalidateSession();
+                return "";
+            }
         }
         return "idm/users.xhtml?faces-redirect=true";
     }

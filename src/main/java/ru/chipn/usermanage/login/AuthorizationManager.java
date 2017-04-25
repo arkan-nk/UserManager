@@ -16,7 +16,8 @@ import java.io.Serializable;
 import static org.picketlink.idm.model.basic.BasicModel.getRole;
 
 /**
- * Authorization. Authenticated User must be member of FG_OPERATOR0 role
+ * Class to make an authorization after authentication.
+ * Authenticated User must be member of FG_OPERATOR0 role
  * This role in LDAP is cn=fg_operator0, ou=Roles, dc=a2,dc=chipn, dc=ru
  */
 @Named
